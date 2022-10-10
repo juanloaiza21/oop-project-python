@@ -1,6 +1,5 @@
 import sqlite3 as sql;
 from decouple import config
-from numpy import void
 
 DB = config('DB_NAME')
 
@@ -138,6 +137,7 @@ def readOrdered(field: str):
         print (e)
 
 #Actualizar datos en un determinado campo de alguna materia
+"""Actualizar materia en diseño lógico."""
 def update(fieldOnChange: str, dataOnChange,code: int):
     try:
         conn = sql.connect(DB)
