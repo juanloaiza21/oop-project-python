@@ -58,7 +58,7 @@ def rowGetter():
     departamento = input('Departamento que dicta la materia: ')
     creditos = input('Creditos de la materia: ')
     idioma = input('Idioma en que se dicta la materia: ')
-    return (int(codigo), nombre, facultad, departamento, idioma, int(creditos))
+    return (int(codigo), nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), int(creditos))
 
 #pide varias veces los datos
 def batchRowGetter():
@@ -136,6 +136,46 @@ def readOrdered(field: str):
         print(datos);
     except sql.Error as e:
         print (e)
+
+#Actualizar datos en un determinado campo de alguna materia
+def update(fieldOnChange: str, dataOnChange,code: int):
+    try:
+        conn = sql.connect(DB)
+        cursor = conn.cursor()
+        instruction = f"UPDATE materias SET {fieldOnChange}={dataOnChange} WHERE codigo={code}" #Comando de actualización en SQL
+        cursor.execute(instruction)
+        conn.commit();
+        conn.close()
+        print ('Datos actualizados de forma correcta')
+    except sql.Error as e:
+        print (e)
+
+#---------------------------------------------------------------Métodos DELETE, no se usan acá pero no sobran-----------------------------------------------------#
+def deleteRow(code: int):
+    try:
+        conn = sql.connect(DB)
+        cursor = conn.cursor()
+        instruction = f"DELETE FROM materias WHERE codigo={code}" #Comando de delete en SQL un solo dato
+        cursor.execute(instruction)
+        conn.commit();
+        conn.close()
+        print ('Datos actualizados de forma correcta')
+    except sql.Error as e:
+        print (e)
+
+def deleteAll():
+    try:
+        conn = sql.connect(DB)
+        cursor = conn.cursor()
+        instruction = f"DELETE * FROM materias" #Comando de delete all en SQL
+        cursor.execute(instruction)
+        conn.commit();
+        conn.close()
+        print ('Datos actualizados de forma correcta')
+    except sql.Error as e:
+        print (e)
+#---------------------------------------------------------------Métodos DELETE, no se usan acá pero no sobran-----------------------------------------------------#
+
 
 #HACER QUE PIDA SI QUIERE ESCRIBIR O LEER TODO
 def main():
