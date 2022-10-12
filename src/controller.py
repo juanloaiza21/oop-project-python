@@ -27,6 +27,3 @@ def main():
         elif selector==4:
             break;
 
-
-
-main()
