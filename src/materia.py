@@ -183,28 +183,54 @@ def main():
     # Verifica si existe la tabla    SOTISFICAR TODO
     createTeable()
     #Revisa si va a añadir datos, leer o actualizar, metodo reutilizable, verifica que el input sea correcto
-    selector = int(input("Si desea añadir datos ingrese '1' y enter. Si desea actualizar datos presione '2' y enter. si desea obtener información ingrese '3' y enter"))
-    while(selector!=1 and selector !=2 and selector !=3):
+    validator = True
+    while validator:
+        try:
+            selector = input("Si desea añadir datos ingrese '1' y enter. Si desea actualizar datos presione '2' y enter. si desea obtener información ingrese '3' y enter ")
+            selector = int(selector)
+            validator = False
+            while(selector!=1 and selector !=2 and selector !=3):
+                selector = input(f"{selector} no es una opción valida, por favor digite una opcion valida ")
+                selector = int(selector)
+        except ValueError:
+            print("Input invalido")
+            validator = True
     #-------------------------------------------Creación de materias---------------------------------------------------------------------------#
-        selector = input(f"{selector} no es una opción valida, por favor digite una opcion valida ")
     if selector ==1:
-        selector = int(input("Si desea solo añadir una materia digite '1' y luego enter, si desea registrar multiples datos digite '2' y luego enter. "))
-        while(selector!=1 and selector !=2):
-            selector = input(f"{selector} no es una opción valida, por favor digite una opcion valida ")
+        validator = True
+        while validator:
+            try:
+                pointer = input("Si desea solo añadir una materia digite '1' y luego enter, si desea registrar multiples datos digite '2' y luego enter. ")
+                pointer = int(pointer)
+                validator = False
+                while(pointer!=1 and pointer !=2):
+                    pointer = input(f"{pointer} no es una opción valida, por favor digite una opcion valida ")
+                    pointer = int(pointer)
+            except ValueError:
+                print("Input invalido")
+                validator = True
     #Primer caso del input de escritura, un solo dato
-        if int(selector)==1:
+        if int(pointer)==1:
             data = rowGetter()
             insertRow(data[0], data[1], data[2], data[3], data[4], data[5])
             print("Datos insertados: ",data)
     #Segundo caso, múltiples datos
-        elif(int(selector)==2):
+        elif(int(pointer)==2):
             data = batchRowGetter()
             batchInsertRow(data)
     #-----------------------------------------------------------------------------------------------------------------------------------------#
 
     #---------------------------------------------------------------Actualizar datos-----------------------------------------------------------#
     elif(int(selector)==2):
-        code = int(input("Escriba el codigo que quiere actualizar "))
+        validator = True
+        while validator:
+            try:
+                code = input("Escriba el codigo que quiere actualizar ")
+                code = int(code)
+                validator = False
+            except ValueError:
+                print("Input invalido")
+                validator = True
         field = input("""Escriba por el campo que quiere actualizar, recuerde que los campos son
                 codigo,
                 nombre
@@ -242,6 +268,3 @@ def main():
         elif order==2:
             readAllRows()
     #-----------------------------------------------------------------------------------------------------------------------------------------#
-
-
-main()
