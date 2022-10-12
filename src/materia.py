@@ -127,7 +127,7 @@ def readOrdered(field: str):
     try:
         conn = sql.connect(DB)
         cursor = conn.cursor()
-        instruction = f"SELECT * from materias ORDERED BY {field} DESC" #Si le quitamos el DESC se ordenara de menor a mayor, "DESC" viene de DESCENDING
+        instruction = f"SELECT * from materias ORDER BY {field} DESC" #Si le quitamos el DESC se ordenara de menor a mayor, "DESC" viene de DESCENDING
         cursor.execute(instruction)
         datos = cursor.fetchall()
         conn.commit();
@@ -142,11 +142,16 @@ def update(fieldOnChange: str, dataOnChange, code: int):
     try:
         conn = sql.connect(DB)
         cursor = conn.cursor()
-        instruction = f"UPDATE materias SET {fieldOnChange}={dataOnChange} WHERE codigo={code}" #Comando de actualización en SQL
-        cursor.execute(instruction)
-        conn.commit();
-        conn.close()
-        print ('Datos actualizados de forma correcta')
+        try:
+            dataOnChange= int(dataOnChange)
+            instruction = f"UPDATE materias SET '{fieldOnChange}'={dataOnChange} WHERE codigo={code}"
+        except ValueError:
+            instruction = f"UPDATE materias SET '{fieldOnChange}'='{dataOnChange}' WHERE codigo={code}" #Comando de actualización en SQL
+        finally:
+            cursor.execute(instruction)
+            conn.commit();
+            conn.close()
+            print ('Datos actualizados de forma correcta')
     except sql.Error as e:
         print (e)
 
@@ -244,7 +249,7 @@ def main():
             dataOnchange = input(f"Escriba el valor con el cual quiere modificar el campo {field.lower()} de la materia con codigo{code} ")
             try:
                 dataOnchange = int(dataOnchange)
-            except ValueError:
+            except:
                 dataOnchange.lower()
             finally:
                 update(field, dataOnchange, code)

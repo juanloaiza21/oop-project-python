@@ -1,5 +1,3 @@
-from select import select
-from wsgiref.validate import validator
 from materia import main as matController
 from historia_academica import main as acadHistory
 from estudiante import main as estudent
