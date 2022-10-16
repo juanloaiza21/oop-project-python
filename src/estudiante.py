@@ -1,5 +1,4 @@
 #TODO all module
-#TODO all module
 from datetime import date
 import sqlite3 as sql
 from decouple import config
@@ -27,11 +26,11 @@ def createTeable():
                 nombre text,
                 apellido text,
                 carrera text,
-                fechanacimiento date,
-                fechaingreso date
-                procedencia text
-                correoeletronico text
-                cantidadmatriculas text
+                fechanacimiento text,
+                fechaingreso text,
+                procedencia text,
+                correoeletronico text,
+                cantidadmatriculas integer
                 )"""
         );
         conn.commit();
@@ -42,11 +41,11 @@ def createTeable():
 
         
 #Inserta la materia
-def insertRow(identificacion : int, nombre: str, apellido: str, carrera: str, fechanacimiento: date, fechaingreso: date, procedencia: str, correoeletronico: str, cantidadmatriculas: str):
+def insertRow(identificacion : int, nombre: str, apellido: str, carrera: str, fechanacimiento: str, fechaingreso: str, procedencia: str, correoeletronico: str, cantidadmatriculas: int):
     try:
         conn = sql.connect(DB)
         cursor = conn.cursor()
-        instruction = f"INSERT INTO materias values({identificacion}, '{nombre}', '{apellido}', '{carrera}', '{fechanacimiento}', '{fechaingreso}','{procedencia}','{correoeletronico}','{cantidadmatriculas}')"
+        instruction = f"INSERT INTO estudiante values({identificacion}, '{nombre}', '{apellido}', '{carrera}', '{fechanacimiento}', '{fechaingreso}','{procedencia}','{correoeletronico}','{cantidadmatriculas}')"
         cursor.execute(instruction)
         conn.commit();
         conn.close();
@@ -84,8 +83,6 @@ def batchRowGetter():
         correoeletronico = input('corre oeletronico del estudiante: ')
         cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
         result.append((int(identificacion), nombre, apellido, carrera, fechanacimiento, fechaingreso, procedencia, correoeletronico, int(cantidadmatriculas)))
-        runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
-        counter+=1
         runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
         counter+=1
         if runner != secret_runner:
@@ -126,7 +123,7 @@ def batchInsertRow(dataList):
     try:
         conn = sql.connect(DB)
         cursor = conn.cursor()
-        instruction = f"INSERT INTO estudiante values(?, ?, ?, ?, ?, ?)"
+        instruction = f"INSERT INTO estudiante values(?, ?, ?, ?, ?, ?, ?, ?, ?)"
         cursor.executemany(instruction, dataList)
         conn.commit();
         conn.close();
@@ -138,7 +135,7 @@ def readOrdered(field: str):
     try:
         conn = sql.connect(DB)
         cursor = conn.cursor()
-        instruction = f"SELECT * from estudiante ORDER BY {field} DESC" #Si le quitamos el DESC se ordenara de menor a mayor, "DESC" viene de DESCENDING
+        instruction = f"SELECT * from estudiante ORDER BY '{field}' DESC" #Si le quitamos el DESC se ordenara de menor a mayor, "DESC" viene de DESCENDING
         cursor.execute(instruction)
         datos = cursor.fetchall()
         conn.commit();
@@ -186,7 +183,7 @@ def main():
             except ValueError:
                 print("Input invalido")
                 validator = True
-        #-------------------------------------------Creación de materias---------------------------------------------------------------------------#
+        #-------------------------------------------Creación de estudiante---------------------------------------------------------------------------#
         if selector ==1:
             validator = True
             while validator:
@@ -203,7 +200,7 @@ def main():
         #Primer caso del input de escritura, un solo dato
             if int(pointer)==1:
                 data = rowGetter()
-                insertRow(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9])
+                insertRow(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8])
                 print("Datos insertados: ",data)
         #Segundo caso, múltiples datos
             elif(int(pointer)==2):
@@ -230,7 +227,6 @@ def main():
                     fechanacimiento,
                     fechaingreso
                     procedencia
-                    correoeletronico
                     correoeletronico
                     cantidadmatriculas
             """)
@@ -260,7 +256,6 @@ def main():
                     fechaingreso
                     procedencia
                     correoeletronico
-                    correoeletronico
                     cantidadmatriculas
                 """)
                 readOrdered(field.lower())
@@ -270,11 +265,4 @@ def main():
         elif selector ==4:
             break;
 
-#----------------------------------------------------------------Controlador principal----------------------------------------------------------------------------#
-
-#-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
-
-#----------------------------------------------------------------Controlador principal----------------------------------------------------------------------------#
-def main():
-    pass
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
