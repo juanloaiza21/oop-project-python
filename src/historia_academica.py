@@ -54,17 +54,20 @@ def insertRow(codigo: int, id_estudiante: int, score: float = 0.0):
 #Lector del input por parte del usuario
 #TODO validar ints, strings y floats
 def rowGetter():
-    print("El codigo de la materia y el Id del estudiante deben existir, si no, habra error")
-    codigo = input('Codigo de la materia: ')
-    codigo = codigo.ljust(10)
-    idEstudiante = input('Id del estudiante ')
-    #TODO validacion en caso de que la nota aun no este sea 0
-    selector = input("¿Desea agregar nota? 1. Si. 2. No")
-    if selector ==1:
-        nota = input('Nota del estudiante ')
-    else:
-        nota = 0
-    return (int(codigo), int(idEstudiante), float(nota))
+    try:
+        print("El codigo de la materia y el Id del estudiante deben existir, si no, habra error")
+        codigo = input('Codigo de la materia: ')
+        codigo = codigo.ljust(10)
+        idEstudiante = input('Id del estudiante ')
+        #TODO validacion en caso de que la nota aun no este sea 0
+        selector = input("¿Desea agregar nota? 1. Si. 2. No")
+        if selector ==1:
+            nota = input('Nota del estudiante ')
+        else:
+            nota = 0
+        return (int(codigo), int(idEstudiante), float(nota))
+    except ValueError:
+        print("Dato(s) invalido")
 
 #TODO validar ints, strings y floats
 def batchRowGetter():
@@ -134,12 +137,15 @@ def update(fieldOnChange: str, dataOnChange, code: int, dataOnChange2: int):
         print (e)
 
 def rowUpdateGetter():
-    print("El codigo de la materia y el Id del estudiante deben existir, si no, habra error")
-    codigo = input('Codigo de la materia: ')
-    codigo = codigo.ljust(10)
-    idEstudiante = input('Id del estudiante ')
-    nota = input('Nota del estudiante ')
-    return (int(codigo), int(idEstudiante), float(nota))
+    try:
+        print("El codigo de la materia y el Id del estudiante deben existir, si no, habra error")
+        codigo = input('Codigo de la materia: ')
+        codigo = codigo.ljust(10)
+        idEstudiante = input('Id del estudiante ')
+        nota = input('Nota del estudiante ')
+        return (int(codigo), int(idEstudiante), float(nota))
+    except ValueError:
+        print("Dato(s) invalido")
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -155,6 +161,16 @@ def deleteRow(code: int, studentId: int):
         print ('Datos actualizados de forma correcta')
     except sql.Error as e:
         print (e)
+
+def rowDeleteGetter():
+    try:
+        print("El codigo de la materia y el Id del estudiante deben existir, si no, habra error")
+        codigo = input('Codigo de la materia: ')
+        codigo = codigo.ljust(10)
+        idEstudiante = input('Id del estudiante ')
+        return (int(codigo), int(idEstudiante))
+    except ValueError:
+        print("Dato(s) invalido")
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 #----------------------------------------------------------------Controlador principal----------------------------------------------------------------------------#
@@ -164,7 +180,7 @@ def main():
         validator = True
         while validator:
             try:
-                selector=input("Si desea crear añadir una materia aprete 1. Si desea actualizar datos o una nota en una materia ya registrada aprete 2. Si desea consultar sus notas o su promedio aprete 3. si desea eliminar alguna materia aprete 4. Para salir, cualquier otra tecla.")
+                selector=input("Si desea crear añadir una materia aprete 1. Si desea actualizar una nota en una materia ya registrada aprete 2. Si desea consultar sus notas o su promedio aprete 3. si desea eliminar alguna materia aprete 4. Para salir, cualquier otra tecla.")
                 selector =int(selector)
                 if (selector!=1 and selector !=2 and selector !=3 and selector !=4):
                     print(f"{selector} es un valor invalido")
@@ -186,6 +202,7 @@ def main():
                         data = rowGetter()
                         insertRow(data)
                         print("Datos añadidos correctamente");
+                        break;
                     elif selector == 2:
                         print('A continuación va a inscribir una materia ')
                         data = rowGetter()
@@ -197,16 +214,46 @@ def main():
         elif selector == 2:
             while True:
                 try:
-                    print("Para actualizar la nota de una materia debe escribir el documento del estudiante y el codigo de la materia.");
+                    print("Para actualizar la nota de una materia debe escribir el documento del estudiante y el codigo de la materia. Claramene la nota tambien");
                     data = rowUpdateGetter()
                     update('nota', data[2], data[1], data[0])
                     print('Actualizado correctamente')
+                    break
+                except:
+                    print ("Unexpected error")
+        elif selector == 3: 
+            while True:
+                try:
+                    selector=input("Si desea ver su promedio aprete 1. Si desea ver todas sus notas aprete 2.");
+                    selector = int(selector)
+                    if (selector !=1 and selector !=2):
+                        print(f"{selector} es invalido")
+                    elif selector == 1:
+                        while True:
+                            try:
+                                idd = int(input("Ingrese el documento del estudiante "))
+                                data = acadHistoryById(idd)
+                                promedio = prom(data)
+                                print("Su promedio es: ", promedio)
+                                break
+                            except ValueError:
+                                print(f"{idd} es invalido")
+                    elif selector == 2:
+                       while True:
+                            try:
+                                idd = int(input("Ingrese el documento del estudiante "))
+                                data = acadHistoryById(idd)
+                                print("Sus notas son: ", data)
+                                break
+                            except ValueError:
+                                print(f"{idd} es invalido")
                 except ValueError:
                     print (f"{selector} es invalido")
-        elif selector == 3: 
-            pass
         elif selector == 4:
-            pass
+            while True:
+                data = rowDeleteGetter()
+                deleteRow(data)
+                break;
         else:
             break
 
