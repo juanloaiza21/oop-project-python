@@ -46,6 +46,7 @@ def insertRow(codigo: int, nombre: str, facultad: str, departamento: str, idioma
 
     
 #Pide input por teclado a tráves de consola de los datos, en versión gráfica desaparece
+#TODO validar ints, strings y floats
 def rowGetter():
     codigo = input('Codigo de la materia: ')
     codigo = codigo.ljust(10)

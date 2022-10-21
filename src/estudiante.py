@@ -54,6 +54,7 @@ def insertRow(identificacion : int, nombre: str, apellido: str, carrera: str, fe
 
 #Pide input por teclado a tráves de consola de los datos, en versión gráfica desaparece
 def rowGetter():
+    #TODO validar ints, strings y floats
     identificacion = input('numero de identificacion del estudiante: ')
     identificacion = identificacion.ljust(10)
     nombre = input('Nombre del estudiante: ')
