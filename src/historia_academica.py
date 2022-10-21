@@ -116,15 +116,15 @@ def prom (data):
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 #----------------------------------------------------------------Metodo de actualizacion--------------------------------------------------------------------------#
-def update(fieldOnChange: str, dataOnChange, code: int):
+def update(fieldOnChange: str, dataOnChange, code: int, dataOnChange2: int):
     try:
         conn = sql.connect(DB)
         cursor = conn.cursor()
         try:
             dataOnChange= int(dataOnChange)
-            instruction = f"UPDATE acadhistory SET '{fieldOnChange}'={dataOnChange} WHERE codigo={code}"
+            instruction = f"UPDATE acadhistory SET '{fieldOnChange}'={dataOnChange} WHERE codigo={code} AND id_estudiante={dataOnChange2}"
         except ValueError:
-            instruction = f"UPDATE acadhistory SET '{fieldOnChange}'='{dataOnChange}' WHERE codigo={code}" #Comando de actualización en SQL
+            instruction = f"UPDATE acadhistory SET '{fieldOnChange}'='{dataOnChange}' WHERE codigo={code} AND id_estudiante={dataOnChange2}" #Comando de actualización en SQL
         finally:
             cursor.execute(instruction)
             conn.commit();
@@ -132,6 +132,15 @@ def update(fieldOnChange: str, dataOnChange, code: int):
             print ('Datos actualizados de forma correcta')
     except sql.Error as e:
         print (e)
+
+def rowUpdateGetter():
+    print("El codigo de la materia y el Id del estudiante deben existir, si no, habra error")
+    codigo = input('Codigo de la materia: ')
+    codigo = codigo.ljust(10)
+    idEstudiante = input('Id del estudiante ')
+    nota = input('Nota del estudiante ')
+    return (int(codigo), int(idEstudiante), float(nota))
+
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 #----------------------------------------------------------------Metodo de borrado--------------------------------------------------------------------------#
@@ -186,7 +195,14 @@ def main():
                 except ValueError:
                     print (f"{selector} es invalido")
         elif selector == 2:
-            pass
+            while True:
+                try:
+                    print("Para actualizar la nota de una materia debe escribir el documento del estudiante y el codigo de la materia.");
+                    data = rowUpdateGetter()
+                    update('nota', data[2], data[1], data[0])
+                    print('Actualizado correctamente')
+                except ValueError:
+                    print (f"{selector} es invalido")
         elif selector == 3: 
             pass
         elif selector == 4:
