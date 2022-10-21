@@ -1,3 +1,4 @@
+from multiprocessing.sharedctypes import Value
 import sqlite3 as sql
 from decouple import config
 DB = config('DB_NAME')
@@ -38,14 +39,21 @@ def insertRow(codigo: int, nombre: str, facultad: str, departamento: str, idioma
 #Pide input por teclado a tráves de consola de los datos, en versión gráfica desaparece
 #TODO validar ints, strings y floats
 def rowGetter():
-    codigo = input('Codigo de la materia: ')
-    codigo = codigo.ljust(10)
-    nombre = input('Nombre de la materia: ')
-    facultad = input('Facultad que dicta la materia: ')
-    departamento = input('Departamento que dicta la materia: ')
-    creditos = input('Creditos de la materia: ')
-    idioma = input('Idioma en que se dicta la materia: ')
-    return (int(codigo), nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), int(creditos))
+    while True:
+        try: 
+            codigo = input('Codigo de la materia: ')
+            codigo = codigo.ljust(10)
+            codigo = int(codigo)
+            nombre = input('Nombre de la materia: ')
+            facultad = input('Facultad que dicta la materia: ')
+            departamento = input('Departamento que dicta la materia: ')
+            creditos = input('Creditos de la materia: ')
+            creditos = int(creditos)
+            idioma = input('Idioma en que se dicta la materia: ')
+            return (codigo, nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), creditos)
+        except ValueError:
+            print("Dato(s) invalido(s), codigo y creditos son numeros enteros")
+
 
 #pide varias veces los datos
 def batchRowGetter():
@@ -53,18 +61,23 @@ def batchRowGetter():
     secret_runner = "1"
     counter = 0
     while True: 
-        codigo = input('Codigo de la materia: ')
-        codigo = codigo.ljust(10)
-        nombre = input('Nombre de la materia: ')
-        facultad = input('Facultad que dicta la materia: ')
-        departamento = input('Departamento que dicta la materia: ')
-        creditos = input('Creditos de la materia: ')
-        idioma = input('Idioma en que se dicta la materia: ')
-        result.append((int(codigo), nombre, facultad, departamento, idioma, int(creditos)))
-        runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
-        counter+=1
-        if runner != secret_runner:
-            break 
+        try:
+            codigo = input('Codigo de la materia: ')
+            codigo = codigo.ljust(10)
+            codigo = int(codigo)
+            nombre = input('Nombre de la materia: ')
+            facultad = input('Facultad que dicta la materia: ')
+            departamento = input('Departamento que dicta la materia: ')
+            creditos = input('Creditos de la materia: ')
+            creditos = int(creditos)
+            idioma = input('Idioma en que se dicta la materia: ')
+            result.append((codigo, nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), creditos))
+            runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
+            counter+=1
+            if runner != secret_runner:
+                break 
+        except ValueError:
+            print("Dato(s) invalido(s), codigo y creditos son numeros enteros")
     print (f"Usted ha insertado {counter} datos, los cuales son: {result}")
     return result
 

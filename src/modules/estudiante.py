@@ -45,17 +45,24 @@ def insertRow(identificacion : int, nombre: str, apellido: str, carrera: str, fe
 #Pide input por teclado a tráves de consola de los datos, en versión gráfica desaparece
 def rowGetter():
     #TODO validar ints, strings y floats
-    identificacion = input('numero de identificacion del estudiante: ')
-    identificacion = identificacion.ljust(10)
-    nombre = input('Nombre del estudiante: ')
-    apellido = input('apellido del estudiante: ')
-    carrera = input('nomrbre de la carrera: ')
-    fechanacimiento = input('fecha de nacimiento del estudiante: ')
-    fechaingreso = input('fecha de ingreso del estudiante: ')
-    procedencia = input('procedencia del estudiante: ')
-    correoeletronico = input('corre oeletronico del estudiante: ')
-    cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
-    return (int(identificacion), nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.upper(), fechaingreso.upper(), procedencia.upper(),correoeletronico.upper(),int(cantidadmatriculas))
+    #TODO hacer que la fecha sea DD/MM/AA
+    while True:
+        try:
+            identificacion = input('numero de identificacion del estudiante: ')
+            identificacion = identificacion.ljust(10)
+            identificacion = int(identificacion)
+            nombre = input('Nombre del estudiante: ')
+            apellido = input('apellido del estudiante: ')
+            carrera = input('nomrbre de la carrera: ')
+            fechanacimiento = input('fecha de nacimiento del estudiante: ')
+            fechaingreso = input('fecha de ingreso del estudiante: ')
+            procedencia = input('procedencia del estudiante: ')
+            correoeletronico = input('corre oeletronico del estudiante: ')
+            cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
+            cantidadmatriculas = int(cantidadmatriculas)
+            return (identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.upper(), fechaingreso.upper(), procedencia.upper(),correoeletronico.upper(),cantidadmatriculas)
+        except ValueError:
+            print('Value error, cantidad de matriculas e identificacion son numeros enteros')
 
 #pide varias veces los datos
 def batchRowGetter():
@@ -63,21 +70,26 @@ def batchRowGetter():
     secret_runner = "1"
     counter = 0
     while True: 
-        identificacion = input('numero de identificacion del estudiante: ')
-        identificacion = identificacion.ljust(10)
-        nombre = input('Nombre del estudiante: ')
-        apellido = input('apellido del estudiante: ')
-        carrera = input('nomrbre de la carrera: ')
-        fechanacimiento = input('fecha de nacimiento del estudiante: ')
-        fechaingreso = input('fecha de ingreso del estudiante: ')
-        procedencia = input('procedencia del estudiante: ')
-        correoeletronico = input('corre oeletronico del estudiante: ')
-        cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
-        result.append((int(identificacion), nombre, apellido, carrera, fechanacimiento, fechaingreso, procedencia, correoeletronico, int(cantidadmatriculas)))
-        runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
-        counter+=1
-        if runner != secret_runner:
-            break 
+        try:
+            identificacion = input('numero de identificacion del estudiante: ')
+            identificacion = identificacion.ljust(10)
+            identificacion = int(identificacion)
+            nombre = input('Nombre del estudiante: ')
+            apellido = input('apellido del estudiante: ')
+            carrera = input('nomrbre de la carrera: ')
+            fechanacimiento = input('fecha de nacimiento del estudiante: ')
+            fechaingreso = input('fecha de ingreso del estudiante: ')
+            procedencia = input('procedencia del estudiante: ')
+            correoeletronico = input('corre oeletronico del estudiante: ')
+            cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
+            cantidadmatriculas = int(cantidadmatriculas)
+            result.append((identificacion, nombre, apellido, carrera, fechanacimiento, fechaingreso, procedencia, correoeletronico, cantidadmatriculas))
+            runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
+            counter+=1
+            if runner != secret_runner:
+                break 
+        except ValueError:
+                print('Value error, cantidad de matriculas e identificacion son numeros enteros')
     print (f"Usted ha insertado {counter} datos, los cuales son: {result}")
     return result
 

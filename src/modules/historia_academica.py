@@ -60,23 +60,24 @@ def rowGetter():
     except ValueError:
         print("Dato(s) invalido")
 
-#TODO validar ints, strings y floats
 def batchRowGetter():
     result = []
     secret_runner = "1"
     counter = 0
     while True: 
-        print("El codigo de la materia y el Id del estudiante deben existir, si no, habra error")
-        codigo = input('Codigo de la materia: ')
-        codigo = codigo.ljust(10)
-        idEstudiante = input('Id del estudiante ')
-        #TODO validacion en caso de que la nota aun no este sea 0
-        nota = input('Nota del estudiante ')
-        result.append(int(codigo), int(idEstudiante), float(nota))
-        runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
-        counter+=1
-        if runner != secret_runner:
-            break 
+        try:
+            print("El codigo de la materia y el Id del estudiante deben existir, si no, habra error")
+            codigo = input('Codigo de la materia: ')
+            codigo = codigo.ljust(10)
+            idEstudiante = input('Id del estudiante ')
+            nota = input('Nota del estudiante ')
+            result.append(int(codigo), int(idEstudiante), float(nota))
+            runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
+            counter+=1
+            if runner != secret_runner:
+                break 
+        except ValueError:
+            print("Dato(s) invalido")
     print (f"Usted ha insertado {counter} datos, los cuales son: {result}")
     return result
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
