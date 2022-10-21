@@ -6,15 +6,6 @@ from materia import readOrdered as allMaterias
 
 DB = config('DB_NAME')
 
-#Crea base de datos, hay que hacer que verifique si ya existe
-def createrDB():
-    try:
-        conn = sql.connect(DB);
-        conn.commit();
-        conn.close();
-    except sql.Error as e:
-        print(e)
-
 #Crea tablas manualmente, automatizar; TODO generar modulo que cree toda la DB y meterlo en el controlador como primer paso al correr la app
 def createTeable():
     try:
@@ -258,5 +249,3 @@ def main():
             break
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
-
-main()
