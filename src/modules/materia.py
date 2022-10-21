@@ -164,7 +164,7 @@ def main():
         validator = True
         while validator:
             try:
-                selector = input("Si desea añadir datos ingrese '1' y enter. Si desea actualizar datos presione '2' y enter. si desea obtener información ingrese '3' y enter, para salir presione 4 y enter. ")
+                selector = input("Si desea añadir datos ingrese '1' y enter. Si desea actualizar el idioma presione '2' y enter. si desea obtener información ingrese '3' y enter, para salir presione 4 y enter. ")
                 selector = int(selector)
                 validator = False
                 while(selector!=1 and selector !=2 and selector !=3 and selector !=4):
@@ -209,40 +209,30 @@ def main():
                 except ValueError:
                     print("Input invalido")
                     validator = True
-            field = input("""Escriba por el campo que quiere actualizar, recuerde que los campos son
-                    codigo,
-                    nombre
-                    facultad,
-                    departamento,
-                    idioma,
-                    creditos
-            """)
-            dataOnchange = input(f"Escriba el valor con el cual quiere modificar el campo {field.lower()} de la materia con codigo{code} ")
+            dataOnchange = input(f"Escriba el valor con el cual quiere modificar el campo {'idioma'} de la materia con codigo{code} ")
             try:
                 dataOnchange = int(dataOnchange)
             except:
                 dataOnchange.lower()
             finally:
-                update(field, dataOnchange, code)
+                update('idioma', dataOnchange, code)
 
         #------------------------------------------------------------------------------------------------------------------------------------------#
 
         #----------------------------------------------------------------Leer datos---------------------------------------------------------------#
         elif selector==3:
-            order = int(input("Si desea ordenar por algun campo en particular oprima 1  y enter, si no oprima 2 y enter. EL ORDEN SIEMPRE SERA DESCENDETE "))
+            order = int(input("Si desea ordenar por código oprima 1  y enter, si no oprima 2 y enter."))
             #Verifica si el input es correcto
             while(order!=1 and order !=2):
                 order = int(input(f"{selector} no es una opción valida, por favor digite una opcion valida "))
             if(order==1):
-                field = input("""Escriba por el campo que quiere filtrar, recuerde que los campos son
-                    codigo,
-                    nombre
-                    facultad,
-                    departamento,
-                    idioma,
-                    creditos
-                """)
-                readOrdered(field.lower())
+                while True:
+                    try:
+                        field = int(input('Escriba el codigo de la materia '))
+                        searchByFilter('codigo', field)
+                        break
+                    except ValueError:
+                        print(f"{field} invalido") 
             elif order==2:
                 readAllRows()
         #-----------------------------------------------------------------------------------------------------------------------------------------#

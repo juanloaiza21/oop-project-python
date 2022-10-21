@@ -218,48 +218,28 @@ def main():
                 except ValueError:
                     print("Input invalido")
                     validator = True
-            field = input("""Escriba por el campo que quiere actualizar, recuerde que los campos son
-                    identificacion,
-                    nombre
-                    apellido,
-                    carrera,
-                    fechanacimiento,
-                    fechaingreso
-                    procedencia
-                    correoeletronico
-                    cantidadmatriculas
-            """)
-            dataOnchange = input(f"Escriba el valor con el cual quiere modificar el campo {field.lower()} de la materia con identificacion{iden} ")
-            try:
-                dataOnchange = int(dataOnchange)
-            except:
-                dataOnchange.lower()
-            finally:
-                update(field, dataOnchange, iden)
+            dataOnchange = int(input(f"Escriba el nuevo valor de matricula "))
+            while True: 
+                try:
+                    dataOnchange = int(dataOnchange)
+                    update('cantidadmatriculas', dataOnchange, iden)
+                    break
+                except ValueError:
+                    print(f'{dataOnchange} invalido')
 
         #------------------------------------------------------------------------------------------------------------------------------------------#
 
         #----------------------------------------------------------------Leer datos---------------------------------------------------------------#
         elif selector==3:
-            order = int(input("Si desea ordenar por algun campo en particular oprima 1  y enter, si no oprima 2 y enter. EL ORDEN SIEMPRE SERA DESCENDETE "))
-            #Verifica si el input es correcto
-            while(order!=1 and order !=2):
-                order = int(input(f"{selector} no es una opción valida, por favor digite una opcion valida "))
-            if(order==1):
-                field = input("""Escriba por el campo que quiere filtrar, recuerde que los campos son
-                    codigo,
-                    nombre
-                    apellido,
-                    carrera,
-                    fechanacimiento,
-                    fechaingreso
-                    procedencia
-                    correoeletronico
-                    cantidadmatriculas
-                """)
-                readOrdered(field.lower())
-            elif order==2:
-                readAllRows()
+            while True: 
+                try:
+                    selector = int(input("Para ver sus datos escriba el numero de la identificacion "))
+                    searchByFilter('identificacion', selector)
+                    break
+                except ValueError:
+                    print("dato inválido")
+
+            
         #-----------------------------------------------------------------------------------------------------------------------------------------#
         elif selector ==4:
             break;
