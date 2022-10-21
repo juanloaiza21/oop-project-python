@@ -21,16 +21,16 @@ def createTeable():
         conn = sql.connect(DB)
         cursor = conn.cursor()
         cursor.execute(
-            """CREATE TABLE estudiante (
-                identificacion integer PRIMARY KEY,
-                nombre text,
-                apellido text,
-                carrera text,
-                fechanacimiento text,
-                fechaingreso text,
-                procedencia text,
-                correoeletronico text,
-                cantidadmatriculas integer
+            """CREATE TABLE IF NOT EXISTS estudiante (
+                identificacion INTEGER PRIMARY KEY,
+                nombre TEXT NOT NULL,
+                apellido TEXT NOT NULL,
+                carrera TEXT NOT NULL,
+                fechanacimiento TEXT NOT NULL,
+                fechaingreso TEXT NOT NULL,
+                procedencia TEXT NOT NULL,
+                correoeletronico TEXT NOT NULL,
+                cantidadmatriculas INTEGER NOT NULL
                 )"""
         );
         conn.commit();

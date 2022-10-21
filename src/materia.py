@@ -3,9 +3,6 @@ from decouple import config
 
 DB = config('DB_NAME')
 
-
-"""A la larga este será el módulo de materias"""
-
 #Crea base de datos, hay que hacer que verifique si ya existe
 def createrDB():
     try:
@@ -21,13 +18,13 @@ def createTeable():
         conn = sql.connect(DB)
         cursor = conn.cursor()
         cursor.execute(
-            """CREATE TABLE materias (
-                codigo integer PRIMARY KEY,
-                nombre text,
-                facultad text,
-                departamento text,
-                idioma text,
-                creditos integer
+            """CREATE TABLE IF NOT EXISTS materias (
+                codigo INTEGER PRIMARY KEY,
+                nombre TEXT NOT NULL,
+                facultad TEXT NOT NULL,
+                departamento TEXT NOT NULL,
+                idioma TEXT NOT NULL,
+                creditos INTEGER NOT NULL
                 )"""
         );
         conn.commit();
