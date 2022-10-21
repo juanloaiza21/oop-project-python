@@ -153,32 +153,6 @@ def update(fieldOnChange: str, dataOnChange, code: int):
     except sql.Error as e:
         print (e)
 
-#---------------------------------------------------------------Métodos DELETE, no se usan acá pero no sobran TODO eliminarlos--------------------------------------#
-def deleteRow(code: int):
-    try:
-        conn = sql.connect(DB)
-        cursor = conn.cursor()
-        instruction = f"DELETE FROM materias WHERE codigo={code}" #Comando de delete en SQL un solo dato
-        cursor.execute(instruction)
-        conn.commit();
-        conn.close()
-        print ('Datos actualizados de forma correcta')
-    except sql.Error as e:
-        print (e)
-
-def deleteAll():
-    try:
-        conn = sql.connect(DB)
-        cursor = conn.cursor()
-        instruction = f"DELETE * FROM materias" #Comando de delete all en SQL
-        cursor.execute(instruction)
-        conn.commit();
-        conn.close()
-        print ('Datos actualizados de forma correcta')
-    except sql.Error as e:
-        print (e)
-#-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
-
 #---------------------------------------------------------------Función principal---------------------------------------------------------------------------------#
 def main():
     
