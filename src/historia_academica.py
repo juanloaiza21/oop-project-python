@@ -2,7 +2,6 @@
 import sqlite3 as sql
 from time import sleep
 from decouple import config
-from materia import readOrdered as allMaterias
 
 DB = config('DB_NAME')
 
@@ -27,9 +26,24 @@ def createTeable():
     except sql.Error as e:
         print(e)
 
+
+#TODO FIX IMPORT
+def allMaterias(field: str):
+    try:
+        conn = sql.connect(DB)
+        cursor = conn.cursor()
+        instruction = f"SELECT * from materias ORDER BY {field} DESC" #Si le quitamos el DESC se ordenara de menor a mayor, "DESC" viene de DESCENDING
+        cursor.execute(instruction)
+        datos = cursor.fetchall()
+        conn.commit();
+        conn.close()
+        print(datos);
+    except sql.Error as e:
+        print (e)
+
 #----------------------------------------------------------------Inserta las notas de la materia-------------------------------------------------------------------
 #Crear historia academica en documentación
-def insertRow(codigo: int, id_estudiante: int, score: float = 0.0):
+def insertRow(codigo: int, id_estudiante: int, score: float):
     try:
         conn = sql.connect(DB)
         cursor = conn.cursor()
@@ -116,10 +130,10 @@ def update(fieldOnChange: str, dataOnChange, code: int, dataOnChange2: int):
         conn = sql.connect(DB)
         cursor = conn.cursor()
         try:
-            dataOnChange= int(dataOnChange)
-            instruction = f"UPDATE acadhistory SET '{fieldOnChange}'={dataOnChange} WHERE codigo={code} AND id_estudiante={dataOnChange2}"
+            dataOnChange= float(dataOnChange)
+            instruction = f"UPDATE acadhistory SET '{fieldOnChange}'={dataOnChange} WHERE code_materia={code} AND id_estudiante={dataOnChange2}"
         except ValueError:
-            instruction = f"UPDATE acadhistory SET '{fieldOnChange}'='{dataOnChange}' WHERE codigo={code} AND id_estudiante={dataOnChange2}" #Comando de actualización en SQL
+            instruction = f"UPDATE acadhistory SET '{fieldOnChange}'='{dataOnChange}' WHERE code_materia={code} AND id_estudiante={dataOnChange2}" #Comando de actualización en SQL
         finally:
             cursor.execute(instruction)
             conn.commit();
@@ -192,13 +206,14 @@ def main():
                         sleep(2.5)
                         print('A continuación va a inscribir una materia ')
                         data = rowGetter()
-                        insertRow(data)
+                        insertRow(data[0], data[1], data[2])
                         print("Datos añadidos correctamente");
                         break;
                     elif selector == 2:
                         print('A continuación va a inscribir una materia ')
                         data = rowGetter()
-                        insertRow(data)
+                        #TODO revisar error se crean datos sin relacion
+                        insertRow(data[0], data[1], data[2])
                         print("Datos añadidos correctamente")
                         break;
                 except ValueError:

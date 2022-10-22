@@ -116,7 +116,7 @@ def batchInsertRow(dataList):
         conn = sql.connect(DB)
         cursor = conn.cursor()
         instruction = f"INSERT INTO materias values(?, ?, ?, ?, ?, ?)"
-        cursor.executemany(instruction, dataList)
+        cursor.executemany(instruction, dataList) #Enviar varios datos a la vez
         conn.commit();
         conn.close();
     except sql.Error as e:
@@ -224,7 +224,7 @@ def main():
             order = int(input("Si desea ordenar por código oprima 1  y enter, si no oprima 2 y enter."))
             #Verifica si el input es correcto
             while(order!=1 and order !=2):
-                order = int(input(f"{selector} no es una opción valida, por favor digite una opcion valida "))
+                order = int(input(f"{selector} no es una opción valida, por favor digite una opcion valida ")) #TODO valdiacion
             if(order==1):
                 while True:
                     try:

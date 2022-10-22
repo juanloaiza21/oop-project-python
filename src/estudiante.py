@@ -1,5 +1,5 @@
 #TODO all module
-from datetime import date
+from datetime import date, datetime
 import sqlite3 as sql
 from decouple import config
 
@@ -44,7 +44,6 @@ def insertRow(identificacion : int, nombre: str, apellido: str, carrera: str, fe
 
 #Pide input por teclado a tráves de consola de los datos, en versión gráfica desaparece
 def rowGetter():
-    #TODO validar ints, strings y floats
     #TODO hacer que la fecha sea DD/MM/AA
     while True:
         try:
@@ -212,6 +211,7 @@ def main():
             validator = True
             while validator:
                 try:
+                    #TODO verificar que el estudiante exista
                     iden = input("Escriba el numero de identificacion del estudiante que quiere actualizar ")
                     iden = int(iden)
                     validator = False
