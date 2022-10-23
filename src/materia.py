@@ -1,3 +1,4 @@
+from multiprocessing.sharedctypes import Value
 import sqlite3 as sql
 from decouple import config
 DB = config('DB_NAME')
@@ -41,13 +42,25 @@ def rowGetter():
     while True:
         try: 
             codigo = input('Codigo de la materia: ')
-            codigo = codigo.ljust(10)
-            codigo = int(codigo)
+            while True:
+                try:              
+                    codigo = codigo.ljust(10)
+                    codigo = int(codigo)
+                    break
+                except:
+                    print("input invalido")
+                    codigo = input('Codigo de la materia: ')
             nombre = input('Nombre de la materia: ')
             facultad = input('Facultad que dicta la materia: ')
             departamento = input('Departamento que dicta la materia: ')
             creditos = input('Creditos de la materia: ')
-            creditos = int(creditos)
+            while True:
+                try:              
+                    creditos = int(creditos)
+                    break
+                except:
+                    print("input invalido")
+                    creditos = input('creditos de la materia: ')
             idioma = input('Idioma en que se dicta la materia: ')
             return (codigo, nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), creditos)
         except ValueError:
@@ -62,13 +75,25 @@ def batchRowGetter():
     while True: 
         try:
             codigo = input('Codigo de la materia: ')
-            codigo = codigo.ljust(10)
-            codigo = int(codigo)
+            while True:
+                try:              
+                    codigo = codigo.ljust(10)
+                    codigo = int(codigo)
+                    break
+                except:
+                    print("input invalido")
+                    codigo = input('Codigo de la materia: ')
             nombre = input('Nombre de la materia: ')
             facultad = input('Facultad que dicta la materia: ')
             departamento = input('Departamento que dicta la materia: ')
             creditos = input('Creditos de la materia: ')
-            creditos = int(creditos)
+            while True:
+                try:              
+                    creditos = int(creditos)
+                    break
+                except:
+                    print("input invalido")
+                    creditos = input('creditos de la materia: ')
             idioma = input('Idioma en que se dicta la materia: ')
             result.append((codigo, nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), creditos))
             runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')

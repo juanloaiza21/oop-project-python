@@ -1,4 +1,3 @@
-from datetime import date, datetime
 import sqlite3 as sql
 from decouple import config
 import datetime
@@ -95,17 +94,6 @@ def rowGetter():
                     print("input invalido")
                     cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
             return (identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(),correoeletronico.upper(),cantidadmatriculas)
-            identificacion = int(identificacion)
-            nombre = input('Nombre del estudiante: ')
-            apellido = input('apellido del estudiante: ')
-            carrera = input('nomrbre de la carrera: ')
-            fechanacimiento = input('fecha de nacimiento del estudiante: ')
-            fechaingreso = input('fecha de ingreso del estudiante: ')
-            procedencia = input('procedencia del estudiante: ')
-            correoeletronico = input('corre oeletronico del estudiante: ')
-            cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
-            cantidadmatriculas = int(cantidadmatriculas)
-            return (identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.upper(), fechaingreso.upper(), procedencia.upper(),correoeletronico.upper(),cantidadmatriculas)
         except ValueError:
             print('Value error, cantidad de matriculas e identificacion son numeros enteros')
 
@@ -165,17 +153,6 @@ def batchRowGetter():
                     print("input invalido")
                     cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
             result.append((identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(), correoeletronico.upper(), cantidadmatriculas))
-            identificacion = int(identificacion)
-            nombre = input('Nombre del estudiante: ')
-            apellido = input('apellido del estudiante: ')
-            carrera = input('nomrbre de la carrera: ')
-            fechanacimiento = input('fecha de nacimiento del estudiante: ')
-            fechaingreso = input('fecha de ingreso del estudiante: ')
-            procedencia = input('procedencia del estudiante: ')
-            correoeletronico = input('corre oeletronico del estudiante: ')
-            cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
-            cantidadmatriculas = int(cantidadmatriculas)
-            result.append((identificacion, nombre, apellido, carrera, fechanacimiento, fechaingreso, procedencia, correoeletronico, cantidadmatriculas))
             runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
             counter+=1
             if runner != secret_runner:
@@ -340,4 +317,3 @@ def main():
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
-print(rowGetter())
