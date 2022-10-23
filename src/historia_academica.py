@@ -16,8 +16,8 @@ def createTeable():
         cursor.execute(
             """CREATE TABLE IF NOT EXISTS acadhistory (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                code_materia  INTEGER,
-                id_estudiante INTEGER,
+                code_materia  INTEGER NOT NULL UNIQUE,
+                id_estudiante INTEGER NOT NULL,
                 nota REAL,
                 creditos_cursados INTEGER,
                 FOREIGN KEY(id_estudiante) REFERENCES estudiante(identificacion),
@@ -34,9 +34,9 @@ def createTeable():
 def creditsRef(idMateria: int):
     try:
         data = materiasFilter('codigo', idMateria)
-        return data[1][5]
+        return data[0][5]
     except:
-        print("Codigo d ela materia inexistente")
+        print("Codigo de la materia inexistente")
 
 #Crear historia academica en documentación
 def insertRow(codigo: int, id_estudiante: int, score: float):
@@ -44,7 +44,7 @@ def insertRow(codigo: int, id_estudiante: int, score: float):
         conn = sql.connect(DB)
         conn.execute('PRAGMA foreign_keys = ON') #Valida las llaves extranjeras, es decir la existencia del estudiante o la amteria, si no existe da error
         cursor = conn.cursor()
-        creditos= creditsRef()
+        creditos= creditsRef(codigo)
         instruction = f"INSERT INTO acadhistory(code_materia, id_estudiante, nota, creditos_cursados) VALUES ({codigo},{id_estudiante}, {score}, {creditos})"
         cursor.execute(instruction)
         conn.commit();
@@ -52,7 +52,7 @@ def insertRow(codigo: int, id_estudiante: int, score: float):
         print("Datos añadidos correctamente")
     except sql.Error as e:
         print (e)
-        print('Probablemente no exista el estudiante o la materia, revise por favor los datos que ingreso y vuelva a intentar')
+        print('Probablemente no exista el estudiante o la materia, revise por favor los datos que ingreso y vuelva a intentar. Si sí existen, es que primero debe eliminar la materia, para que se actualice con los nuevos datos')
 
 #Lector del input por parte del usuario
 def rowGetter():
@@ -62,7 +62,7 @@ def rowGetter():
             codigo = input('Codigo de la materia: ')
             codigo = codigo.ljust(10)
             idEstudiante = input('Id del estudiante ')
-            selector = input("¿Desea agregar nota? 1. Si. 2. No")
+            selector = int(input("¿Desea agregar nota? 1. Si. 2. No"))
             if selector ==1:
                 nota = input('Nota del estudiante ')
             else:
@@ -117,7 +117,7 @@ def prom (data):
     try:
         numeroMaterias = len(data)
         sumaNotas = 0
-        for i in range(numeroMaterias-1):
+        for i in range(numeroMaterias):
             sumaNotas += data[i][3]
         return sumaNotas/numeroMaterias
     except:
@@ -131,7 +131,7 @@ def update(fieldOnChange: str, dataOnChange, code: int, dataOnChange2: int):
         cursor = conn.cursor()
         try:
             dataOnChange= float(dataOnChange)
-            instruction = f"UPDATE acadhistory SET '{fieldOnChange}'={dataOnChange} WHERE code_materia={code} AND id_estudiante={dataOnChange2}"
+            instruction = f"UPDATE acadhistory SET '{fieldOnChange}'={dataOnChange} WHERE code_materia={dataOnChange2} AND id_estudiante={code}"
         except ValueError:
             instruction = f"UPDATE acadhistory SET '{fieldOnChange}'='{dataOnChange}' WHERE code_materia={code} AND id_estudiante={dataOnChange2}" #Comando de actualización en SQL
         finally:
@@ -251,16 +251,15 @@ def main():
                                 break
                             except ValueError:
                                 print(f"{idd} es invalido")
+                    break
                 except ValueError:
                     print (f"{selector} es invalido")
         elif selector == 4:
             while True:
                 data = rowDeleteGetter()
-                deleteRow(data)
+                deleteRow(data[0], data[1])
                 break;
         else:
             break
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
-
-creditsRef()

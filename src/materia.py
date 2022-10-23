@@ -229,7 +229,7 @@ def main():
                 while True:
                     try:
                         field = int(input('Escriba el codigo de la materia '))
-                        searchByFilter('codigo', field)
+                        print(searchByFilter('codigo', field))
                         break
                     except ValueError:
                         print(f"{field} invalido") 
