@@ -2,6 +2,7 @@
 import sqlite3 as sql
 from time import sleep
 from decouple import config
+from materia import readOrdered as allMaterias
 
 DB = config('DB_NAME')
 
@@ -26,26 +27,12 @@ def createTeable():
     except sql.Error as e:
         print(e)
 
-
-#TODO FIX IMPORT
-def allMaterias(field: str):
-    try:
-        conn = sql.connect(DB)
-        cursor = conn.cursor()
-        instruction = f"SELECT * from materias ORDER BY {field} DESC" #Si le quitamos el DESC se ordenara de menor a mayor, "DESC" viene de DESCENDING
-        cursor.execute(instruction)
-        datos = cursor.fetchall()
-        conn.commit();
-        conn.close()
-        print(datos);
-    except sql.Error as e:
-        print (e)
-
 #----------------------------------------------------------------Inserta las notas de la materia-------------------------------------------------------------------
 #Crear historia academica en documentación
 def insertRow(codigo: int, id_estudiante: int, score: float):
     try:
         conn = sql.connect(DB)
+        conn.execute('PRAGMA foreign_keys = ON') #Valida las llaves extranjeras, es decir la existencia del estudiante o la amteria, si no existe da error
         cursor = conn.cursor()
         #TODO creditos automaticos
         creditos=5
@@ -53,8 +40,10 @@ def insertRow(codigo: int, id_estudiante: int, score: float):
         cursor.execute(instruction)
         conn.commit();
         conn.close();
+        print("Datos añadidos correctamente")
     except sql.Error as e:
         print (e)
+        print('Probablemente no exista el estudiante o la materia, revise por favor los datos que ingreso y vuelva a intentar')
 
 #Lector del input por parte del usuario
 #TODO validar ints, strings y floats
@@ -207,14 +196,11 @@ def main():
                         print('A continuación va a inscribir una materia ')
                         data = rowGetter()
                         insertRow(data[0], data[1], data[2])
-                        print("Datos añadidos correctamente");
                         break;
                     elif selector == 2:
                         print('A continuación va a inscribir una materia ')
                         data = rowGetter()
-                        #TODO revisar error se crean datos sin relacion
                         insertRow(data[0], data[1], data[2])
-                        print("Datos añadidos correctamente")
                         break;
                 except ValueError:
                     print (f"{selector} es invalido")
@@ -224,7 +210,6 @@ def main():
                     print("Para actualizar la nota de una materia debe escribir el documento del estudiante y el codigo de la materia. Claramene la nota tambien");
                     data = rowUpdateGetter()
                     update('nota', data[2], data[1], data[0])
-                    print('Actualizado correctamente')
                     break
                 except:
                     print ("Unexpected error")
@@ -265,3 +250,5 @@ def main():
             break
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+main()
