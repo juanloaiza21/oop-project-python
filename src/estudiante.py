@@ -1,19 +1,9 @@
 #TODO all module
-from datetime import date
 import sqlite3 as sql
 from decouple import config
+import datetime
 
 DB = config('DB_NAME')
-
-#Crea base de datos, hay que hacer que verifique si ya existe
-def createrDB():
-    try:
-        conn = sql.connect(DB);
-        conn.commit();
-        conn.close();
-    except sql.Error as e:
-        print(e)
-
 
 #Crea tablas manualmente, automatizar
 def createTeable():
@@ -21,16 +11,16 @@ def createTeable():
         conn = sql.connect(DB)
         cursor = conn.cursor()
         cursor.execute(
-            """CREATE TABLE estudiante (
-                identificacion integer PRIMARY KEY,
-                nombre text,
-                apellido text,
-                carrera text,
-                fechanacimiento text,
-                fechaingreso text,
-                procedencia text,
-                correoeletronico text,
-                cantidadmatriculas integer
+            """CREATE TABLE IF NOT EXISTS estudiante (
+                identificacion INTEGER PRIMARY KEY,
+                nombre TEXT NOT NULL,
+                apellido TEXT NOT NULL,
+                carrera TEXT NOT NULL,
+                fechanacimiento TEXT NOT NULL,
+                fechaingreso TEXT NOT NULL,
+                procedencia TEXT NOT NULL,
+                correoeletronico TEXT NOT NULL,
+                cantidadmatriculas INTEGER NOT NULL
                 )"""
         );
         conn.commit();
@@ -54,17 +44,59 @@ def insertRow(identificacion : int, nombre: str, apellido: str, carrera: str, fe
 
 #Pide input por teclado a tráves de consola de los datos, en versión gráfica desaparece
 def rowGetter():
-    identificacion = input('numero de identificacion del estudiante: ')
-    identificacion = identificacion.ljust(10)
-    nombre = input('Nombre del estudiante: ')
-    apellido = input('apellido del estudiante: ')
-    carrera = input('nomrbre de la carrera: ')
-    fechanacimiento = input('fecha de nacimiento del estudiante: ')
-    fechaingreso = input('fecha de ingreso del estudiante: ')
-    procedencia = input('procedencia del estudiante: ')
-    correoeletronico = input('corre oeletronico del estudiante: ')
-    cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
-    return (int(identificacion), nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.upper(), fechaingreso.upper(), procedencia.upper(),correoeletronico.upper(),int(cantidadmatriculas))
+    #TODO hacer que la fecha sea DD/MM/AA
+    while True:
+        try:
+            identificacion = input('numero de identificacion del estudiante: ')
+            identificacion = identificacion.ljust(10)
+            while True:
+                try:
+                    identificacion = int(identificacion)
+                    break
+                except:
+                    print("input invalido")
+                    identificacion = input('numero de identificacion del estudiante: ')
+                    identificacion = identificacion.ljust(10)                
+            nombre = input('Nombre del estudiante: ')
+            apellido = input('apellido del estudiante: ')
+            carrera = input('nomrbre de la carrera: ')
+            fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+            while True:
+                try:
+                    fechanacimientoreal=datetime.datetime.strptime(fechanacimiento,'%d/%m/%Y')
+                    break
+                except:
+                    try:
+                        fechanacimientoreal=datetime.datetime.strptime(fechanacimiento,'%Y/%m/%d')
+                        break
+                    except:
+                        print("formato invalido")
+                        fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+            fechaingreso = input('fecha de ingreso del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+            while True:
+                try:
+                    fechanacimientoreal2=datetime.datetime.strptime(fechaingreso,'%d/%m/%Y')
+                    break
+                except:
+                    try:
+                        fechanacimientoreal=datetime.datetime.strptime(fechaingreso,'%Y/%m/%d')
+                        break
+                    except:
+                        print("formato invalido")
+                        fechanacimiento = input('fecha de ingreso del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+            procedencia = input('procedencia del estudiante: ')
+            correoeletronico = input('corre oeletronico del estudiante: ')
+            cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
+            while True:
+                try:
+                    cantidadmatriculas = int(cantidadmatriculas)
+                    break
+                except:
+                    print("input invalido")
+                    cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
+            return (identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.upper(), fechaingreso.upper(), procedencia.upper(),correoeletronico.upper(),cantidadmatriculas)
+        except ValueError:
+            print('Value error, cantidad de matriculas e identificacion son numeros enteros')
 
 #pide varias veces los datos
 def batchRowGetter():
@@ -72,21 +104,61 @@ def batchRowGetter():
     secret_runner = "1"
     counter = 0
     while True: 
-        identificacion = input('numero de identificacion del estudiante: ')
-        identificacion = identificacion.ljust(10)
-        nombre = input('Nombre del estudiante: ')
-        apellido = input('apellido del estudiante: ')
-        carrera = input('nomrbre de la carrera: ')
-        fechanacimiento = input('fecha de nacimiento del estudiante: ')
-        fechaingreso = input('fecha de ingreso del estudiante: ')
-        procedencia = input('procedencia del estudiante: ')
-        correoeletronico = input('corre oeletronico del estudiante: ')
-        cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
-        result.append((int(identificacion), nombre, apellido, carrera, fechanacimiento, fechaingreso, procedencia, correoeletronico, int(cantidadmatriculas)))
-        runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
-        counter+=1
-        if runner != secret_runner:
-            break 
+        try:
+            identificacion = input('numero de identificacion del estudiante: ')
+            identificacion = identificacion.ljust(10)
+            while True:
+                try:
+                    identificacion = int(identificacion)
+                    break
+                except:
+                    print("input invalido")
+                    identificacion = input('numero de identificacion del estudiante: ')
+                    identificacion = identificacion.ljust(10)                
+            nombre = input('Nombre del estudiante: ')
+            apellido = input('apellido del estudiante: ')
+            carrera = input('nomrbre de la carrera: ')
+            fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+            while True:
+                try:
+                    fechanacimientoreal=datetime.datetime.strptime(fechanacimiento,'%d/%m/%Y')
+                    break
+                except:
+                    try:
+                        fechanacimientoreal=datetime.datetime.strptime(fechanacimiento,'%Y/%m/%d')
+                        break
+                    except:
+                        print("formato invalido")
+                        fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+            fechaingreso = input('fecha de ingreso del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+            while True:
+                try:
+                    fechanacimientoreal2=datetime.datetime.strptime(fechaingreso,'%d/%m/%Y')
+                    break
+                except:
+                    try:
+                        fechanacimientoreal=datetime.datetime.strptime(fechaingreso,'%Y/%m/%d')
+                        break
+                    except:
+                        print("formato invalido")
+                        fechanacimiento = input('fecha de ingreso del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+            procedencia = input('procedencia del estudiante: ')
+            correoeletronico = input('corre oeletronico del estudiante: ')
+            cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
+            while True:
+                try:
+                    cantidadmatriculas = int(cantidadmatriculas)
+                    break
+                except:
+                    print("input invalido")
+                    cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
+            result.append((identificacion, nombre, apellido, carrera, fechanacimiento, fechaingreso, procedencia, correoeletronico, cantidadmatriculas))
+            runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
+            counter+=1
+            if runner != secret_runner:
+                break 
+        except ValueError:
+                print('Value error, cantidad de matriculas e identificacion son numeros enteros')
     print (f"Usted ha insertado {counter} datos, los cuales son: {result}")
     return result
 
@@ -166,10 +238,6 @@ def update(fieldOnChange: str, dataOnChange, iden: int):
 def main():
     
     while True:
-        #Verifica si existe el archivo.db SOTISFICAR TODO
-        createrDB()
-        # Verifica si existe la tabla    SOTISFICAR TODO
-        createTeable()
         #Revisa si va a añadir datos, leer o actualizar, metodo reutilizable, verifica que el input sea correcto
         validator = True
         while validator:
@@ -213,56 +281,39 @@ def main():
             validator = True
             while validator:
                 try:
+                    #TODO verificar que el estudiante exista
                     iden = input("Escriba el numero de identificacion del estudiante que quiere actualizar ")
                     iden = int(iden)
                     validator = False
                 except ValueError:
                     print("Input invalido")
                     validator = True
-            field = input("""Escriba por el campo que quiere actualizar, recuerde que los campos son
-                    identificacion,
-                    nombre
-                    apellido,
-                    carrera,
-                    fechanacimiento,
-                    fechaingreso
-                    procedencia
-                    correoeletronico
-                    cantidadmatriculas
-            """)
-            dataOnchange = input(f"Escriba el valor con el cual quiere modificar el campo {field.lower()} de la materia con identificacion{iden} ")
-            try:
-                dataOnchange = int(dataOnchange)
-            except:
-                dataOnchange.lower()
-            finally:
-                update(field, dataOnchange, iden)
+            dataOnchange = int(input(f"Escriba el nuevo valor de matricula "))
+            while True: 
+                try:
+                    dataOnchange = int(dataOnchange)
+                    update('cantidadmatriculas', dataOnchange, iden)
+                    break
+                except ValueError:
+                    print(f'{dataOnchange} invalido')
 
         #------------------------------------------------------------------------------------------------------------------------------------------#
 
         #----------------------------------------------------------------Leer datos---------------------------------------------------------------#
         elif selector==3:
-            order = int(input("Si desea ordenar por algun campo en particular oprima 1  y enter, si no oprima 2 y enter. EL ORDEN SIEMPRE SERA DESCENDETE "))
-            #Verifica si el input es correcto
-            while(order!=1 and order !=2):
-                order = int(input(f"{selector} no es una opción valida, por favor digite una opcion valida "))
-            if(order==1):
-                field = input("""Escriba por el campo que quiere filtrar, recuerde que los campos son
-                    codigo,
-                    nombre
-                    apellido,
-                    carrera,
-                    fechanacimiento,
-                    fechaingreso
-                    procedencia
-                    correoeletronico
-                    cantidadmatriculas
-                """)
-                readOrdered(field.lower())
-            elif order==2:
-                readAllRows()
+            while True: 
+                try:
+                    selector = int(input("Para ver sus datos escriba el numero de la identificacion "))
+                    searchByFilter('identificacion', selector)
+                    break
+                except ValueError:
+                    print("dato inválido")
+
+            
         #-----------------------------------------------------------------------------------------------------------------------------------------#
         elif selector ==4:
             break;
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
