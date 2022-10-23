@@ -60,34 +60,16 @@ def rowGetter():
         try:
             print("El codigo de la materia y el Id del estudiante deben existir, si no, habra error")
             codigo = input('Codigo de la materia: ')
-            while True:
-                try:              
-                    codigo = codigo.ljust(10)
-                    codigo = int(codigo)
-                    break
-                except:
-                    print("input invalido")
-                    codigo = input('Codigo de la materia: ')            
+            codigo = codigo.ljust(10)
             idEstudiante = input('Id del estudiante ')
-            while True:
-                try:              
-                    idEstudiante = int(idEstudiante)
-                    break
-                except:
-                    print("input invalido")
-                    idEstudiante = input('Id del estudiante ')   
             selector = int(input("¿Desea agregar nota? 1. Si. 2. No"))
             if selector ==1:
                 nota = input('Nota del estudiante ')
-                while True:
-                    try:              
-                        nota = float(nota)
-                        break
-                    except:
-                        print("input invalido")
-                        nota = input('Nota del estudiante ')   
             else:
                 nota = 0
+            nota = float(nota)
+            idEstudiante = int(idEstudiante)
+            codigo = int(codigo)
             return (codigo, idEstudiante, nota)
         except ValueError:
             print("Dato(s) invalido")
@@ -100,32 +82,9 @@ def batchRowGetter():
         try:
             print("El codigo de la materia y el Id del estudiante deben existir, si no, habra error")
             codigo = input('Codigo de la materia: ')
-            while True:
-                try:              
-                    codigo = codigo.ljust(10)
-                    codigo = int(codigo)
-                    break
-                except:
-                    print("input invalido")
-                    codigo = input('Codigo de la materia: ')            
+            codigo = codigo.ljust(10)
             idEstudiante = input('Id del estudiante ')
-            while True:
-                try:              
-                    idEstudiante = int(idEstudiante)
-                    break
-                except:
-                    print("input invalido")
-                    idEstudiante = input('Id del estudiante ')   
-            selector = int(input("¿Desea agregar nota? 1. Si. 2. No"))
-            if selector ==1:
-                nota = input('Nota del estudiante ')
-                while True:
-                    try:              
-                        nota = float(nota)
-                        break
-                    except:
-                        print("input invalido")
-                        nota = input('Nota del estudiante ') 
+            nota = input('Nota del estudiante ')
             result.append(int(codigo), int(idEstudiante), float(nota))
             runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
             counter+=1
@@ -302,3 +261,5 @@ def main():
                 break;
         else:
             break
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------#

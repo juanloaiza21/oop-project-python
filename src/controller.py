@@ -1,8 +1,11 @@
+#Modulos de control
 from materia import main as matController
 from historia_academica import main as acadHistory
 from estudiante import main as estudent
+from table_creator import main as dbCreator
 
 def main():
+    dbCreator()
     while True:
         validator = True
         while validator:
