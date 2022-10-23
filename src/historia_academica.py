@@ -1,8 +1,10 @@
 #TODO all module
+from ast import While
 import sqlite3 as sql
 from time import sleep
 from decouple import config
 from materia import readOrdered as allMaterias
+from materia import searchByFilter as materiasFilter
 
 DB = config('DB_NAME')
 
@@ -28,14 +30,21 @@ def createTeable():
         print(e)
 
 #----------------------------------------------------------------Inserta las notas de la materia-------------------------------------------------------------------
+
+def creditsRef(idMateria: int):
+    try:
+        data = materiasFilter('codigo', idMateria)
+        return data[1][5]
+    except:
+        print("Codigo d ela materia inexistente")
+
 #Crear historia academica en documentación
 def insertRow(codigo: int, id_estudiante: int, score: float):
     try:
         conn = sql.connect(DB)
         conn.execute('PRAGMA foreign_keys = ON') #Valida las llaves extranjeras, es decir la existencia del estudiante o la amteria, si no existe da error
         cursor = conn.cursor()
-        #TODO creditos automaticos
-        creditos=5
+        creditos= creditsRef()
         instruction = f"INSERT INTO acadhistory(code_materia, id_estudiante, nota, creditos_cursados) VALUES ({codigo},{id_estudiante}, {score}, {creditos})"
         cursor.execute(instruction)
         conn.commit();
@@ -46,22 +55,24 @@ def insertRow(codigo: int, id_estudiante: int, score: float):
         print('Probablemente no exista el estudiante o la materia, revise por favor los datos que ingreso y vuelva a intentar')
 
 #Lector del input por parte del usuario
-#TODO validar ints, strings y floats
 def rowGetter():
-    try:
-        print("El codigo de la materia y el Id del estudiante deben existir, si no, habra error")
-        codigo = input('Codigo de la materia: ')
-        codigo = codigo.ljust(10)
-        idEstudiante = input('Id del estudiante ')
-        #TODO validacion en caso de que la nota aun no este sea 0
-        selector = input("¿Desea agregar nota? 1. Si. 2. No")
-        if selector ==1:
-            nota = input('Nota del estudiante ')
-        else:
-            nota = 0
-        return (int(codigo), int(idEstudiante), float(nota))
-    except ValueError:
-        print("Dato(s) invalido")
+    while True:
+        try:
+            print("El codigo de la materia y el Id del estudiante deben existir, si no, habra error")
+            codigo = input('Codigo de la materia: ')
+            codigo = codigo.ljust(10)
+            idEstudiante = input('Id del estudiante ')
+            selector = input("¿Desea agregar nota? 1. Si. 2. No")
+            if selector ==1:
+                nota = input('Nota del estudiante ')
+            else:
+                nota = 0
+            nota = float(nota)
+            idEstudiante = int(idEstudiante)
+            codigo = int(codigo)
+            return (codigo, idEstudiante, nota)
+        except ValueError:
+            print("Dato(s) invalido")
 
 def batchRowGetter():
     result = []
@@ -132,15 +143,16 @@ def update(fieldOnChange: str, dataOnChange, code: int, dataOnChange2: int):
         print (e)
 
 def rowUpdateGetter():
-    try:
-        print("El codigo de la materia y el Id del estudiante deben existir, si no, habra error")
-        codigo = input('Codigo de la materia: ')
-        codigo = codigo.ljust(10)
-        idEstudiante = input('Id del estudiante ')
-        nota = input('Nota del estudiante ')
-        return (int(codigo), int(idEstudiante), float(nota))
-    except ValueError:
-        print("Dato(s) invalido")
+    while True:
+        try:
+            print("El codigo de la materia y el Id del estudiante deben existir, si no, habra error")
+            codigo = input('Codigo de la materia: ')
+            codigo = codigo.ljust(10)
+            idEstudiante = input('Id del estudiante ')
+            nota = input('Nota del estudiante ')
+            return (int(codigo), int(idEstudiante), float(nota))
+        except ValueError:
+            print("Dato(s) invalido")
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -251,4 +263,4 @@ def main():
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
-main()
+creditsRef()

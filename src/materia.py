@@ -106,7 +106,7 @@ def searchByFilter(fieldName, fieldValue):
         datos = cursor.fetchall()
         conn.commit();
         conn.close()
-        print(datos);
+        return datos;
     except sql.Error as e:
         print (e)
 
