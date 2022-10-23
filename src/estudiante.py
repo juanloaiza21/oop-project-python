@@ -60,30 +60,30 @@ def rowGetter():
             nombre = input('Nombre del estudiante: ')
             apellido = input('apellido del estudiante: ')
             carrera = input('nomrbre de la carrera: ')
-            fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+            #Validador fecha nacimiento
             while True:
                 try:
-                    fechanacimientoreal=datetime.datetime.strptime(fechanacimiento,'%d/%m/%Y')
+                    fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+                    fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%d/%m/%Y')
                     break
                 except:
                     try:
-                        fechanacimientoreal=datetime.datetime.strptime(fechanacimiento,'%Y/%m/%d')
+                        fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%Y/%m/%d')
                         break
                     except:
                         print("formato invalido")
-                        fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
-            fechaingreso = input('fecha de ingreso del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+            #Validador fecha ingreso
             while True:
                 try:
-                    fechanacimientoreal2=datetime.datetime.strptime(fechaingreso,'%d/%m/%Y')
+                    fechaingreso = input('fecha de ingreso del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+                    fechaingreso=datetime.datetime.strptime(fechaingreso,'%d/%m/%Y')
                     break
                 except:
                     try:
-                        fechanacimientoreal=datetime.datetime.strptime(fechaingreso,'%Y/%m/%d')
+                        fechaingreso=datetime.datetime.strptime(fechaingreso,'%Y/%m/%d')
                         break
                     except:
                         print("formato invalido")
-                        fechanacimiento = input('fecha de ingreso del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
             procedencia = input('procedencia del estudiante: ')
             correoeletronico = input('corre oeletronico del estudiante: ')
             cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
@@ -94,7 +94,7 @@ def rowGetter():
                 except:
                     print("input invalido")
                     cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
-            return (identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.upper(), fechaingreso.upper(), procedencia.upper(),correoeletronico.upper(),cantidadmatriculas)
+            return (identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(),correoeletronico.upper(),cantidadmatriculas)
         except ValueError:
             print('Value error, cantidad de matriculas e identificacion son numeros enteros')
 
@@ -119,29 +119,30 @@ def batchRowGetter():
             apellido = input('apellido del estudiante: ')
             carrera = input('nomrbre de la carrera: ')
             fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+           #Validador fecha nacimiento
             while True:
                 try:
-                    fechanacimientoreal=datetime.datetime.strptime(fechanacimiento,'%d/%m/%Y')
+                    fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+                    fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%d/%m/%Y')
                     break
                 except:
                     try:
-                        fechanacimientoreal=datetime.datetime.strptime(fechanacimiento,'%Y/%m/%d')
+                        fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%Y/%m/%d')
                         break
                     except:
                         print("formato invalido")
-                        fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
-            fechaingreso = input('fecha de ingreso del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+            #Validador fecha ingreso
             while True:
                 try:
-                    fechanacimientoreal2=datetime.datetime.strptime(fechaingreso,'%d/%m/%Y')
+                    fechaingreso = input('fecha de ingreso del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+                    fechaingreso=datetime.datetime.strptime(fechaingreso,'%d/%m/%Y')
                     break
                 except:
                     try:
-                        fechanacimientoreal=datetime.datetime.strptime(fechaingreso,'%Y/%m/%d')
+                        fechaingreso=datetime.datetime.strptime(fechaingreso,'%Y/%m/%d')
                         break
                     except:
                         print("formato invalido")
-                        fechanacimiento = input('fecha de ingreso del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
             procedencia = input('procedencia del estudiante: ')
             correoeletronico = input('corre oeletronico del estudiante: ')
             cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
@@ -152,7 +153,7 @@ def batchRowGetter():
                 except:
                     print("input invalido")
                     cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
-            result.append((identificacion, nombre, apellido, carrera, fechanacimiento, fechaingreso, procedencia, correoeletronico, cantidadmatriculas))
+            result.append((identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(), correoeletronico.upper(), cantidadmatriculas))
             runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
             counter+=1
             if runner != secret_runner:
@@ -317,3 +318,4 @@ def main():
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
+print(rowGetter())
