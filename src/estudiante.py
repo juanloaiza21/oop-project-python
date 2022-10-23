@@ -95,17 +95,6 @@ def rowGetter():
                     print("input invalido")
                     cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
             return (identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(),correoeletronico.upper(),cantidadmatriculas)
-            identificacion = int(identificacion)
-            nombre = input('Nombre del estudiante: ')
-            apellido = input('apellido del estudiante: ')
-            carrera = input('nomrbre de la carrera: ')
-            fechanacimiento = input('fecha de nacimiento del estudiante: ')
-            fechaingreso = input('fecha de ingreso del estudiante: ')
-            procedencia = input('procedencia del estudiante: ')
-            correoeletronico = input('corre oeletronico del estudiante: ')
-            cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
-            cantidadmatriculas = int(cantidadmatriculas)
-            return (identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.upper(), fechaingreso.upper(), procedencia.upper(),correoeletronico.upper(),cantidadmatriculas)
         except ValueError:
             print('Value error, cantidad de matriculas e identificacion son numeros enteros')
 
