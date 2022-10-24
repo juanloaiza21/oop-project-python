@@ -1,4 +1,3 @@
-from multiprocessing.sharedctypes import Value
 import sqlite3 as sql
 from decouple import config
 DB = config('DB_NAME')

@@ -1,7 +1,7 @@
-#TODO all module
 from datetime import date, datetime
 import sqlite3 as sql
 from decouple import config
+import datetime
 
 DB = config('DB_NAME')
 
@@ -49,17 +49,52 @@ def rowGetter():
         try:
             identificacion = input('numero de identificacion del estudiante: ')
             identificacion = identificacion.ljust(10)
-            identificacion = int(identificacion)
+            while True:
+                try:
+                    identificacion = int(identificacion)
+                    break
+                except:
+                    print("input invalido")
+                    identificacion = input('numero de identificacion del estudiante: ')
+                    identificacion = identificacion.ljust(10)                
             nombre = input('Nombre del estudiante: ')
             apellido = input('apellido del estudiante: ')
             carrera = input('nomrbre de la carrera: ')
-            fechanacimiento = input('fecha de nacimiento del estudiante: ')
-            fechaingreso = input('fecha de ingreso del estudiante: ')
+            #Validador fecha nacimiento
+            while True:
+                try:
+                    fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+                    fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%d/%m/%Y')
+                    break
+                except:
+                    try:
+                        fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%Y/%m/%d')
+                        break
+                    except:
+                        print("formato invalido")
+            #Validador fecha ingreso
+            while True:
+                try:
+                    fechaingreso = input('fecha de ingreso del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+                    fechaingreso=datetime.datetime.strptime(fechaingreso,'%d/%m/%Y')
+                    break
+                except:
+                    try:
+                        fechaingreso=datetime.datetime.strptime(fechaingreso,'%Y/%m/%d')
+                        break
+                    except:
+                        print("formato invalido")
             procedencia = input('procedencia del estudiante: ')
             correoeletronico = input('corre oeletronico del estudiante: ')
             cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
-            cantidadmatriculas = int(cantidadmatriculas)
-            return (identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.upper(), fechaingreso.upper(), procedencia.upper(),correoeletronico.upper(),cantidadmatriculas)
+            while True:
+                try:
+                    cantidadmatriculas = int(cantidadmatriculas)
+                    break
+                except:
+                    print("input invalido")
+                    cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
+            return (identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(),correoeletronico.upper(),cantidadmatriculas)
         except ValueError:
             print('Value error, cantidad de matriculas e identificacion son numeros enteros')
 
@@ -72,6 +107,53 @@ def batchRowGetter():
         try:
             identificacion = input('numero de identificacion del estudiante: ')
             identificacion = identificacion.ljust(10)
+            while True:
+                try:
+                    identificacion = int(identificacion)
+                    break
+                except:
+                    print("input invalido")
+                    identificacion = input('numero de identificacion del estudiante: ')
+                    identificacion = identificacion.ljust(10)                
+            nombre = input('Nombre del estudiante: ')
+            apellido = input('apellido del estudiante: ')
+            carrera = input('nomrbre de la carrera: ')
+            fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+           #Validador fecha nacimiento
+            while True:
+                try:
+                    fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+                    fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%d/%m/%Y')
+                    break
+                except:
+                    try:
+                        fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%Y/%m/%d')
+                        break
+                    except:
+                        print("formato invalido")
+            #Validador fecha ingreso
+            while True:
+                try:
+                    fechaingreso = input('fecha de ingreso del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+                    fechaingreso=datetime.datetime.strptime(fechaingreso,'%d/%m/%Y')
+                    break
+                except:
+                    try:
+                        fechaingreso=datetime.datetime.strptime(fechaingreso,'%Y/%m/%d')
+                        break
+                    except:
+                        print("formato invalido")
+            procedencia = input('procedencia del estudiante: ')
+            correoeletronico = input('corre oeletronico del estudiante: ')
+            cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
+            while True:
+                try:
+                    cantidadmatriculas = int(cantidadmatriculas)
+                    break
+                except:
+                    print("input invalido")
+                    cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
+            result.append((identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(), correoeletronico.upper(), cantidadmatriculas))
             identificacion = int(identificacion)
             nombre = input('Nombre del estudiante: ')
             apellido = input('apellido del estudiante: ')
@@ -245,3 +327,6 @@ def main():
             break;
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
+print(rowGetter())
