@@ -1,5 +1,7 @@
 import sqlite3 as sql
 from decouple import config
+from console_utils import clearConsole
+from console_utils import tableMaterias
 DB = config('DB_NAME')
 
 #Crea tablas manualmente, automatizar
@@ -77,7 +79,8 @@ def batchRowGetter():
                 break 
         except ValueError:
             print("Dato(s) invalido(s), codigo y creditos son numeros enteros")
-    print (f"Usted ha insertado {counter} datos, los cuales son: {result}")
+    print (f"Usted ha insertado {counter} datos, los cuales son: ")
+    tableMaterias(result)
     return result
 
 
@@ -91,7 +94,7 @@ def readAllRows():
         datos = cursor.fetchall()
         conn.commit();
         conn.close()
-        print(datos);
+        return (datos);
     except sql.Error as e:
         print (e)
 
@@ -163,7 +166,7 @@ def main():
         validator = True
         while validator:
             try:
-                selector = input("Si desea añadir datos ingrese '1' y enter. Si desea actualizar el idioma presione '2' y enter. si desea obtener información ingrese '3' y enter, para salir presione 4 y enter. ")
+                selector = input("\nSi desea añadir datos ingrese '1' y enter. Si desea actualizar el idioma presione '2' y enter. si desea obtener información ingrese '3' y enter, para salir presione 4 y enter. ")
                 selector = int(selector)
                 validator = False
                 while(selector!=1 and selector !=2 and selector !=3 and selector !=4):
@@ -174,10 +177,12 @@ def main():
                 validator = True
         #-------------------------------------------Creación de materias---------------------------------------------------------------------------#
         if selector ==1:
+            clearConsole()
             validator = True
             while validator:
                 try:
-                    pointer = input("Si desea solo añadir una materia digite '1' y luego enter, si desea registrar multiples datos digite '2' y luego enter. ")
+                    clearConsole()
+                    pointer = input(" \nSi desea solo añadir una materia digite '1' y luego enter, si desea registrar multiples datos digite '2' y luego enter. ")
                     pointer = int(pointer)
                     validator = False
                     while(pointer!=1 and pointer !=2):
@@ -190,7 +195,8 @@ def main():
             if int(pointer)==1:
                 data = rowGetter()
                 insertRow(data[0], data[1], data[2], data[3], data[4], data[5])
-                print("Datos insertados: ",data)
+                print("Datos insertados: ")
+                tableMaterias([data])
         #Segundo caso, múltiples datos
             elif(int(pointer)==2):
                 data = batchRowGetter()
@@ -199,6 +205,7 @@ def main():
 
         #---------------------------------------------------------------Actualizar datos-----------------------------------------------------------#
         elif(int(selector)==2):
+            clearConsole()
             validator = True
             while validator:
                 try:
@@ -208,7 +215,7 @@ def main():
                 except ValueError:
                     print("Input invalido")
                     validator = True
-            dataOnchange = input(f"Escriba el valor con el cual quiere modificar el campo {'idioma'} de la materia con codigo{code} ")
+            dataOnchange = input(f"\nEscriba el valor con el cual quiere modificar el campo {'idioma'} de la materia con codigo{code} ")
             try:
                 dataOnchange = int(dataOnchange)
             except:
@@ -220,7 +227,8 @@ def main():
 
         #----------------------------------------------------------------Leer datos---------------------------------------------------------------#
         elif selector==3:
-            order = int(input("Si desea ordenar por código oprima 1  y enter, si no oprima 2 y enter."))
+            clearConsole()
+            order = int(input("\nSi desea ordenar por código oprima 1  y enter, si no oprima 2 y enter."))
             #Verifica si el input es correcto
             while(order!=1 and order !=2):
                 order = int(input(f"{selector} no es una opción valida, por favor digite una opcion valida ")) #TODO valdiacion
@@ -228,12 +236,15 @@ def main():
                 while True:
                     try:
                         field = int(input('Escriba el codigo de la materia '))
-                        print(searchByFilter('codigo', field))
+                        tableMaterias(searchByFilter('codigo', field))
+
                         break
                     except ValueError:
                         print(f"{field} invalido") 
             elif order==2:
-                readAllRows()
+                tableMaterias(readAllRows())
         #-----------------------------------------------------------------------------------------------------------------------------------------#
         elif selector ==4:
             break;
+
+main()

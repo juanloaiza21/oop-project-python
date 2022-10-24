@@ -146,6 +146,7 @@ def batchRowGetter():
             procedencia = input('procedencia del estudiante: ')
             correoeletronico = input('corre oeletronico del estudiante: ')
             cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
+            cantidadmatriculas = int(cantidadmatriculas)
             while True:
                 try:
                     cantidadmatriculas = int(cantidadmatriculas)
@@ -154,16 +155,6 @@ def batchRowGetter():
                     print("input invalido")
                     cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
             result.append((identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(), correoeletronico.upper(), cantidadmatriculas))
-            identificacion = int(identificacion)
-            nombre = input('Nombre del estudiante: ')
-            apellido = input('apellido del estudiante: ')
-            carrera = input('nomrbre de la carrera: ')
-            fechanacimiento = input('fecha de nacimiento del estudiante: ')
-            fechaingreso = input('fecha de ingreso del estudiante: ')
-            procedencia = input('procedencia del estudiante: ')
-            correoeletronico = input('corre oeletronico del estudiante: ')
-            cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
-            cantidadmatriculas = int(cantidadmatriculas)
             result.append((identificacion, nombre, apellido, carrera, fechanacimiento, fechaingreso, procedencia, correoeletronico, cantidadmatriculas))
             runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
             counter+=1
@@ -329,4 +320,3 @@ def main():
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
-print(rowGetter())
