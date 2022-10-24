@@ -1,7 +1,8 @@
-from datetime import date, datetime
+from datetime import datetime
 import sqlite3 as sql
 from decouple import config
 import datetime
+from console_utils import clearConsole, tableEstudiante
 
 DB = config('DB_NAME')
 
@@ -162,7 +163,8 @@ def batchRowGetter():
                 break 
         except ValueError:
                 print('Value error, cantidad de matriculas e identificacion son numeros enteros')
-    print (f"Usted ha insertado {counter} datos, los cuales son: {result}")
+    print (f"Usted ha insertado {counter} datos, los cuales son:")
+    tableEstudiante(result)
     return result
 
 #Leer todos datos
@@ -189,7 +191,7 @@ def searchByFilter(fieldName, fieldValue):
         datos = cursor.fetchall()
         conn.commit();
         conn.close()
-        print(datos);
+        tableEstudiante(datos);
     except sql.Error as e:
         print (e)   
 
@@ -256,6 +258,7 @@ def main():
                 validator = True
         #-------------------------------------------Creación de estudiante---------------------------------------------------------------------------#
         if selector ==1:
+            clearConsole()
             validator = True
             while validator:
                 try:
@@ -272,7 +275,8 @@ def main():
             if int(pointer)==1:
                 data = rowGetter()
                 insertRow(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8])
-                print("Datos insertados: ",data)
+                print("Datos insertados: ")
+                tableEstudiante([data])
         #Segundo caso, múltiples datos
             elif(int(pointer)==2):
                 data = batchRowGetter()
@@ -282,6 +286,7 @@ def main():
         #---------------------------------------------------------------Actualizar datos-----------------------------------------------------------#
         elif(int(selector)==2):
             validator = True
+            clearConsole()
             while validator:
                 try:
                     #TODO verificar que el estudiante exista
@@ -318,5 +323,4 @@ def main():
             break;
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
-
-#-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
+main()
