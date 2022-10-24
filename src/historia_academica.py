@@ -72,7 +72,10 @@ def rowGetter():
             nota = float(nota)
             idEstudiante = int(idEstudiante)
             codigo = int(codigo)
-            return (codigo, idEstudiante, nota)
+            if not (codigo and idEstudiante and nota):
+                print('Algun valor esta vacio, por favor envie todos los datos')
+            else:
+                return (codigo, idEstudiante, nota)
         except ValueError:
             print("Dato(s) invalido")
 
@@ -132,7 +135,10 @@ def rowUpdateGetter():
             codigo = codigo.ljust(10)
             idEstudiante = input('Id del estudiante ')
             nota = input('Nota del estudiante ')
-            return (int(codigo), int(idEstudiante), float(nota))
+            if not(codigo and idEstudiante and nota):
+                print("Asegurese de enviar todos los datos")
+            else:
+                return (int(codigo), int(idEstudiante), float(nota))
         except ValueError:
             print("Dato(s) invalido")
 
@@ -157,7 +163,10 @@ def rowDeleteGetter():
         codigo = input('Codigo de la materia: ')
         codigo = codigo.ljust(10)
         idEstudiante = input('Id del estudiante ')
-        return (int(codigo), int(idEstudiante))
+        if not(codigo and idEstudiante):
+            print("Asegurese de enviar todos los datos")
+        else:
+            return (int(codigo), int(idEstudiante))
     except ValueError:
         print("Dato(s) invalido")
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#

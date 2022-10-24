@@ -95,7 +95,10 @@ def rowGetter():
                 except:
                     print("input invalido")
                     cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
-            return (identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(),correoeletronico.upper(),cantidadmatriculas)
+            if not (identificacion and nombre and apellido and carrera and fechanacimiento and fechaingreso and procedencia and correoeletronico and cantidadmatriculas):
+                print("Algun dato es vacio, por favor envie todos los datos.")
+            else:
+                return (identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(),correoeletronico.upper(),cantidadmatriculas)
         except ValueError:
             print('Value error, cantidad de matriculas e identificacion son numeros enteros')
 
@@ -155,10 +158,13 @@ def batchRowGetter():
                 except:
                     print("input invalido")
                     cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
-            result.append((identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(), correoeletronico.upper(), cantidadmatriculas))
-            result.append((identificacion, nombre, apellido, carrera, fechanacimiento, fechaingreso, procedencia, correoeletronico, cantidadmatriculas))
-            runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
-            counter+=1
+            if not (identificacion and nombre and apellido and carrera and fechanacimiento and fechaingreso and procedencia and correoeletronico and cantidadmatriculas):
+                print("Algun dato es vacio, por favor envie todos los datos.")
+            else:    
+                result.append((identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(), correoeletronico.upper(), cantidadmatriculas))
+                result.append((identificacion, nombre, apellido, carrera, fechanacimiento, fechaingreso, procedencia, correoeletronico, cantidadmatriculas))
+                runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
+                counter+=1
             if runner != secret_runner:
                 break 
         except ValueError:

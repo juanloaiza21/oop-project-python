@@ -51,7 +51,10 @@ def rowGetter():
             creditos = input('Creditos de la materia: ')
             creditos = int(creditos)
             idioma = input('Idioma en que se dicta la materia: ')
-            return (codigo, nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), creditos)
+            if not(codigo and nombre and facultad and departamento and idioma and creditos):
+                print("Por favor llene todos los campos")
+            else:
+                return (codigo, nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), creditos)
         except ValueError:
             print("Dato(s) invalido(s), codigo y creditos son numeros enteros")
 
@@ -72,9 +75,12 @@ def batchRowGetter():
             creditos = input('Creditos de la materia: ')
             creditos = int(creditos)
             idioma = input('Idioma en que se dicta la materia: ')
-            result.append((codigo, nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), creditos))
-            runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
-            counter+=1
+            if not(codigo and nombre and facultad and departamento and idioma and creditos):
+                print("Por favor llene todos los campos")
+            else:
+                result.append((codigo, nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), creditos))
+                runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
+                counter+=1
             if runner != secret_runner:
                 break 
         except ValueError:
@@ -236,9 +242,10 @@ def main():
                 while True:
                     try:
                         field = int(input('Escriba el codigo de la materia '))
-                        tableMaterias(searchByFilter('codigo', field))
-
-                        break
+                        if not field:
+                            tableMaterias(searchByFilter('codigo', field))
+                        else:
+                            break
                     except ValueError:
                         print(f"{field} invalido") 
             elif order==2:
