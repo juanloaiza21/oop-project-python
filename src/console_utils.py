@@ -18,3 +18,10 @@ def tableMaterias(data):
     for i in range(len(data)):
         my_table.add_row(data[i])
     print(my_table)
+
+def tableHistoriaAcad(data):
+    my_table = PrettyTable() #llamado al modulo de tablas en consola
+    my_table.field_names = ["ID", "CODIGO MATERIA", "ID ESTUDIANTE", "NOTA", "CREDITOS"] #Nombre de los campos
+    for i in range(len(data)):
+        my_table.add_row(data[i])
+    print(my_table)

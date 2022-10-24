@@ -135,7 +135,7 @@ def readOrdered(field: str):
         datos = cursor.fetchall()
         conn.commit();
         conn.close()
-        print(datos);
+        tableMaterias(datos);
     except sql.Error as e:
         print (e)
 
@@ -246,5 +246,3 @@ def main():
         #-----------------------------------------------------------------------------------------------------------------------------------------#
         elif selector ==4:
             break;
-
-main()
