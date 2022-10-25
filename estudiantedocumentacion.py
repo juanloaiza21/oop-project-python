@@ -280,7 +280,7 @@ def main():#definicion del metodo controldor del modulo estudiante
                     print("Input invalido")#generar mensaje de entrada invalida
                     validator = True #cambiar el valor del boleano para que el ciclo de ingresar y verificar entrada del usuario continue 
         #Primer caso del input de escritura, un solo dato
-            if int(pointer)==1:#sentencia en caso que la entrada pointed del usuario sea 1, por lo tanto desea añadir solo una materia
+            if int(pointer)==1:#sentencia en caso que la entrada pointed del usuario sea 1, por lo tanto desea añadir solo un estudiante
                 data = rowGetter()#llamar al metodo que pide input por teclado a tráves de consola de los datos
                 insertRow(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8])#llamar al metodo que inserta el estudiante en la base de datos
                 print("Datos insertados: ",data)#mensaje para el usuario con los datos ingresados
