@@ -27,9 +27,19 @@ def tableHistoriaAcad(data):
         my_table.add_row(data[i])
     print(my_table)
 
+#Tabla Estudiante
 def tableEstudiante(data):
     my_table = PrettyTable() #llamado al modulo de tablas en consola
     my_table.field_names = ["IDENTIFICACION", "NOMBRE", "APELLIDO", "CARRERA", "FECHA NACIMIENTO", "FECHA INGRESO", "PROCEDENCIA", "CORREO ELECTRONICO", "CANTIDAD DE MATRICULAS"] #Nombre de los campos
+    for i in range(len(data)):
+        my_table.add_row(data[i])
+    print(my_table)
+
+
+#Tabla de historia academica
+def tableRanking(data):
+    my_table = PrettyTable() #llamado al modulo de tablas en consola
+    my_table.field_names = ["ID", "PROMEDIO"] #Nombre de los campos
     for i in range(len(data)):
         my_table.add_row(data[i])
     print(my_table)
