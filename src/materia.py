@@ -201,24 +201,30 @@ def main():
         #Añadir materia
         if selector == 1:
             while True:
-                try:
-                    subselector = int(input("Si desea añadir una materia presione 1, si desea añadir una materia sin recibir los datos presione 2, si desea añadir multiples materias presione 3, para salir cualquier otro numero "))
+                while True:
+                    try:
+                        subselector = int(input("Si desea añadir una materia presione 1, si desea añadir una materia sin recibir los datos presione 2, si desea añadir multiples materias presione 3, para salir cualquier otro numero "))
+                        break
+                    except ValueError:
+                        print("valor invalido")
+                #Añadir una sola materia
+                if subselector == 1:
+                    data = rowGetter()
+                    insertRow(data[0], data[1], data[2], data[3], data[4], data[5])
+                    tableMaterias([data])
                     break
-                except ValueError:
-                    print("valor invalido")
-            #Añadir una sola materia
-            if subselector == 1:
-                data = rowGetter()
-                insertRow(data[0], data[1], data[2], data[3], data[4], data[5])
-                tableMaterias([data])
-            #Añadir materia sin que se vean los datos
-            if subselector==2:
-                data = rowGetter()
-                insertRow(data[0], data[1], data[2], data[3], data[4], data[5])
-            #Añadir multiples materias
-            if subselector==3:
-                data = batchRowGetter()
-                batchInsertRow(data)
+                #Añadir materia sin que se vean los datos
+                elif subselector==2:
+                    data = rowGetter()
+                    insertRow(data[0], data[1], data[2], data[3], data[4], data[5])
+                    break
+                #Añadir multiples materias
+                elif subselector==3:
+                    data = batchRowGetter()
+                    batchInsertRow(data)
+                    break
+                else:
+                    break
         #Actualizar idioma
         if selector == 2:
             while True:
