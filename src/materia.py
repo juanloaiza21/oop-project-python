@@ -1,3 +1,4 @@
+from cgitb import text
 import sqlite3 as sql
 from decouple import config
 from console_utils import clearConsole
@@ -60,7 +61,7 @@ def rowGetter():
 
 
 #pide varias veces los datos
-def batchRowGetter(data = 0):
+def batchRowGetter():
     result = []
     secret_runner = "1"
     counter = 0
@@ -86,8 +87,7 @@ def batchRowGetter(data = 0):
         except ValueError:
             print("Dato(s) invalido(s), codigo y creditos son numeros enteros")
     print (f"Usted ha insertado {counter} datos, los cuales son: ")
-    if data == 0:
-        tableMaterias(result)
+    tableMaterias(result)
     return result
 
 
@@ -186,8 +186,71 @@ def promedio():
 
 
 #---------------------------------------------------------------Función principal---------------------------------------------------------------------------------#
+#TODO revisar
 def main():
     #TODO
     while True:
-        #Revisa si va a añadir datos, leer o actualizar, metodo reutilizable, verifica que el input sea correcto
-       pass
+        #validador inicial
+        while True:
+            try:
+                selector = input("Para añadir una materia presione 1, para actualizar el idioma presione 2, para leer datos presione 3. Para salir presione otro numero.")
+                selector = int(selector)
+                break
+            except ValueError:
+                print("valor invalido")
+        #Añadir materia
+        if selector == 1:
+            while True:
+                try:
+                    subselector = int(input("Si desea añadir una materia presione 1, si desea añadir una materia sin recibir los datos presione 2, si desea añadir multiples materias presione 3, para salir cualquier otro numero"))
+                    break
+                except ValueError:
+                    print("valor invalido")
+            #Añadir una sola materia
+            if subselector == 1:
+                data = rowGetter()
+                insertRow(data[0], data[1], data[2], data[3], data[4], data[5])
+                tableMaterias((data))
+            #Añadir materia sin que se vean los datos
+            if subselector==2:
+                data = rowGetter()
+                insertRow(data[0], data[1], data[2], data[3], data[4], data[5])
+            #Añadir multiples materias
+            if subselector==3:
+                data = batchRowGetter()
+                batchInsertRow(data)
+        #Actualizar idioma
+        if selector == 2:
+            while True:
+                try:
+                    codigo = int(input("Seleccione el codigo de la materia "))
+                    break
+                except ValueError:
+                    print('Valor invalido')
+            while True:
+                idioma = input("Escriba el nuevo idioma ")
+                if (type(idioma)!=str):
+                    print('Ingrese un valor')
+                else:
+                    break
+            update('idioma', idioma, codigo)
+        #Leer datos
+        if selector == 3:
+                while True:
+                    try:
+                        subselector = int(input("Si desea ver todas las materias presione 1, si desea buscar por codigos presione 2, para salir otro numero"))
+                        break
+                    except ValueError:
+                        print("valor invalido")
+            #Ver todas las materias
+                if(subselector == 1):
+                    readAllRows()
+            #Ver materias por codigos
+                if(subselector == 2):
+                    while True:
+                        try:
+                            codigo = int(input("Si desea ver todas las materias presione 1, si desea buscar por codigos presione 2, para salir otro numero"))
+                            break
+                        except ValueError:
+                            print("valor invalido")
+                    tableMaterias( searchByFilter('codigo', codigo))
