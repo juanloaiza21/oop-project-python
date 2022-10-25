@@ -170,7 +170,7 @@ def main():
             try:
                 selector=input("Si desea crear añadir una materia aprete 1. Si desea actualizar una nota en una materia ya registrada aprete 2. Si desea consultar sus notas o su promedio aprete 3. si desea eliminar alguna materia aprete 4. Para salir, cualquier otra tecla.")
                 selector =int(selector)
-                if (selector!=1 and selector !=2 and selector !=3 and selector !=4):
+                if (selector!=1 and selector !=2 and selector !=3 and selector !=4 and selector !=5):
                     print(f"{selector} es un valor invalido")
                 else:
                     validator = False
