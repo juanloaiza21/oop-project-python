@@ -60,7 +60,7 @@ def rowGetter():
 
 
 #pide varias veces los datos
-def batchRowGetter():
+def batchRowGetter(data = 0):
     result = []
     secret_runner = "1"
     counter = 0
@@ -86,7 +86,8 @@ def batchRowGetter():
         except ValueError:
             print("Dato(s) invalido(s), codigo y creditos son numeros enteros")
     print (f"Usted ha insertado {counter} datos, los cuales son: ")
-    tableMaterias(result)
+    if data == 0:
+        tableMaterias(result)
     return result
 
 
@@ -164,92 +165,29 @@ def update(fieldOnChange: str, dataOnChange, code: int):
     except sql.Error as e:
         print (e)
 
+#---------------------------------------------------------------------------------------------IMPORTANT calcular promedios de una tabla------------------------------------------------------------------------------------------
+#Calcula el promedio de un campo n
+def promedio():
+    try:
+        conn = sql.connect(DB)
+        cursor = conn.cursor()
+        instruction = f"SELECT count(*) FROM materias" #Comando de contar campos en SQL
+        cursor.execute(instruction)
+        cantidad=cursor.fetchall()
+        instruction = f"SELECT sum(creditos) FROM materias" #Comando de sumar campos en SQL
+        cursor.execute(instruction)
+        suma=cursor.fetchall()
+        conn.commit();
+        conn.close()
+        print("Promedio creditos ", suma[0][0]/cantidad[0][0])
+    except sql.Error as e:
+        print (e)
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 #---------------------------------------------------------------Función principal---------------------------------------------------------------------------------#
 def main():
-    
+    #TODO
     while True:
         #Revisa si va a añadir datos, leer o actualizar, metodo reutilizable, verifica que el input sea correcto
-        validator = True
-        while validator:
-            try:
-                selector = input("\nSi desea añadir datos ingrese '1' y enter. Si desea actualizar el idioma presione '2' y enter. si desea obtener información ingrese '3' y enter, para salir presione 4 y enter. ")
-                selector = int(selector)
-                validator = False
-                while(selector!=1 and selector !=2 and selector !=3 and selector !=4):
-                    selector = input(f"{selector} no es una opción valida, por favor digite una opcion valida ")
-                    selector = int(selector)
-            except ValueError:
-                print("Input invalido")
-                validator = True
-        #-------------------------------------------Creación de materias---------------------------------------------------------------------------#
-        if selector ==1:
-            clearConsole()
-            validator = True
-            while validator:
-                try:
-                    clearConsole()
-                    pointer = input(" \nSi desea solo añadir una materia digite '1' y luego enter, si desea registrar multiples datos digite '2' y luego enter. ")
-                    pointer = int(pointer)
-                    validator = False
-                    while(pointer!=1 and pointer !=2):
-                        pointer = input(f"{pointer} no es una opción valida, por favor digite una opcion valida ")
-                        pointer = int(pointer)
-                except ValueError:
-                    print("Input invalido")
-                    validator = True
-        #Primer caso del input de escritura, un solo dato
-            if int(pointer)==1:
-                data = rowGetter()
-                insertRow(data[0], data[1], data[2], data[3], data[4], data[5])
-                print("Datos insertados: ")
-                tableMaterias([data])
-        #Segundo caso, múltiples datos
-            elif(int(pointer)==2):
-                data = batchRowGetter()
-                batchInsertRow(data)
-        #-----------------------------------------------------------------------------------------------------------------------------------------#
-
-        #---------------------------------------------------------------Actualizar datos-----------------------------------------------------------#
-        elif(int(selector)==2):
-            clearConsole()
-            validator = True
-            while validator:
-                try:
-                    code = input("Escriba el codigo que quiere actualizar ")
-                    code = int(code)
-                    validator = False
-                except ValueError:
-                    print("Input invalido")
-                    validator = True
-            dataOnchange = input(f"\nEscriba el valor con el cual quiere modificar el campo {'idioma'} de la materia con codigo{code} ")
-            try:
-                dataOnchange = int(dataOnchange)
-            except:
-                dataOnchange.lower()
-            finally:
-                update('idioma', dataOnchange, code)
-
-        #------------------------------------------------------------------------------------------------------------------------------------------#
-
-        #----------------------------------------------------------------Leer datos---------------------------------------------------------------#
-        elif selector==3:
-            clearConsole()
-            order = int(input("\nSi desea ordenar por código oprima 1  y enter, si no oprima 2 y enter."))
-            #Verifica si el input es correcto
-            while(order!=1 and order !=2):
-                order = int(input(f"{selector} no es una opción valida, por favor digite una opcion valida ")) #TODO valdiacion
-            if(order==1):
-                while True:
-                    try:
-                        field = int(input('Escriba el codigo de la materia '))
-                        if not field:
-                            tableMaterias(searchByFilter('codigo', field))
-                        else:
-                            break
-                    except ValueError:
-                        print(f"{field} invalido") 
-            elif order==2:
-                tableMaterias(readAllRows())
-        #-----------------------------------------------------------------------------------------------------------------------------------------#
-        elif selector ==4:
-            break;
+       pass

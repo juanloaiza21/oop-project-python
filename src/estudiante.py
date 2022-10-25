@@ -86,15 +86,14 @@ def rowGetter():
                     except:
                         print("formato invalido")
             procedencia = input('procedencia del estudiante: ')
-            correoeletronico = input('corre oeletronico del estudiante: ')
-            cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
+            correoeletronico = input('correo eletronico del estudiante: ')
             while True:
                 try:
+                    cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
                     cantidadmatriculas = int(cantidadmatriculas)
                     break
                 except:
                     print("input invalido")
-                    cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
             if not (identificacion and nombre and apellido and carrera and fechanacimiento and fechaingreso and procedencia and correoeletronico and cantidadmatriculas):
                 print("Algun dato es vacio, por favor envie todos los datos.")
             else:
@@ -122,7 +121,6 @@ def batchRowGetter():
             nombre = input('Nombre del estudiante: ')
             apellido = input('apellido del estudiante: ')
             carrera = input('nomrbre de la carrera: ')
-            fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
            #Validador fecha nacimiento
             while True:
                 try:
@@ -149,24 +147,21 @@ def batchRowGetter():
                         print("formato invalido")
             procedencia = input('procedencia del estudiante: ')
             correoeletronico = input('corre oeletronico del estudiante: ')
-            cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
-            cantidadmatriculas = int(cantidadmatriculas)
             while True:
                 try:
+                    cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
                     cantidadmatriculas = int(cantidadmatriculas)
                     break
                 except:
                     print("input invalido")
-                    cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
             if not (identificacion and nombre and apellido and carrera and fechanacimiento and fechaingreso and procedencia and correoeletronico and cantidadmatriculas):
                 print("Algun dato es vacio, por favor envie todos los datos.")
             else:    
                 result.append((identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(), correoeletronico.upper(), cantidadmatriculas))
-                result.append((identificacion, nombre, apellido, carrera, fechanacimiento, fechaingreso, procedencia, correoeletronico, cantidadmatriculas))
                 runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
                 counter+=1
-            if runner != secret_runner:
-                break 
+                if runner != secret_runner:
+                    break 
         except ValueError:
                 print('Value error, cantidad de matriculas e identificacion son numeros enteros')
     print (f"Usted ha insertado {counter} datos, los cuales son:")
@@ -329,4 +324,3 @@ def main():
             break;
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
-main()
