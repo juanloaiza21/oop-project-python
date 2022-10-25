@@ -193,7 +193,7 @@ def main():
         #validador inicial
         while True:
             try:
-                selector = input("Para añadir una materia presione 1, para actualizar el idioma presione 2, para leer datos presione 3. Para salir presione otro numero.")
+                selector = input("Para añadir una materia presione 1, para actualizar el idioma presione 2, para leer datos presione 3. Para salir presione otro numero. ")
                 selector = int(selector)
                 break
             except ValueError:
@@ -202,7 +202,7 @@ def main():
         if selector == 1:
             while True:
                 try:
-                    subselector = int(input("Si desea añadir una materia presione 1, si desea añadir una materia sin recibir los datos presione 2, si desea añadir multiples materias presione 3, para salir cualquier otro numero"))
+                    subselector = int(input("Si desea añadir una materia presione 1, si desea añadir una materia sin recibir los datos presione 2, si desea añadir multiples materias presione 3, para salir cualquier otro numero "))
                     break
                 except ValueError:
                     print("valor invalido")
@@ -210,7 +210,7 @@ def main():
             if subselector == 1:
                 data = rowGetter()
                 insertRow(data[0], data[1], data[2], data[3], data[4], data[5])
-                tableMaterias((data))
+                tableMaterias([data])
             #Añadir materia sin que se vean los datos
             if subselector==2:
                 data = rowGetter()
@@ -237,20 +237,23 @@ def main():
         #Leer datos
         if selector == 3:
                 while True:
+                    clearConsole()
                     try:
-                        subselector = int(input("Si desea ver todas las materias presione 1, si desea buscar por codigos presione 2, para salir otro numero"))
+                        subselector = int(input("Si desea ver todas las materias presione 1, si desea buscar por codigos presione 2, para salir otro numero" ))
                         break
                     except ValueError:
                         print("valor invalido")
             #Ver todas las materias
                 if(subselector == 1):
-                    readAllRows()
+                    tableMaterias(readAllRows())
             #Ver materias por codigos
                 if(subselector == 2):
                     while True:
                         try:
-                            codigo = int(input("Si desea ver todas las materias presione 1, si desea buscar por codigos presione 2, para salir otro numero"))
+                            codigo = int(input("Escriba el codigo de la materia que quiere ver "))
                             break
                         except ValueError:
                             print("valor invalido")
                     tableMaterias( searchByFilter('codigo', codigo))
+        else:
+            break
