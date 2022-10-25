@@ -1,5 +1,8 @@
+from cgitb import text
 import sqlite3 as sql
 from decouple import config
+from console_utils import clearConsole
+from console_utils import tableMaterias
 DB = config('DB_NAME')
 
 #Crea tablas manualmente, automatizar
@@ -49,7 +52,10 @@ def rowGetter():
             creditos = input('Creditos de la materia: ')
             creditos = int(creditos)
             idioma = input('Idioma en que se dicta la materia: ')
-            return (codigo, nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), creditos)
+            if not(codigo and nombre and facultad and departamento and idioma and creditos):
+                print("Por favor llene todos los campos")
+            else:
+                return (codigo, nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), creditos)
         except ValueError:
             print("Dato(s) invalido(s), codigo y creditos son numeros enteros")
 
@@ -70,14 +76,18 @@ def batchRowGetter():
             creditos = input('Creditos de la materia: ')
             creditos = int(creditos)
             idioma = input('Idioma en que se dicta la materia: ')
-            result.append((codigo, nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), creditos))
-            runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
-            counter+=1
+            if not(codigo and nombre and facultad and departamento and idioma and creditos):
+                print("Por favor llene todos los campos")
+            else:
+                result.append((codigo, nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), creditos))
+                runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
+                counter+=1
             if runner != secret_runner:
                 break 
         except ValueError:
             print("Dato(s) invalido(s), codigo y creditos son numeros enteros")
-    print (f"Usted ha insertado {counter} datos, los cuales son: {result}")
+    print (f"Usted ha insertado {counter} datos, los cuales son: ")
+    tableMaterias(result)
     return result
 
 
@@ -91,7 +101,7 @@ def readAllRows():
         datos = cursor.fetchall()
         conn.commit();
         conn.close()
-        print(datos);
+        return (datos);
     except sql.Error as e:
         print (e)
 
@@ -132,7 +142,7 @@ def readOrdered(field: str):
         datos = cursor.fetchall()
         conn.commit();
         conn.close()
-        print(datos);
+        tableMaterias(datos);
     except sql.Error as e:
         print (e)
 
@@ -155,85 +165,95 @@ def update(fieldOnChange: str, dataOnChange, code: int):
     except sql.Error as e:
         print (e)
 
+#---------------------------------------------------------------------------------------------IMPORTANT calcular promedios de una tabla------------------------------------------------------------------------------------------
+#Calcula el promedio de un campo n
+def promedio():
+    try:
+        conn = sql.connect(DB)
+        cursor = conn.cursor()
+        instruction = f"SELECT count(*) FROM materias" #Comando de contar campos en SQL
+        cursor.execute(instruction)
+        cantidad=cursor.fetchall()
+        instruction = f"SELECT sum(creditos) FROM materias" #Comando de sumar campos en SQL
+        cursor.execute(instruction)
+        suma=cursor.fetchall()
+        conn.commit();
+        conn.close()
+        print("Promedio creditos ", suma[0][0]/cantidad[0][0])
+    except sql.Error as e:
+        print (e)
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 #---------------------------------------------------------------Función principal---------------------------------------------------------------------------------#
+#TODO revisar
 def main():
-    
+    #TODO
     while True:
-        #Revisa si va a añadir datos, leer o actualizar, metodo reutilizable, verifica que el input sea correcto
-        validator = True
-        while validator:
+        #validador inicial
+        while True:
             try:
-                selector = input("Si desea añadir datos ingrese '1' y enter. Si desea actualizar el idioma presione '2' y enter. si desea obtener información ingrese '3' y enter, para salir presione 4 y enter. ")
+                selector = input("Para añadir una materia presione 1, para actualizar el idioma presione 2, para leer datos presione 3. Para salir presione otro numero. ")
                 selector = int(selector)
-                validator = False
-                while(selector!=1 and selector !=2 and selector !=3 and selector !=4):
-                    selector = input(f"{selector} no es una opción valida, por favor digite una opcion valida ")
-                    selector = int(selector)
+                break
             except ValueError:
-                print("Input invalido")
-                validator = True
-        #-------------------------------------------Creación de materias---------------------------------------------------------------------------#
-        if selector ==1:
-            validator = True
-            while validator:
+                print("valor invalido")
+        #Añadir materia
+        if selector == 1:
+            while True:
                 try:
-                    pointer = input("Si desea solo añadir una materia digite '1' y luego enter, si desea registrar multiples datos digite '2' y luego enter. ")
-                    pointer = int(pointer)
-                    validator = False
-                    while(pointer!=1 and pointer !=2):
-                        pointer = input(f"{pointer} no es una opción valida, por favor digite una opcion valida ")
-                        pointer = int(pointer)
+                    subselector = int(input("Si desea añadir una materia presione 1, si desea añadir una materia sin recibir los datos presione 2, si desea añadir multiples materias presione 3, para salir cualquier otro numero "))
+                    break
                 except ValueError:
-                    print("Input invalido")
-                    validator = True
-        #Primer caso del input de escritura, un solo dato
-            if int(pointer)==1:
+                    print("valor invalido")
+            #Añadir una sola materia
+            if subselector == 1:
                 data = rowGetter()
                 insertRow(data[0], data[1], data[2], data[3], data[4], data[5])
-                print("Datos insertados: ",data)
-        #Segundo caso, múltiples datos
-            elif(int(pointer)==2):
+                tableMaterias([data])
+            #Añadir materia sin que se vean los datos
+            if subselector==2:
+                data = rowGetter()
+                insertRow(data[0], data[1], data[2], data[3], data[4], data[5])
+            #Añadir multiples materias
+            if subselector==3:
                 data = batchRowGetter()
                 batchInsertRow(data)
-        #-----------------------------------------------------------------------------------------------------------------------------------------#
-
-        #---------------------------------------------------------------Actualizar datos-----------------------------------------------------------#
-        elif(int(selector)==2):
-            validator = True
-            while validator:
+        #Actualizar idioma
+        if selector == 2:
+            while True:
                 try:
-                    code = input("Escriba el codigo que quiere actualizar ")
-                    code = int(code)
-                    validator = False
+                    codigo = int(input("Seleccione el codigo de la materia "))
+                    break
                 except ValueError:
-                    print("Input invalido")
-                    validator = True
-            dataOnchange = input(f"Escriba el valor con el cual quiere modificar el campo {'idioma'} de la materia con codigo{code} ")
-            try:
-                dataOnchange = int(dataOnchange)
-            except:
-                dataOnchange.lower()
-            finally:
-                update('idioma', dataOnchange, code)
-
-        #------------------------------------------------------------------------------------------------------------------------------------------#
-
-        #----------------------------------------------------------------Leer datos---------------------------------------------------------------#
-        elif selector==3:
-            order = int(input("Si desea ordenar por código oprima 1  y enter, si no oprima 2 y enter."))
-            #Verifica si el input es correcto
-            while(order!=1 and order !=2):
-                order = int(input(f"{selector} no es una opción valida, por favor digite una opcion valida ")) #TODO valdiacion
-            if(order==1):
+                    print('Valor invalido')
+            while True:
+                idioma = input("Escriba el nuevo idioma ")
+                if (type(idioma)!=str):
+                    print('Ingrese un valor')
+                else:
+                    break
+            update('idioma', idioma, codigo)
+        #Leer datos
+        if selector == 3:
                 while True:
+                    clearConsole()
                     try:
-                        field = int(input('Escriba el codigo de la materia '))
-                        print(searchByFilter('codigo', field))
+                        subselector = int(input("Si desea ver todas las materias presione 1, si desea buscar por codigos presione 2, para salir otro numero" ))
                         break
                     except ValueError:
-                        print(f"{field} invalido") 
-            elif order==2:
-                readAllRows()
-        #-----------------------------------------------------------------------------------------------------------------------------------------#
-        elif selector ==4:
-            break;
+                        print("valor invalido")
+            #Ver todas las materias
+                if(subselector == 1):
+                    tableMaterias(readAllRows())
+            #Ver materias por codigos
+                if(subselector == 2):
+                    while True:
+                        try:
+                            codigo = int(input("Escriba el codigo de la materia que quiere ver "))
+                            break
+                        except ValueError:
+                            print("valor invalido")
+                    tableMaterias( searchByFilter('codigo', codigo))
+        else:
+            break

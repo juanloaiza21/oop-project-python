@@ -1,10 +1,10 @@
 #TODO all module
-from ast import While
 import sqlite3 as sql
 from time import sleep
 from decouple import config
 from materia import readOrdered as allMaterias
 from materia import searchByFilter as materiasFilter
+from console_utils import clearConsole, tableHistoriaAcad
 
 DB = config('DB_NAME')
 
@@ -16,7 +16,7 @@ def createTeable():
         cursor.execute(
             """CREATE TABLE IF NOT EXISTS acadhistory (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                code_materia  INTEGER NOT NULL UNIQUE,
+                code_materia  INTEGER NOT NULL,
                 id_estudiante INTEGER NOT NULL,
                 nota REAL,
                 creditos_cursados INTEGER,
@@ -49,7 +49,8 @@ def insertRow(codigo: int, id_estudiante: int, score: float):
         cursor.execute(instruction)
         conn.commit();
         conn.close();
-        print("Datos añadidos correctamente")
+        print("Datos añadidos: ")
+        tableHistoriaAcad([(0,codigo, id_estudiante, score, creditos)])
     except sql.Error as e:
         print (e)
         print('Probablemente no exista el estudiante o la materia, revise por favor los datos que ingreso y vuelva a intentar. Si sí existen, es que primero debe eliminar la materia, para que se actualice con los nuevos datos')
@@ -66,7 +67,7 @@ def rowGetter():
             if selector ==1:
                 nota = input('Nota del estudiante ')
             else:
-                nota = 0
+                nota = 0.0
             nota = float(nota)
             idEstudiante = int(idEstudiante)
             codigo = int(codigo)
@@ -74,26 +75,6 @@ def rowGetter():
         except ValueError:
             print("Dato(s) invalido")
 
-def batchRowGetter():
-    result = []
-    secret_runner = "1"
-    counter = 0
-    while True: 
-        try:
-            print("El codigo de la materia y el Id del estudiante deben existir, si no, habra error")
-            codigo = input('Codigo de la materia: ')
-            codigo = codigo.ljust(10)
-            idEstudiante = input('Id del estudiante ')
-            nota = input('Nota del estudiante ')
-            result.append(int(codigo), int(idEstudiante), float(nota))
-            runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
-            counter+=1
-            if runner != secret_runner:
-                break 
-        except ValueError:
-            print("Dato(s) invalido")
-    print (f"Usted ha insertado {counter} datos, los cuales son: {result}")
-    return result
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 #----------------------------------------------------------------Lector del modulo de historia academica----------------------------------------------------------#
@@ -156,7 +137,7 @@ def rowUpdateGetter():
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
-#----------------------------------------------------------------Metodo de borrado--------------------------------------------------------------------------#
+#----------------------------------------------------------------Metodo de borrado--------------------------------------------------------------------------------#
 def deleteRow(code: int, studentId: int):
     try:
         conn = sql.connect(DB)
@@ -189,36 +170,38 @@ def main():
             try:
                 selector=input("Si desea crear añadir una materia aprete 1. Si desea actualizar una nota en una materia ya registrada aprete 2. Si desea consultar sus notas o su promedio aprete 3. si desea eliminar alguna materia aprete 4. Para salir, cualquier otra tecla.")
                 selector =int(selector)
-                if (selector!=1 and selector !=2 and selector !=3 and selector !=4):
+                if (selector!=1 and selector !=2 and selector !=3 and selector !=4 and selector !=5):
                     print(f"{selector} es un valor invalido")
                 else:
                     validator = False
             except ValueError:
                 print(f"{selector} es un valor invalido")
         if selector == 1:
-            while True:
+            validator = True
+            while validator:
+                # TODO Se arma bucle infinito en 1
                 try:
-                    selector=input("Para añadir una materia debe escribir el documento del estudiante (ya registrado) y  el codigo de una materia existente. ¿Desea ver que materias hay disponibles? 1.Si. 2.No");
-                    selector = int(selector)
-                    if (selector !=1 and selector !=2):
-                        print(f"{selector} es invalido")
-                    elif selector == 1:
+                    clearConsole()
+                    selectorr=input("Para añadir una materia debe escribir el documento del estudiante (ya registrado) y  el codigo de una materia existente. ¿Desea ver que materias hay disponibles? 1.Si. 2.No");
+                    selectorr = selectorr
+                    if selectorr == "1":
                         allMaterias('codigo')
                         sleep(2.5)
                         print('A continuación va a inscribir una materia ')
                         data = rowGetter()
                         insertRow(data[0], data[1], data[2])
-                        break;
-                    elif selector == 2:
+                        validator = False
+                    elif selectorr == "2":
                         print('A continuación va a inscribir una materia ')
                         data = rowGetter()
                         insertRow(data[0], data[1], data[2])
-                        break;
+                        validator = False
                 except ValueError:
                     print (f"{selector} es invalido")
         elif selector == 2:
             while True:
                 try:
+                    clearConsole()
                     print("Para actualizar la nota de una materia debe escribir el documento del estudiante y el codigo de la materia. Claramene la nota tambien");
                     data = rowUpdateGetter()
                     update('nota', data[2], data[1], data[0])
@@ -228,6 +211,7 @@ def main():
         elif selector == 3: 
             while True:
                 try:
+                    clearConsole()
                     selector=input("Si desea ver su promedio aprete 1. Si desea ver todas sus notas aprete 2.");
                     selector = int(selector)
                     if (selector !=1 and selector !=2):
@@ -245,9 +229,11 @@ def main():
                     elif selector == 2:
                        while True:
                             try:
+                                clearConsole()
                                 idd = int(input("Ingrese el documento del estudiante "))
                                 data = acadHistoryById(idd)
-                                print("Sus notas son: ", data)
+                                print("Sus notas son: ")
+                                tableHistoriaAcad(data)
                                 break
                             except ValueError:
                                 print(f"{idd} es invalido")
@@ -256,6 +242,7 @@ def main():
                     print (f"{selector} es invalido")
         elif selector == 4:
             while True:
+                clearConsole()
                 data = rowDeleteGetter()
                 deleteRow(data[0], data[1])
                 break;

@@ -1,7 +1,8 @@
-from datetime import date, datetime
+from datetime import datetime
 import sqlite3 as sql
 from decouple import config
 import datetime
+from console_utils import clearConsole, tableEstudiante
 
 DB = config('DB_NAME')
 
@@ -85,16 +86,18 @@ def rowGetter():
                     except:
                         print("formato invalido")
             procedencia = input('procedencia del estudiante: ')
-            correoeletronico = input('corre oeletronico del estudiante: ')
-            cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
+            correoeletronico = input('correo eletronico del estudiante: ')
             while True:
                 try:
+                    cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
                     cantidadmatriculas = int(cantidadmatriculas)
                     break
                 except:
                     print("input invalido")
-                    cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
-            return (identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(),correoeletronico.upper(),cantidadmatriculas)
+            if not (identificacion and nombre and apellido and carrera and fechanacimiento and fechaingreso and procedencia and correoeletronico and cantidadmatriculas):
+                print("Algun dato es vacio, por favor envie todos los datos.")
+            else:
+                return (identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(),correoeletronico.upper(),cantidadmatriculas)
         except ValueError:
             print('Value error, cantidad de matriculas e identificacion son numeros enteros')
 
@@ -118,7 +121,6 @@ def batchRowGetter():
             nombre = input('Nombre del estudiante: ')
             apellido = input('apellido del estudiante: ')
             carrera = input('nomrbre de la carrera: ')
-            fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
            #Validador fecha nacimiento
             while True:
                 try:
@@ -145,33 +147,25 @@ def batchRowGetter():
                         print("formato invalido")
             procedencia = input('procedencia del estudiante: ')
             correoeletronico = input('corre oeletronico del estudiante: ')
-            cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
             while True:
                 try:
+                    cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
                     cantidadmatriculas = int(cantidadmatriculas)
                     break
                 except:
                     print("input invalido")
-                    cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
-            result.append((identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(), correoeletronico.upper(), cantidadmatriculas))
-            identificacion = int(identificacion)
-            nombre = input('Nombre del estudiante: ')
-            apellido = input('apellido del estudiante: ')
-            carrera = input('nomrbre de la carrera: ')
-            fechanacimiento = input('fecha de nacimiento del estudiante: ')
-            fechaingreso = input('fecha de ingreso del estudiante: ')
-            procedencia = input('procedencia del estudiante: ')
-            correoeletronico = input('corre oeletronico del estudiante: ')
-            cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
-            cantidadmatriculas = int(cantidadmatriculas)
-            result.append((identificacion, nombre, apellido, carrera, fechanacimiento, fechaingreso, procedencia, correoeletronico, cantidadmatriculas))
-            runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
-            counter+=1
-            if runner != secret_runner:
-                break 
+            if not (identificacion and nombre and apellido and carrera and fechanacimiento and fechaingreso and procedencia and correoeletronico and cantidadmatriculas):
+                print("Algun dato es vacio, por favor envie todos los datos.")
+            else:    
+                result.append((identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(), correoeletronico.upper(), cantidadmatriculas))
+                runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
+                counter+=1
+                if runner != secret_runner:
+                    break 
         except ValueError:
                 print('Value error, cantidad de matriculas e identificacion son numeros enteros')
-    print (f"Usted ha insertado {counter} datos, los cuales son: {result}")
+    print (f"Usted ha insertado {counter} datos, los cuales son:")
+    tableEstudiante(result)
     return result
 
 #Leer todos datos
@@ -198,7 +192,7 @@ def searchByFilter(fieldName, fieldValue):
         datos = cursor.fetchall()
         conn.commit();
         conn.close()
-        print(datos);
+        tableEstudiante(datos);
     except sql.Error as e:
         print (e)   
 
@@ -265,6 +259,7 @@ def main():
                 validator = True
         #-------------------------------------------Creación de estudiante---------------------------------------------------------------------------#
         if selector ==1:
+            clearConsole()
             validator = True
             while validator:
                 try:
@@ -281,7 +276,8 @@ def main():
             if int(pointer)==1:
                 data = rowGetter()
                 insertRow(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8])
-                print("Datos insertados: ",data)
+                print("Datos insertados: ")
+                tableEstudiante([data])
         #Segundo caso, múltiples datos
             elif(int(pointer)==2):
                 data = batchRowGetter()
@@ -291,6 +287,7 @@ def main():
         #---------------------------------------------------------------Actualizar datos-----------------------------------------------------------#
         elif(int(selector)==2):
             validator = True
+            clearConsole()
             while validator:
                 try:
                     #TODO verificar que el estudiante exista
@@ -327,6 +324,3 @@ def main():
             break;
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
-
-#-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
-print(rowGetter())
