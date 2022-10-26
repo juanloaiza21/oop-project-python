@@ -225,12 +225,12 @@ def main():#definicion del metodo controldor del modulo materia
         #Primer caso del input de escritura, un solo dato
             if int(pointer)==1:#sentencia en caso que la entrada pointed del usuario sea 1, por lo tanto desea añadir solo una materia
                 data = rowGetter()#llamar al metodo que pide input por teclado a tráves de consola de los datos
-                insertRow(data[0], data[1], data[2], data[3], data[4], data[5])#llamar al metodo que inserta el estudiante en la base de datos
+                insertRow(data[0], data[1], data[2], data[3], data[4], data[5])#llamar al metodo que inserta la materia en la base de datos
                 print("Datos insertados: ",data)#mensaje para el usuario con los datos ingresados
         #Segundo caso, múltiples datos
             elif(int(pointer)==2):#sentencia en caso que la entrada pointed del usuario sea 2, por lo tanto desea añadir multiples materias
                 data = batchRowGetter()#llamar al metodo que pide input por teclado a tráves de consola de los datos varias veces
-                batchInsertRow(data)#llamar al metodo que inserta todas los estudiantes que a ingresado el usuario en la base de datos e internamenete da el mensaje al usuario
+                batchInsertRow(data)#llamar al metodo que inserta todas las materias que a ingresado el usuario en la base de datos e internamenete da el mensaje al usuario
         #-----------------------------------------------------------------------------------------------------------------------------------------#
 
         #---------------------------------------------------------------Actualizar datos-----------------------------------------------------------#
