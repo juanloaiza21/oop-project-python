@@ -3,6 +3,7 @@ from materia import main as matController
 from historia_academica import main as acadHistory
 from estudiante import main as estudent
 from table_creator import main as dbCreator
+from ranking import main as rankingGen
 
 def main():
     dbCreator()
@@ -10,10 +11,10 @@ def main():
         validator = True
         while validator:
             try:
-                selector = input("Para entrar a 'materia' presione 1, para entrar en 'historia academica' presione 2, para entrar en 'estudiante' presione 3, para salir presione 4. ")
+                selector = input("Para entrar a 'materia' presione 1, para entrar en 'historia academica' presione 2, para entrar en 'estudiante' presione 3, para ver el top de estudiante presione 4. Para salir presione 5 ")
                 selector = int(selector)
                 validator = False
-                while (selector!=1 and selector!=2 and selector!=3 and selector !=4):
+                while (selector!=1 and selector!=2 and selector!=3 and selector !=4 and selector!=5):
                     selector = input(f"{selector} no es valido ")
                     selector = int(selector)
             except ValueError:
@@ -26,5 +27,7 @@ def main():
         elif selector==3:
             estudent()
         elif selector==4:
+            rankingGen()
+        elif selector==5:
             break;
 

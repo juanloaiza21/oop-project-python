@@ -8,7 +8,6 @@ from console_utils import clearConsole, tableHistoriaAcad
 
 DB = config('DB_NAME')
 
-#Crea tablas manualmente, automatizar; TODO generar modulo que cree toda la DB y meterlo en el controlador como primer paso al correr la app
 def createTeable():
     try:
         conn = sql.connect(DB) #Conexion a la base de datos
