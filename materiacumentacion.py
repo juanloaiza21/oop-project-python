@@ -236,7 +236,7 @@ def main():#definicion del metodo controldor del modulo materia
         #---------------------------------------------------------------Actualizar datos-----------------------------------------------------------#
         elif(int(selector)==2):#sentencia en caso que la entrada del usuario sea 2
             validator = True#creacion del boleano para realiza la comprobacion que se realizo una entrada correcta por parte del usuario
-            while validator:#generar un ciclo en la tabla de datos estudiante con la funcion de ingresar y verificar la entrada del usuario
+            while validator:#generar un ciclo en la tabla de datos materia con la funcion de ingresar y verificar la entrada del usuario
                 try:#sentecia que se desea ejecutar sin presencia de ningun tipo de error
                     code = input("Escriba el codigo que quiere actualizar ")#entrada del codigo o clave primaria del estudiante que se desea actualizr
                     code = int(code)#verificacion de que la entrada es un numero
