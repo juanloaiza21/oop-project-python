@@ -1,4 +1,3 @@
-TODO all module
 import sqlite3 as sql#importar sqlite3 por el nombre sql
 from time import sleep#importar sleep de time para poder tener un manejo de tiempo
 from decouple import config#importar config de decouple
