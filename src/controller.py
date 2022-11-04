@@ -11,13 +11,13 @@ def main():
         validator = True
         while validator:
             try:
-                selector = input(
+                selector = input( #Este input debe ser un número entero en el rango de 1 a 5, si no lo es, se repite
                     """
                     ¡Bienvenido al programa de gestión de notas!
                     1. Para entrar a 'materia'.
                     2. Para entrar en 'historia academica'.
                     3. Para entrar en 'estudiante'. 
-                    4. Para ver el top de estudiante presione 4. 
+                    4. Para ver el top de estudiante. 
                     5. Para salir. 
                     """
                     )
