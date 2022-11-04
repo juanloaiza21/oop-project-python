@@ -248,7 +248,14 @@ def main():
         validator = True
         while validator:
             try:
-                selector = input("Si desea añadir datos ingrese '1' y enter. Si desea actualizar datos presione '2' y enter. si desea obtener información ingrese '3' y enter, para salir presione 4 y enter. ")
+                selector = input(
+                """Bienvendio a estudiante
+                1. Agregar datos. 
+                2. Para actualizar.
+                3. Para obtener información. 
+                4. Para salir. 
+                """
+                )
                 selector = int(selector)
                 validator = False
                 while(selector!=1 and selector !=2 and selector !=3 and selector !=4):
@@ -263,7 +270,11 @@ def main():
             validator = True
             while validator:
                 try:
-                    pointer = input("Si desea solo añadir un estudiante digite '1' y luego enter, si desea registrar multiples estudiantes digite '2' y luego enter. ")
+                    pointer = input(
+                    """
+                       1. Para un añadir estudiante. 
+                       2. Para añadir multiples estudiantes. 
+                       """)
                     pointer = int(pointer)
                     validator = False
                     while(pointer!=1 and pointer !=2):
@@ -312,7 +323,7 @@ def main():
         elif selector==3:
             while True: 
                 try:
-                    selector = int(input("Para ver sus datos escriba el numero de la identificacion "))
+                    selector = int(input("Para ver sus datos escriba el numero de la identificacion: "))
                     searchByFilter('identificacion', selector)
                     break
                 except ValueError:

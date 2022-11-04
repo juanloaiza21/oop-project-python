@@ -11,7 +11,16 @@ def main():
         validator = True
         while validator:
             try:
-                selector = input("Para entrar a 'materia' presione 1, para entrar en 'historia academica' presione 2, para entrar en 'estudiante' presione 3, para ver el top de estudiante presione 4. Para salir presione 5 ")
+                selector = input(
+                    """
+                    ¡Bienvenido al programa de gestión de notas!
+                    1. Para entrar a 'materia'.
+                    2. Para entrar en 'historia academica'.
+                    3. Para entrar en 'estudiante'. 
+                    4. Para ver el top de estudiante presione 4. 
+                    5. Para salir. 
+                    """
+                    )
                 selector = int(selector)
                 validator = False
                 while (selector!=1 and selector!=2 and selector!=3 and selector !=4 and selector!=5):

@@ -193,7 +193,14 @@ def main():
         #validador inicial
         while True:
             try:
-                selector = input("Para añadir una materia presione 1, para actualizar el idioma presione 2, para leer datos presione 3. Para salir presione otro numero. ")
+                selector = input(
+                """
+                Bienvenido a materia
+                1. Añadir materia.
+                2. Actualizar idioma. 
+                3. Leer datos. 
+                Para salir presione otro numero.  
+                """)
                 selector = int(selector)
                 break
             except ValueError:
@@ -203,7 +210,13 @@ def main():
             while True:
                 while True:
                     try:
-                        subselector = int(input("Si desea añadir una materia presione 1, si desea añadir una materia sin recibir los datos presione 2, si desea añadir multiples materias presione 3, para salir cualquier otro numero "))
+                        subselector = int(input(
+                            """
+                            1. Para añadir una sola materia.
+                            2. Añadir materia sin recibir datos. 
+                            3. Para añadir múltiples materias.
+                            Para salir cualquier otro numero.  
+                            """))
                         break
                     except ValueError:
                         print("valor invalido")
@@ -245,7 +258,13 @@ def main():
                 while True:
                     clearConsole()
                     try:
-                        subselector = int(input("Si desea ver todas las materias presione 1, si desea buscar por codigos presione 2, para salir otro numero" ))
+                        subselector = int(input(
+                            """
+                            1. Si desea ver todas las materias.
+                            2. Para bsucar con el código.
+                            Cualquier otro número para salir
+                            """ 
+                            ))
                         break
                     except ValueError:
                         print("valor invalido")
@@ -256,7 +275,7 @@ def main():
                 if(subselector == 2):
                     while True:
                         try:
-                            codigo = int(input("Escriba el codigo de la materia que quiere ver "))
+                            codigo = int(input("Escriba el codigo de la materia que quiere ver: "))
                             break
                         except ValueError:
                             print("valor invalido")

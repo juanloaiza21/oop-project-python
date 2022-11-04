@@ -167,7 +167,15 @@ def main():
         validator = True
         while validator:
             try:
-                selector=input("Si desea crear añadir una materia aprete 1. Si desea actualizar una nota en una materia ya registrada aprete 2. Si desea consultar sus notas o su promedio aprete 3. si desea eliminar alguna materia aprete 4. Para salir, cualquier otra tecla.")
+                selector=input(
+                """
+                Bienvenido a historia academica
+                1. Si desea añadir una materia. 
+                2. Si desea actualizar una nota en una materia ya registrada. 
+                3. Si desea consultar sus notas o su promedio. 
+                4. Si desea eliminar alguna materia. 
+                Para salir, cualquier otra tecla.
+                """)
                 #El usuario decide que desea realizar en el programa
                 selector =int(selector) #trensforma la seleccion del usuario para poder hacer una validacion
                 if (selector!=1 and selector !=2 and selector !=3 and selector !=4 and selector !=5):
@@ -182,7 +190,13 @@ def main():
                 # TODO Se arma bucle infinito en 1
                 try:
                     clearConsole()
-                    selectorr=input("Para añadir una materia debe escribir el documento del estudiante (ya registrado) y  el codigo de una materia existente. ¿Desea ver que materias hay disponibles? 1.Si. 2.No"); #da la opcion de ver las materias existentes en la base de datos
+                    selectorr=input(
+                    """
+                    Para añadir una materia debe escribir el documento del estudiante (ya registrado) y  el codigo de una materia existente. 
+                    ¿Desea ver que materias hay disponibles? 
+                    1.Si. 
+                    2.No.  
+                    """); #da la opcion de ver las materias existentes en la base de datos
                     selectorr = selectorr
                     if selectorr == "1": #En caso de querer ver las materias se ejecuta las siguientes lineas
                         allMaterias('codigo')
@@ -212,14 +226,19 @@ def main():
             while True:
                 try:
                     clearConsole()
-                    selector=input("Si desea ver su promedio aprete 1. Si desea ver todas sus notas aprete 2.");
+                    selector=input(
+                    """
+                    1. Si desea ver su promedio. 
+                    2. Si desea ver todas sus notas. 
+                    """);
                     selector = int(selector)
                     if (selector !=1 and selector !=2):
                         print(f"{selector} es invalido") #Validacion de la opcion insertada
                     elif selector == 1: #Ejecucion en caso de la opcion 1
                         while True:
                             try:
-                                idd = int(input("Ingrese el documento del estudiante "))
+                                idd = input("Ingrese el documento del estudiante ")
+                                idd = int(idd)
                                 data = acadHistoryById(idd) #se ejecuta la funcion de historia academica
                                 promedio = prom(data) #Saca el promedio de las notas
                                 print("Su promedio es: ", promedio)
@@ -229,7 +248,6 @@ def main():
                     elif selector == 2: #Ejecucion en caso de la opcion 2
                        while True:
                             try:
-                                clearConsole()
                                 idd = int(input("Ingrese el documento del estudiante ")) #solicita el id de estudiante 
                                 data = acadHistoryById(idd)
                                 print("Sus notas son: ") #muestra las notas del estudiante
