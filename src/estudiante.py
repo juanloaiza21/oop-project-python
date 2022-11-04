@@ -44,6 +44,7 @@ def insertRow(identificacion : int, nombre: str, apellido: str, carrera: str, fe
         print (e)
 
 #Pide input por teclado a tráves de consola de los datos, en versión gráfica desaparece
+#Retorna todos los datos del estudiante en forma de tupla con tamaño = 9.
 def rowGetter():
     #TODO hacer que la fecha sea DD/MM/AA
     while True:
@@ -64,24 +65,24 @@ def rowGetter():
             #Validador fecha nacimiento
             while True:
                 try:
-                    fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
-                    fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%d/%m/%Y')
+                    fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ') #Fecha en formato ISO 8601
+                    fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%d/%m/%Y')#Fecha en formato ISO 8601
                     break
                 except:
                     try:
-                        fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%Y/%m/%d')
+                        fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%Y/%m/%d')#Fecha en formato ISO 8601
                         break
                     except:
                         print("formato invalido")
             #Validador fecha ingreso
             while True:
                 try:
-                    fechaingreso = input('fecha de ingreso del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
-                    fechaingreso=datetime.datetime.strptime(fechaingreso,'%d/%m/%Y')
+                    fechaingreso = input('fecha de ingreso del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')#Fecha en formato ISO 8601
+                    fechaingreso=datetime.datetime.strptime(fechaingreso,'%d/%m/%Y')#Fecha en formato ISO 8601
                     break
                 except:
                     try:
-                        fechaingreso=datetime.datetime.strptime(fechaingreso,'%Y/%m/%d')
+                        fechaingreso=datetime.datetime.strptime(fechaingreso,'%Y/%m/%d')#Fecha en formato ISO 8601
                         break
                     except:
                         print("formato invalido")
@@ -102,6 +103,7 @@ def rowGetter():
             print('Value error, cantidad de matriculas e identificacion son numeros enteros')
 
 #pide varias veces los datos
+#Retorna retorna una lista de tuplas con todos los datos de cada estudiante estudiante, tuplas con tamaño= 9.
 def batchRowGetter():
     result = []
     secret_runner = "1"
@@ -169,6 +171,7 @@ def batchRowGetter():
     return result
 
 #Leer todos datos
+#Retorna una lista de tuplas tamaño = 9 con los datos del estudiante
 def readAllRows():
     try:
         conn = sql.connect(DB)
@@ -182,7 +185,9 @@ def readAllRows():
     except sql.Error as e:
         print (e)
 
- #Acá se puede filtrar los datos bajo una condición 
+#Acá se puede filtrar los datos bajo una condición 
+#Field by name puede ser cualquier tipo de dato, igual que field value, no poseen validaciones ya que están siendo usados especificamente.
+#Retorna una lista de tuplas tamaño = 9 que contiene los datos del estudiante que hace match con los datos pedidos
 def searchByFilter(fieldName, fieldValue):
     try:
         conn = sql.connect(DB)
@@ -197,6 +202,7 @@ def searchByFilter(fieldName, fieldValue):
         print (e)   
 
 #Batch write, escribe multiples lineas de datos a la vez
+#Recibe los datos de BatchRowGetter
 def batchInsertRow(dataList):
     try:
         conn = sql.connect(DB)
@@ -209,6 +215,7 @@ def batchInsertRow(dataList):
         print (e)   
 
 #Read order, ordena los datos de mayor a menor según el campo que le pidamos 
+#Retorna una lista de tuplas tamaño = 9 que contiene los datos de los estudiantes de manera ordenada según el campo que siemrpe será un string
 def readOrdered(field: str):
     try:
         conn = sql.connect(DB)
