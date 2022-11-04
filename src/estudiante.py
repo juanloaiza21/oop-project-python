@@ -95,7 +95,7 @@ def rowGetter():
                     break
                 except:
                     print("input invalido")
-            if not (identificacion and nombre and apellido and carrera and fechanacimiento and fechaingreso and procedencia and correoeletronico and cantidadmatriculas):
+            if (identificacion is None and nombre is None and apellido is None and carrera is None and fechanacimiento is None and fechaingreso is None and procedencia is None and correoeletronico is None and cantidadmatriculas is None):
                 print("Algun dato es vacio, por favor envie todos los datos.")
             else:
                 return (identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(),correoeletronico.upper(),cantidadmatriculas)
@@ -156,7 +156,7 @@ def batchRowGetter():
                     break
                 except:
                     print("input invalido")
-            if not (identificacion and nombre and apellido and carrera and fechanacimiento and fechaingreso and procedencia and correoeletronico and cantidadmatriculas):
+            if (identificacion is None and nombre is None and apellido is None and carrera is None and fechanacimiento is None and fechaingreso is None and procedencia is None and correoeletronico is None and cantidadmatriculas is None):
                 print("Algun dato es vacio, por favor envie todos los datos.")
             else:    
                 result.append((identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(), correoeletronico.upper(), cantidadmatriculas))
@@ -231,6 +231,8 @@ def readOrdered(field: str):
 
 #Actualizar datos en un determinado campo de algun estudiante
 """Actualizar materia en diseño lógico."""
+#Pide el fieldOnChange como un string, la data puede ser cualquier tipo de dato, y la identificación que responde al nombre iden
+#Retorna un mensaje de felicitación si todo fue correcto
 def update(fieldOnChange: str, dataOnChange, iden: int):
     try:
         conn = sql.connect(DB)
@@ -249,7 +251,7 @@ def update(fieldOnChange: str, dataOnChange, iden: int):
         print (e)
 
 def main():
-    
+    NoneType = type(None)
     while True:
         #Revisa si va a añadir datos, leer o actualizar, metodo reutilizable, verifica que el input sea correcto
         validator = True

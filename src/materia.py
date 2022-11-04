@@ -51,7 +51,7 @@ def rowGetter():
             creditos = input('Creditos de la materia: ')
             creditos = int(creditos)
             idioma = input('Idioma en que se dicta la materia: ')
-            if not(codigo and nombre and facultad and departamento and idioma and creditos):
+            if(codigo is None and nombre is None and facultad is None and departamento is None and idioma is None and creditos is None):
                 print("Por favor llene todos los campos")
             else:
                 return (codigo, nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), creditos)
@@ -76,7 +76,7 @@ def batchRowGetter():
             creditos = input('Creditos de la materia: ')
             creditos = int(creditos)
             idioma = input('Idioma en que se dicta la materia: ')
-            if not(codigo and nombre and facultad and departamento and idioma and creditos):
+            if(codigo is None and nombre is None and facultad is None and departamento is None and idioma is None and creditos is None):
                 print("Por favor llene todos los campos")
             else:
                 result.append((codigo, nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), creditos))

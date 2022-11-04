@@ -6,6 +6,7 @@ from table_creator import main as dbCreator
 from ranking import main as rankingGen
 
 def main():
+    NoneType = type(None)
     dbCreator()
     while True:
         validator = True
