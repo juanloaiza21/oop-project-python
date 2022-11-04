@@ -308,7 +308,8 @@ def main():
                 except ValueError:
                     print("Input invalido")
                     validator = True
-            dataOnchange = int(input(f"Escriba el nuevo valor de matricula "))
+            dataOnchange = input(f"Escriba el nuevo valor de matricula ")
+            dataOnchange = int(dataOnchange)
             while True: 
                 try:
                     dataOnchange = int(dataOnchange)
@@ -323,7 +324,8 @@ def main():
         elif selector==3:
             while True: 
                 try:
-                    selector = int(input("Para ver sus datos escriba el numero de la identificacion: "))
+                    selector = input("Para ver sus datos escriba el numero de la identificacion: ")
+                    selector = int(selector)
                     searchByFilter('identificacion', selector)
                     break
                 except ValueError:

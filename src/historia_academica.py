@@ -62,7 +62,12 @@ def rowGetter():
             codigo = input('Codigo de la materia: ') #El usuario ingresa el codigo
             codigo = codigo.ljust(10) #El codigo no puede tener mas de 10 caracteres
             idEstudiante = input('Id del estudiante ') #Se ingresa el Id del estudiante
-            selector = int(input("¿Desea agregar nota? 1. Si. 2. No")) #El usuario decide entre insertar o no insertar nota
+            selector = input("""
+            ¿Desea agregar nota? 
+            1. Si. 
+            2. No.
+            """) #El usuario decide entre insertar o no insertar nota
+            selector = int(selector)
             if selector ==1: #Si el usuario selecciona 1 podra insertar la nota
                 nota = input('Nota del estudiante ')
             else: #en caso de no insertar nota aparecera como 0.0
@@ -248,7 +253,8 @@ def main():
                     elif selector == 2: #Ejecucion en caso de la opcion 2
                        while True:
                             try:
-                                idd = int(input("Ingrese el documento del estudiante ")) #solicita el id de estudiante 
+                                idd = input("Ingrese el documento del estudiante ")
+                                idd = int(idd) #solicita el id de estudiante y lo convierte 
                                 data = acadHistoryById(idd)
                                 print("Sus notas son: ") #muestra las notas del estudiante
                                 tableHistoriaAcad(data) 

@@ -210,13 +210,14 @@ def main():
             while True:
                 while True:
                     try:
-                        subselector = int(input(
+                        subselector = input(
                             """
                             1. Para añadir una sola materia.
                             2. Añadir materia sin recibir datos. 
                             3. Para añadir múltiples materias.
                             Para salir cualquier otro numero.  
-                            """))
+                            """)
+                        subselector = int(subselector)
                         break
                     except ValueError:
                         print("valor invalido")
@@ -242,7 +243,8 @@ def main():
         if selector == 2:
             while True:
                 try:
-                    codigo = int(input("Seleccione el codigo de la materia "))
+                    codigo = input("Seleccione el codigo de la materia ")
+                    codigo = int(codigo)
                     break
                 except ValueError:
                     print('Valor invalido')
@@ -258,13 +260,14 @@ def main():
                 while True:
                     clearConsole()
                     try:
-                        subselector = int(input(
+                        subselector = input(
                             """
                             1. Si desea ver todas las materias.
                             2. Para bsucar con el código.
                             Cualquier otro número para salir
                             """ 
-                            ))
+                            )
+                        subselector=int(subselector)
                         break
                     except ValueError:
                         print("valor invalido")
@@ -275,7 +278,8 @@ def main():
                 if(subselector == 2):
                     while True:
                         try:
-                            codigo = int(input("Escriba el codigo de la materia que quiere ver: "))
+                            codigo = input("Escriba el codigo de la materia que quiere ver: ")
+                            codigo = int(codigo)
                             break
                         except ValueError:
                             print("valor invalido")
