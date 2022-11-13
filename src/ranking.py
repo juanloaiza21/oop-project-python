@@ -1,36 +1,40 @@
 from types import NoneType
-from estudiante import readAllRows
+from estudiante import Estudiante
 from historia_academica import prom, acadHistoryById
-from console_utils import tableRanking
+from console_utils import Console
 
+class Ranking(Console):
 #Busca todos los ids de la tabla estudiante y los guarda en una lista y devuelve esta lsita
-def idsList():
-    ids =[]
-    data = readAllRows() #Data de todos los estudiantes
-    for x in range(len(data)):
-        ids.append(data[x][0]) #Acomoda los ids en lista
-    return ids
+    def __init__(self):
+        self.estudiante = Estudiante()
+    
+    def __idsList(self):
+        ids =[]
+        data = self.estudiante.readAllRows() #Data de todos los estudiantes
+        for x in range(len(data)):
+            ids.append(data[x][0]) #Acomoda los ids en lista
+        return ids
 
-#Devuelve el promedio junto a quien le pertenece
-def promsCalculator(data):
-    proms = []
-    for i in range(len(data)):
-        datos = acadHistoryById(data[i])
-        promedy =prom(datos)
-        if type(promedy)==NoneType:
-            promedy = 0.0
-        proms.append({data[i]:promedy}) #Organiza los datos como un diccionario y almacena este diccionario en una lista
-    return proms #Devuelve una lista de diccionarios con las notas y sus respectivos dueños
+    #Devuelve el promedio junto a quien le pertenece
+    def __promsCalculator(self, data):
+        proms = []
+        for i in range(len(data)):
+            datos = acadHistoryById(data[i])
+            promedy =prom(datos)
+            if type(promedy)==NoneType:
+                promedy = 0.0
+            proms.append({data[i]:promedy}) #Organiza los datos como un diccionario y almacena este diccionario en una lista
+        return proms #Devuelve una lista de diccionarios con las notas y sus respectivos dueños
 
-#Convierte la lista de dictionarios en una lista de tuplas ordenadas
-def dictToTuple(data):
-    result = []
-    for i in range(len(data)):
-        result.append(data[i].popitem())
-    return result
+    #Convierte la lista de dictionarios en una lista de tuplas ordenadas
+    def __dictToTuple(self, data):
+        result = []
+        for i in range(len(data)):
+            result.append(data[i].popitem())
+        return result
 
-def main():
-    data = idsList()
-    promsList = promsCalculator(data)
-    dataToOrder=dictToTuple(promsList)
-    tableRanking(sorted(dataToOrder, key=lambda x: x[1], reverse=True)) #Ordena e imprime la lista de tuplas en orden descendente de acuerdo a la nota que estara siempre en indes = 1
+    def main(self):
+        data = self.__idsList()
+        promsList = self.__romsCalculator(data)
+        dataToOrder=self.__dictToTuple(promsList)
+        self.tableRanking(sorted(dataToOrder, key=lambda x: x[1], reverse=True)) #Ordena e imprime la lista de tuplas en orden descendente de acuerdo a la nota que estara siempre en indes = 1

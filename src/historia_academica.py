@@ -2,10 +2,11 @@
 import sqlite3 as sql
 from time import sleep
 from decouple import config
-from materia import readOrdered as allMaterias
-from materia import searchByFilter as materiasFilter
-from console_utils import clearConsole, tableHistoriaAcad
+from materia import Materia
+from console_utils import Console
 
+miMateria = Materia()
+miConsola = Console()
 DB = config('DB_NAME')
 
 def createTeable():
@@ -32,7 +33,7 @@ def createTeable():
 
 def creditsRef(idMateria: int):
     try:
-        data = materiasFilter('codigo', idMateria)
+        data = miMateria.searchByFilter('codigo', idMateria)
         return data[0][5] #Retorna el codigo de la materia junto a los creditos
     except:  
         print("Codigo de la materia inexistente") #En caso de no existir materia se ejecuta la siguiente linea
@@ -49,7 +50,7 @@ def insertRow(codigo: int, id_estudiante: int, score: float):
         conn.commit();
         conn.close(); #Cierre de la conexion a la base de datos
         print("Datos añadidos: ") #Muestra en pantalla los datos añadidos
-        tableHistoriaAcad([(0,codigo, id_estudiante, score, creditos)])
+        miConsola.tableHistoriaAcad([(0,codigo, id_estudiante, score, creditos)])
     except sql.Error as e:
         print (e)  #En caso de error se debe verificar la existencia de los datos
         print('Probablemente no exista el estudiante o la materia, revise por favor los datos que ingreso y vuelva a intentar. Si sí existen, es que primero debe eliminar la materia, para que se actualice con los nuevos datos')
@@ -194,7 +195,7 @@ def main():
             while validator:
                 # TODO Se arma bucle infinito en 1
                 try:
-                    clearConsole()
+                    miConsola.clearConsole()
                     selectorr=input(
                     """
                     Para añadir una materia debe escribir el documento del estudiante (ya registrado) y  el codigo de una materia existente. 
@@ -204,7 +205,7 @@ def main():
                     """); #da la opcion de ver las materias existentes en la base de datos
                     selectorr = selectorr
                     if selectorr == "1": #En caso de querer ver las materias se ejecuta las siguientes lineas
-                        allMaterias('codigo')
+                        miMateria.readOrdered('codigo')
                         sleep(2.5)
                         print('A continuación va a inscribir una materia ')
                         data = rowGetter()
@@ -220,7 +221,7 @@ def main():
         elif selector == 2: #ejecucion en caso de que la seleccion del usuario sea 2
             while True:
                 try:
-                    clearConsole()
+                    miConsola.clearConsole()
                     print("Para actualizar la nota de una materia debe escribir el documento del estudiante y el codigo de la materia. Claramene la nota tambien");
                     data = rowUpdateGetter() #se ejecuta la funcion de update
                     update('nota', data[2], data[1], data[0])
@@ -230,7 +231,7 @@ def main():
         elif selector == 3: #ejecucion en caso de que la seleccion del usuario sea 3
             while True:
                 try:
-                    clearConsole()
+                    miConsola.clearConsole()
                     selector=input(
                     """
                     1. Si desea ver su promedio. 
@@ -257,7 +258,7 @@ def main():
                                 idd = int(idd) #solicita el id de estudiante y lo convierte 
                                 data = acadHistoryById(idd)
                                 print("Sus notas son: ") #muestra las notas del estudiante
-                                tableHistoriaAcad(data) 
+                                miConsola.tableHistoriaAcad(data) 
                                 break
                             except ValueError:
                                 print(f"{idd} es invalido") #error en caso de que el id sea incorrecto
@@ -266,7 +267,7 @@ def main():
                     print (f"{selector} es invalido") #error en caso de que la seleccion sea incorrecta
         elif selector == 4: #ejecucion en caso de que la seleccion del usuario sea 4
             while True:
-                clearConsole()
+                miConsola.clearConsole()
                 data = rowDeleteGetter() #se ejecuta la funcion de borrado
                 deleteRow(data[0], data[1])
                 break;

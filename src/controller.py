@@ -1,9 +1,14 @@
 #Modulos de control
-from materia import main as matController
+from materia import Materia
 from historia_academica import main as acadHistory
-from estudiante import main as estudent
+from estudiante import Estudiante
 from table_creator import main as dbCreator
-from ranking import main as rankingGen
+from ranking import Ranking
+
+#Instanciamiento
+miMateria = Materia()
+miEstudiante = Estudiante
+miRanking = Ranking()
 
 def main():
     NoneType = type(None)
@@ -31,13 +36,13 @@ def main():
                 print("input invalido")
                 validator = True
         if selector==1:
-            matController()
+            miMateria.main()
         elif selector==2:
             acadHistory()
         elif selector==3:
-            estudent()
+            miEstudiante.main()
         elif selector==4:
-            rankingGen()
+            miRanking.main()
         elif selector==5:
             break;
 
