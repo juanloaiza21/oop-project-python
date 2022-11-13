@@ -5,7 +5,6 @@ from console_utils import clearConsole
 from console_utils import tableMaterias
 DB = config('DB_NAME')
 
-#Crea tablas manualmente, automatizar
 def createTeable():
     try:
         conn = sql.connect(DB)
@@ -39,7 +38,7 @@ def insertRow(codigo: int, nombre: str, facultad: str, departamento: str, idioma
 
     
 #Pide input por teclado a tráves de consola de los datos, en versión gráfica desaparece
-#TODO validar ints, strings y floats
+#Pide input por teclado y retorna una tupla de tamaño = 6, que contiene todos los datos de materias a ser insertados
 def rowGetter():
     while True:
         try: 
@@ -52,7 +51,7 @@ def rowGetter():
             creditos = input('Creditos de la materia: ')
             creditos = int(creditos)
             idioma = input('Idioma en que se dicta la materia: ')
-            if not(codigo and nombre and facultad and departamento and idioma and creditos):
+            if(codigo is None and nombre is None and facultad is None and departamento is None and idioma is None and creditos is None):
                 print("Por favor llene todos los campos")
             else:
                 return (codigo, nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), creditos)
@@ -61,6 +60,7 @@ def rowGetter():
 
 
 #pide varias veces los datos
+#Pide input por teclado y retorna una lista de tuplas de tamaño = 6, que contiene todos los datos de materias a ser insertados
 def batchRowGetter():
     result = []
     secret_runner = "1"
@@ -76,7 +76,7 @@ def batchRowGetter():
             creditos = input('Creditos de la materia: ')
             creditos = int(creditos)
             idioma = input('Idioma en que se dicta la materia: ')
-            if not(codigo and nombre and facultad and departamento and idioma and creditos):
+            if(codigo is None and nombre is None and facultad is None and departamento is None and idioma is None and creditos is None):
                 print("Por favor llene todos los campos")
             else:
                 result.append((codigo, nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), creditos))
@@ -92,6 +92,7 @@ def batchRowGetter():
 
 
 #Leer todos datos
+#Retorna una lista de tuplas tamaño = 6 con todos los datos en la DB referentes a materias
 def readAllRows():
     try:
         conn = sql.connect(DB)
@@ -106,6 +107,8 @@ def readAllRows():
         print (e)
 
 #Acá se puede filtrar los datos bajo una condición 
+#Pide los datos para filtrarlos bajo alguna condición, puede ser cualquier tipo de dato
+#Retorna lista de tuplas con tamaño = 6 con todos los datos de las materias que hagan match con la busqueda 
 def searchByFilter(fieldName, fieldValue):
     try:
         conn = sql.connect(DB)
@@ -120,6 +123,7 @@ def searchByFilter(fieldName, fieldValue):
         print (e)
 
 #Batch write, escribe multiples lineas de datos a la vez
+#Recibe como datos la salida de batch row getter
 def batchInsertRow(dataList):
     try:
         conn = sql.connect(DB)
@@ -133,6 +137,7 @@ def batchInsertRow(dataList):
     
 
 #Read order, ordena los datos de mayor a menor según el campo que le pidamos :p
+#Imprime los datos en forma de tablita
 def readOrdered(field: str):
     try:
         conn = sql.connect(DB)
@@ -148,6 +153,8 @@ def readOrdered(field: str):
 
 #Actualizar datos en un determinado campo de alguna materia
 """Actualizar materia en diseño lógico."""
+#Pide el fieldOnChange como un string, la data puede ser cualquier tipo de dato, y la identificación que responde al nombre code
+#Retorna un mensaje de felicitación si todo fue correcto
 def update(fieldOnChange: str, dataOnChange, code: int):
     try:
         conn = sql.connect(DB)
@@ -166,7 +173,7 @@ def update(fieldOnChange: str, dataOnChange, code: int):
         print (e)
 
 #---------------------------------------------------------------------------------------------IMPORTANT calcular promedios de una tabla------------------------------------------------------------------------------------------
-#Calcula el promedio de un campo n
+#Calcula el promedio de un campo, en este caso de creditos
 def promedio():
     try:
         conn = sql.connect(DB)
@@ -186,14 +193,21 @@ def promedio():
 
 
 #---------------------------------------------------------------Función principal---------------------------------------------------------------------------------#
-#TODO revisar
+
 def main():
     #TODO
     while True:
         #validador inicial
         while True:
             try:
-                selector = input("Para añadir una materia presione 1, para actualizar el idioma presione 2, para leer datos presione 3. Para salir presione otro numero. ")
+                selector = input(
+                """
+                Bienvenido a materia
+                1. Añadir materia.
+                2. Actualizar idioma. 
+                3. Leer datos. 
+                Para salir presione otro numero.  
+                """)
                 selector = int(selector)
                 break
             except ValueError:
@@ -203,7 +217,14 @@ def main():
             while True:
                 while True:
                     try:
-                        subselector = int(input("Si desea añadir una materia presione 1, si desea añadir una materia sin recibir los datos presione 2, si desea añadir multiples materias presione 3, para salir cualquier otro numero "))
+                        subselector = input(
+                            """
+                            1. Para añadir una sola materia.
+                            2. Añadir materia sin recibir datos. 
+                            3. Para añadir múltiples materias.
+                            Para salir cualquier otro numero.  
+                            """)
+                        subselector = int(subselector)
                         break
                     except ValueError:
                         print("valor invalido")
@@ -229,7 +250,8 @@ def main():
         if selector == 2:
             while True:
                 try:
-                    codigo = int(input("Seleccione el codigo de la materia "))
+                    codigo = input("Seleccione el codigo de la materia ")
+                    codigo = int(codigo)
                     break
                 except ValueError:
                     print('Valor invalido')
@@ -245,7 +267,14 @@ def main():
                 while True:
                     clearConsole()
                     try:
-                        subselector = int(input("Si desea ver todas las materias presione 1, si desea buscar por codigos presione 2, para salir otro numero" ))
+                        subselector = input(
+                            """
+                            1. Si desea ver todas las materias.
+                            2. Para bsucar con el código.
+                            Cualquier otro número para salir
+                            """ 
+                            )
+                        subselector=int(subselector)
                         break
                     except ValueError:
                         print("valor invalido")
@@ -256,7 +285,8 @@ def main():
                 if(subselector == 2):
                     while True:
                         try:
-                            codigo = int(input("Escriba el codigo de la materia que quiere ver "))
+                            codigo = input("Escriba el codigo de la materia que quiere ver: ")
+                            codigo = int(codigo)
                             break
                         except ValueError:
                             print("valor invalido")

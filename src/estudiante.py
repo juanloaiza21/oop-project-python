@@ -44,6 +44,7 @@ def insertRow(identificacion : int, nombre: str, apellido: str, carrera: str, fe
         print (e)
 
 #Pide input por teclado a tráves de consola de los datos, en versión gráfica desaparece
+#Retorna todos los datos del estudiante en forma de tupla con tamaño = 9.
 def rowGetter():
     #TODO hacer que la fecha sea DD/MM/AA
     while True:
@@ -64,24 +65,24 @@ def rowGetter():
             #Validador fecha nacimiento
             while True:
                 try:
-                    fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
-                    fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%d/%m/%Y')
+                    fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ') #Fecha en formato ISO 8601
+                    fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%d/%m/%Y')#Fecha en formato ISO 8601
                     break
                 except:
                     try:
-                        fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%Y/%m/%d')
+                        fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%Y/%m/%d')#Fecha en formato ISO 8601
                         break
                     except:
                         print("formato invalido")
             #Validador fecha ingreso
             while True:
                 try:
-                    fechaingreso = input('fecha de ingreso del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
-                    fechaingreso=datetime.datetime.strptime(fechaingreso,'%d/%m/%Y')
+                    fechaingreso = input('fecha de ingreso del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')#Fecha en formato ISO 8601
+                    fechaingreso=datetime.datetime.strptime(fechaingreso,'%d/%m/%Y')#Fecha en formato ISO 8601
                     break
                 except:
                     try:
-                        fechaingreso=datetime.datetime.strptime(fechaingreso,'%Y/%m/%d')
+                        fechaingreso=datetime.datetime.strptime(fechaingreso,'%Y/%m/%d')#Fecha en formato ISO 8601
                         break
                     except:
                         print("formato invalido")
@@ -94,7 +95,7 @@ def rowGetter():
                     break
                 except:
                     print("input invalido")
-            if not (identificacion and nombre and apellido and carrera and fechanacimiento and fechaingreso and procedencia and correoeletronico and cantidadmatriculas):
+            if (identificacion is None and nombre is None and apellido is None and carrera is None and fechanacimiento is None and fechaingreso is None and procedencia is None and correoeletronico is None and cantidadmatriculas is None):
                 print("Algun dato es vacio, por favor envie todos los datos.")
             else:
                 return (identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(),correoeletronico.upper(),cantidadmatriculas)
@@ -102,6 +103,7 @@ def rowGetter():
             print('Value error, cantidad de matriculas e identificacion son numeros enteros')
 
 #pide varias veces los datos
+#Retorna retorna una lista de tuplas con todos los datos de cada estudiante estudiante, tuplas con tamaño= 9.
 def batchRowGetter():
     result = []
     secret_runner = "1"
@@ -154,7 +156,7 @@ def batchRowGetter():
                     break
                 except:
                     print("input invalido")
-            if not (identificacion and nombre and apellido and carrera and fechanacimiento and fechaingreso and procedencia and correoeletronico and cantidadmatriculas):
+            if (identificacion is None and nombre is None and apellido is None and carrera is None and fechanacimiento is None and fechaingreso is None and procedencia is None and correoeletronico is None and cantidadmatriculas is None):
                 print("Algun dato es vacio, por favor envie todos los datos.")
             else:    
                 result.append((identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(), correoeletronico.upper(), cantidadmatriculas))
@@ -169,6 +171,7 @@ def batchRowGetter():
     return result
 
 #Leer todos datos
+#Retorna una lista de tuplas tamaño = 9 con los datos del estudiante
 def readAllRows():
     try:
         conn = sql.connect(DB)
@@ -182,7 +185,9 @@ def readAllRows():
     except sql.Error as e:
         print (e)
 
- #Acá se puede filtrar los datos bajo una condición 
+#Acá se puede filtrar los datos bajo una condición 
+#Field by name puede ser cualquier tipo de dato, igual que field value, no poseen validaciones ya que están siendo usados especificamente.
+#Retorna una lista de tuplas tamaño = 9 que contiene los datos del estudiante que hace match con los datos pedidos
 def searchByFilter(fieldName, fieldValue):
     try:
         conn = sql.connect(DB)
@@ -197,6 +202,7 @@ def searchByFilter(fieldName, fieldValue):
         print (e)   
 
 #Batch write, escribe multiples lineas de datos a la vez
+#Recibe los datos de BatchRowGetter
 def batchInsertRow(dataList):
     try:
         conn = sql.connect(DB)
@@ -209,6 +215,7 @@ def batchInsertRow(dataList):
         print (e)   
 
 #Read order, ordena los datos de mayor a menor según el campo que le pidamos 
+#Retorna una lista de tuplas tamaño = 9 que contiene los datos de los estudiantes de manera ordenada según el campo que siemrpe será un string
 def readOrdered(field: str):
     try:
         conn = sql.connect(DB)
@@ -224,6 +231,8 @@ def readOrdered(field: str):
 
 #Actualizar datos en un determinado campo de algun estudiante
 """Actualizar materia en diseño lógico."""
+#Pide el fieldOnChange como un string, la data puede ser cualquier tipo de dato, y la identificación que responde al nombre iden
+#Retorna un mensaje de felicitación si todo fue correcto
 def update(fieldOnChange: str, dataOnChange, iden: int):
     try:
         conn = sql.connect(DB)
@@ -242,13 +251,20 @@ def update(fieldOnChange: str, dataOnChange, iden: int):
         print (e)
 
 def main():
-    
+    NoneType = type(None)
     while True:
         #Revisa si va a añadir datos, leer o actualizar, metodo reutilizable, verifica que el input sea correcto
         validator = True
         while validator:
             try:
-                selector = input("Si desea añadir datos ingrese '1' y enter. Si desea actualizar datos presione '2' y enter. si desea obtener información ingrese '3' y enter, para salir presione 4 y enter. ")
+                selector = input(
+                """Bienvendio a estudiante
+                1. Agregar datos. 
+                2. Para actualizar.
+                3. Para obtener información. 
+                4. Para salir. 
+                """
+                )
                 selector = int(selector)
                 validator = False
                 while(selector!=1 and selector !=2 and selector !=3 and selector !=4):
@@ -263,7 +279,11 @@ def main():
             validator = True
             while validator:
                 try:
-                    pointer = input("Si desea solo añadir un estudiante digite '1' y luego enter, si desea registrar multiples estudiantes digite '2' y luego enter. ")
+                    pointer = input(
+                    """
+                       1. Para un añadir estudiante. 
+                       2. Para añadir multiples estudiantes. 
+                       """)
                     pointer = int(pointer)
                     validator = False
                     while(pointer!=1 and pointer !=2):
@@ -297,7 +317,8 @@ def main():
                 except ValueError:
                     print("Input invalido")
                     validator = True
-            dataOnchange = int(input(f"Escriba el nuevo valor de matricula "))
+            dataOnchange = input(f"Escriba el nuevo valor de matricula ")
+            dataOnchange = int(dataOnchange)
             while True: 
                 try:
                     dataOnchange = int(dataOnchange)
@@ -312,7 +333,8 @@ def main():
         elif selector==3:
             while True: 
                 try:
-                    selector = int(input("Para ver sus datos escriba el numero de la identificacion "))
+                    selector = input("Para ver sus datos escriba el numero de la identificacion: ")
+                    selector = int(selector)
                     searchByFilter('identificacion', selector)
                     break
                 except ValueError:
