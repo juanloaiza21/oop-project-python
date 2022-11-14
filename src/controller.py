@@ -1,18 +1,24 @@
 #Modulos de control
 from materia import Materia
-from historia_academica import main as acadHistory
+from historia_academica import AcadHistory
 from estudiante import Estudiante
-from table_creator import main as dbCreator
+from table_creator import TableGen
 from ranking import Ranking
+from decouple import config
+
+#DB
+DB = config('DB_NAME')
 
 #Instanciamiento
-miMateria = Materia()
-miEstudiante = Estudiante
-miRanking = Ranking()
+miMateria = Materia(DB)
+miEstudiante = Estudiante()
+miRanking = Ranking(DB)
+miTables = TableGen(DB)
+miHistoria = AcadHistory(DB)
 
 def main():
     NoneType = type(None)
-    dbCreator()
+    miTables.main()
     while True:
         validator = True
         while validator:
@@ -38,7 +44,7 @@ def main():
         if selector==1:
             miMateria.main()
         elif selector==2:
-            acadHistory()
+            miHistoria.main()
         elif selector==3:
             miEstudiante.main()
         elif selector==4:

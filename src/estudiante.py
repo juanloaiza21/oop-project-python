@@ -6,28 +6,6 @@ from console_utils import Console
 
 DB = config('DB_NAME')
 
-def createTeable():
-    try:
-        conn = sql.connect(DB)
-        cursor = conn.cursor()
-        cursor.execute(
-                """CREATE TABLE IF NOT EXISTS estudiante (
-                    identificacion INTEGER PRIMARY KEY,
-                    nombre TEXT NOT NULL,
-                    apellido TEXT NOT NULL,
-                    carrera TEXT NOT NULL,
-                    fechanacimiento TEXT NOT NULL,
-                    fechaingreso TEXT NOT NULL,
-                    procedencia TEXT NOT NULL,
-                    correoeletronico TEXT NOT NULL,
-                    cantidadmatriculas INTEGER NOT NULL
-                    )"""
-            );
-        conn.commit();
-        conn.close();
-    except sql.Error as e:
-        print(e)
-
 class Estudiante(Console):
     def __init__(self)->None:
         pass            

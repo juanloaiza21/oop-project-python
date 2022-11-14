@@ -1,40 +1,19 @@
 from cgitb import text
 import sqlite3 as sql
-from decouple import config
 from console_utils import Console
-DB = config('DB_NAME')
-
-
-def createTeable():
-    try:
-        conn = sql.connect(DB)
-        cursor = conn.cursor()
-        cursor.execute(
-        """CREATE TABLE IF NOT EXISTS materias (
-            codigo INTEGER PRIMARY KEY,
-            nombre TEXT NOT NULL,
-            facultad TEXT NOT NULL,
-            departamento TEXT NOT NULL,
-            idioma TEXT NOT NULL,
-            creditos INTEGER NOT NULL
-                    )"""
-        );
-        conn.commit();
-        conn.close();
-    except sql.Error as e:
-        print(e)
 
 class Materia(Console):
 
     #Constructor function
-    def __init__(self) -> None:
+    def __init__(self, db) -> None:
         self.__codigo:int = None;
         self.__nombre:str = None;
         self.__facultad:str = None;
         self.__departamento:str = None;
         self.__idioma:str = None;
         self.__creditos:int = None;
-        self.__multidata = []        
+        self.__multidata = [];
+        self.__db = db;        
 
 #--------------------------------------------------------------------------------------SETTERS--------------------------------------------------------------------------#         
     def codigoSetter(self, codigo: int) ->None:
@@ -78,7 +57,7 @@ class Materia(Console):
     #Inserta la materia
     def __insertRow(self):
         try:
-            conn = sql.connect(DB)
+            conn = sql.connect(self.__db)
             cursor = conn.cursor()
             instruction = f"INSERT INTO materias values({self.__codigo}, '{self.__nombre}', '{self.__facultad}', '{self.__departamento}', '{self.__idioma}', {self.__creditos})"
             cursor.execute(instruction)
@@ -148,10 +127,10 @@ class Materia(Console):
 
 
     #Leer todos datos
-    #Retorna una lista de tuplas tamaño = 6 con todos los datos en la DB referentes a materias
+    #Retorna una lista de tuplas tamaño = 6 con todos los datos en la self.__db referentes a materias
     def __readAllRows(self):
         try:
-            conn = sql.connect(DB)
+            conn = sql.connect(self.__db)
             cursor = conn.cursor()
             instruction = f"SELECT * from materias"
             cursor.execute(instruction)
@@ -168,7 +147,7 @@ class Materia(Console):
     #Publico para el uso en historia academica 
     def searchByFilter(self, fieldName, fieldValue):
         try:
-            conn = sql.connect(DB)
+            conn = sql.connect(self.__db)
             cursor = conn.cursor()
             instruction = f"SELECT * from materias WHERE {fieldName}={fieldValue}"
             cursor.execute(instruction)
@@ -183,7 +162,7 @@ class Materia(Console):
     #Recibe como datos la salida de batch row getter
     def __batchInsertRow(self, dataList):
         try:
-            conn = sql.connect(DB)
+            conn = sql.connect(self.__db)
             cursor = conn.cursor()
             instruction = f"INSERT INTO materias values(?, ?, ?, ?, ?, ?)"
             cursor.executemany(instruction, self.__multidata) #Enviar varios datos a la vez
@@ -198,7 +177,7 @@ class Materia(Console):
     #Método público para el uso en otros lugares
     def readOrdered(self, field: str):
         try:
-            conn = sql.connect(DB)
+            conn = sql.connect(self.__db)
             cursor = conn.cursor()
             instruction = f"SELECT * from materias ORDER BY {field} DESC" #Si le quitamos el DESC se ordenara de menor a mayor, "DESC" viene de DESCENDING
             cursor.execute(instruction)
@@ -215,7 +194,7 @@ class Materia(Console):
     #Retorna un mensaje de felicitación si todo fue correcto
     def __update(self, fieldOnChange: str, dataOnChange, code: int):
         try:
-            conn = sql.connect(DB)
+            conn = sql.connect(self.__db)
             cursor = conn.cursor()
             try:
                 dataOnChange= int(dataOnChange)
@@ -234,7 +213,7 @@ class Materia(Console):
     #Calcula el promedio de un campo, en este caso de creditos
     def __promedio(self):
         try:
-            conn = sql.connect(DB)
+            conn = sql.connect(self.__db)
             cursor = conn.cursor()
             instruction = f"SELECT count(*) FROM materias" #Comando de contar campos en SQL
             cursor.execute(instruction)
