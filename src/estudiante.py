@@ -1,42 +1,27 @@
 from datetime import datetime
 import sqlite3 as sql
-from decouple import config
 import datetime
 from console_utils import Console
 
-DB = config('DB_NAME')
-
-def createTeable():
-    try:
-        conn = sql.connect(DB)
-        cursor = conn.cursor()
-        cursor.execute(
-                """CREATE TABLE IF NOT EXISTS estudiante (
-                    identificacion INTEGER PRIMARY KEY,
-                    nombre TEXT NOT NULL,
-                    apellido TEXT NOT NULL,
-                    carrera TEXT NOT NULL,
-                    fechanacimiento TEXT NOT NULL,
-                    fechaingreso TEXT NOT NULL,
-                    procedencia TEXT NOT NULL,
-                    correoeletronico TEXT NOT NULL,
-                    cantidadmatriculas INTEGER NOT NULL
-                    )"""
-            );
-        conn.commit();
-        conn.close();
-    except sql.Error as e:
-        print(e)
-
 class Estudiante(Console):
-    def __init__(self)->None:
-        pass            
+    def __init__(self, db: str)->None:
+        self.__db = db            
+        self.__identificacion:int = None
+        self.__nombre: str = None
+        self.__apellido: str = None
+        self.__carrera: str = None
+        self.__fechanacimiento: str = None
+        self.__fechaingreso: str = None
+        self.__procedencia: str = None
+        self.__correoeletronico: str = None
+        self.__cantidadmatriculas: int = None
+
     #Inserta la materia
-    def insertRow(identificacion : int, nombre: str, apellido: str, carrera: str, fechanacimiento: str, fechaingreso: str, procedencia: str, correoeletronico: str, cantidadmatriculas: int):
+    def __insertRow(self):
         try:
-            conn = sql.connect(DB)
+            conn = sql.connect(self.__db)
             cursor = conn.cursor()
-            instruction = f"INSERT INTO estudiante values({identificacion}, '{nombre}', '{apellido}', '{carrera}', '{fechanacimiento}', '{fechaingreso}','{procedencia}','{correoeletronico}','{cantidadmatriculas}')"
+            instruction = f"INSERT INTO estudiante values({self.__identificacion}, '{self.__nombre}', '{self.__apellido}', '{self.__carrera}', '{self.__fechanacimiento}', '{self.__fechaingreso}','{self.__procedencia}','{self.__correoeletronico}','{self.__cantidadmatriculas}')"
             cursor.execute(instruction)
             conn.commit();
             conn.close();
@@ -45,7 +30,7 @@ class Estudiante(Console):
 
     #Pide input por teclado a tráves de consola de los datos, en versión gráfica desaparece
     #Retorna todos los datos del estudiante en forma de tupla con tamaño = 9.
-    def rowGetter():
+    def __rowGetter(self):
         #TODO hacer que la fecha sea DD/MM/AA
         while True:
             try:
@@ -53,15 +38,15 @@ class Estudiante(Console):
                 identificacion = identificacion.ljust(10)
                 while True:
                     try:
-                        identificacion = int(identificacion)
+                        self.__identificacion = int(identificacion)
                         break
                     except:
                         print("input invalido")
                         identificacion = input('numero de identificacion del estudiante: ')
                         identificacion = identificacion.ljust(10)                
-                nombre = input('Nombre del estudiante: ')
-                apellido = input('apellido del estudiante: ')
-                carrera = input('nomrbre de la carrera: ')
+                self.__nombre = input('Nombre del estudiante: ').upper()
+                self.__apellido = input('apellido del estudiante: ').upper()
+                self.__carrera = input('nomrbre de la carrera: ').upper()
                 #Validador fecha nacimiento
                 while True:
                     try:
@@ -86,25 +71,27 @@ class Estudiante(Console):
                             break
                         except:
                             print("formato invalido")
-                procedencia = input('procedencia del estudiante: ')
-                correoeletronico = input('correo eletronico del estudiante: ')
+                self.__fechaingreso = fechaingreso.isoformat()
+                self.__fechanacimiento = fechanacimiento.isoformat()
+                self.__procedencia = input('procedencia del estudiante: ').upper()
+                self.__correoeletronico = input('correo eletronico del estudiante: ').upper()
                 while True:
                     try:
                         cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
-                        cantidadmatriculas = int(cantidadmatriculas)
+                        self.__cantidadmatriculas = int(cantidadmatriculas)
                         break
                     except:
                         print("input invalido")
-                if (identificacion is None and nombre is None and apellido is None and carrera is None and fechanacimiento is None and fechaingreso is None and procedencia is None and correoeletronico is None and cantidadmatriculas is None):
+                if (self.__identificacion is None and self.__nombre is None and self.__apellido is None and self.__carrera is None and self.__fechanacimiento is None and self.__fechaingreso is None and self.__procedencia is None and self.__correoeletronico is None and self.__cantidadmatriculas is None):
                     print("Algun dato es vacio, por favor envie todos los datos.")
                 else:
-                    return (identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(),correoeletronico.upper(),cantidadmatriculas)
+                    break
             except ValueError:
                 print('Value error, cantidad de matriculas e identificacion son numeros enteros')
 
     #pide varias veces los datos
     #Retorna retorna una lista de tuplas con todos los datos de cada estudiante estudiante, tuplas con tamaño= 9.
-    def batchRowGetter(self):
+    def __batchRowGetter(self):
         result = []
         secret_runner = "1"
         counter = 0
@@ -172,9 +159,9 @@ class Estudiante(Console):
 
     #Leer todos datos
     #Retorna una lista de tuplas tamaño = 9 con los datos del estudiante
-    def readAllRows():
+    def readAllRows(self):
         try:
-            conn = sql.connect(DB)
+            conn = sql.connect(self.__db)
             cursor = conn.cursor()
             instruction = f"SELECT * from estudiante"
             cursor.execute(instruction)
@@ -190,7 +177,7 @@ class Estudiante(Console):
     #Retorna una lista de tuplas tamaño = 9 que contiene los datos del estudiante que hace match con los datos pedidos
     def searchByFilter(self, fieldName, fieldValue):
         try:
-            conn = sql.connect(DB)
+            conn = sql.connect(self.__db)
             cursor = conn.cursor()
             instruction = f"SELECT * from estudiante WHERE {fieldName}={fieldValue}"
             cursor.execute(instruction)
@@ -203,9 +190,9 @@ class Estudiante(Console):
 
     #Batch write, escribe multiples lineas de datos a la vez
     #Recibe los datos de BatchRowGetter
-    def batchInsertRow(dataList):
+    def __batchInsertRow(self, dataList):
         try:
-            conn = sql.connect(DB)
+            conn = sql.connect(self.__db)
             cursor = conn.cursor()
             instruction = f"INSERT INTO estudiante values(?, ?, ?, ?, ?, ?, ?, ?, ?)"
             cursor.executemany(instruction, dataList)
@@ -216,9 +203,9 @@ class Estudiante(Console):
 
     #Read order, ordena los datos de mayor a menor según el campo que le pidamos 
     #Retorna una lista de tuplas tamaño = 9 que contiene los datos de los estudiantes de manera ordenada según el campo que siemrpe será un string
-    def readOrdered(field: str):
+    def readOrdered(self, field: str):
         try:
-            conn = sql.connect(DB)
+            conn = sql.connect(self.__db)
             cursor = conn.cursor()
             instruction = f"SELECT * from estudiante ORDER BY '{field}' DESC" #Si le quitamos el DESC se ordenara de menor a mayor, "DESC" viene de DESCENDING
             cursor.execute(instruction)
@@ -233,9 +220,9 @@ class Estudiante(Console):
     """Actualizar materia en diseño lógico."""
     #Pide el fieldOnChange como un string, la data puede ser cualquier tipo de dato, y la identificación que responde al nombre iden
     #Retorna un mensaje de felicitación si todo fue correcto
-    def update(self, fieldOnChange: str, dataOnChange, iden: int):
+    def __update(self, fieldOnChange: str, dataOnChange, iden: int):
         try:
-            conn = sql.connect(DB)
+            conn = sql.connect(self.__db)
             cursor = conn.cursor()
             try:
                 dataOnChange= int(dataOnChange)
@@ -294,14 +281,14 @@ class Estudiante(Console):
                         validator = True
             #Primer caso del input de escritura, un solo dato
                 if int(pointer)==1:
-                    data = self.rowGetter()
-                    self.insertRow(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8])
+                    data = self.__rowGetter()
+                    self.__insertRow()
                     print("Datos insertados: ")
                     self.tableEstudiante([data])
             #Segundo caso, múltiples datos
                 elif(int(pointer)==2):
-                    data = self.batchRowGetter()
-                    self.batchInsertRow(data)
+                    data = self.__batchRowGetter()
+                    self.__batchInsertRow(data)
             #-----------------------------------------------------------------------------------------------------------------------------------------#
 
             #---------------------------------------------------------------Actualizar datos-----------------------------------------------------------#
@@ -322,7 +309,7 @@ class Estudiante(Console):
                 while True: 
                     try:
                         dataOnchange = int(dataOnchange)
-                        self.update('cantidadmatriculas', dataOnchange, iden)
+                        self.__update('cantidadmatriculas', dataOnchange, iden)
                         break
                     except ValueError:
                         print(f'{dataOnchange} invalido')
