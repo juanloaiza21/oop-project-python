@@ -11,7 +11,7 @@ DB = config('DB_NAME')
 
 #Instanciamiento
 miMateria = Materia(DB)
-miEstudiante = Estudiante()
+miEstudiante = Estudiante(DB)
 miRanking = Ranking(DB)
 miTables = TableGen(DB)
 miHistoria = AcadHistory(DB)

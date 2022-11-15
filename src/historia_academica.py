@@ -112,11 +112,13 @@ class AcadHistory(Console):
     #----------------------------------------------------------------Lector del modulo de historia academica----------------------------------------------------------#
 
     #Esta función debe traer todos las notas de un id
-    def acadHistoryById(self):
+    def acadHistoryById(self, idd = None):
         try:
             conn = sql.connect(self.__db) #Conexion a la base de datos
             cursor = conn.cursor()
-            instruction = f"SELECT * from acadhistory WHERE id_estudiante={self.__idEstudiante} ORDER BY nota DESC" #da la instruccion de buscar las notas en la base de datos
+            if idd == None:
+                idd = self.__idEstudiante
+            instruction = f"SELECT * from acadhistory WHERE id_estudiante={idd} ORDER BY nota DESC" #da la instruccion de buscar las notas en la base de datos
             cursor.execute(instruction) #Ejecuta la instruccion de buscar las notas
             datos = cursor.fetchall()
             conn.commit(); 
