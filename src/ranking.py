@@ -37,6 +37,6 @@ class Ranking(Console):
 
     def main(self):
         data = self.__idsList()
-        promsList = self.__romsCalculator(data)
+        promsList = self.__promsCalculator(data)
         dataToOrder=self.__dictToTuple(promsList)
         self.tableRanking(sorted(dataToOrder, key=lambda x: x[1], reverse=True)) #Ordena e imprime la lista de tuplas en orden descendente de acuerdo a la nota que estara siempre en indes = 1

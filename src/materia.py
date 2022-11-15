@@ -160,7 +160,7 @@ class Materia(Console):
 
     #Batch write, escribe multiples lineas de datos a la vez
     #Recibe como datos la salida de batch row getter
-    def __batchInsertRow(self, dataList):
+    def __batchInsertRow(self):
         try:
             conn = sql.connect(self.__db)
             cursor = conn.cursor()
@@ -269,7 +269,8 @@ class Materia(Console):
                     if subselector == 1:
                         self.__rowGetter()
                         self.__insertRow()
-                        self.tableMaterias([self.codigoGetter(), self.nombreGetter(), self.facultadGetter(), self.departamentoGetter(), self.idiomaGetter(),self.creditosGetter])
+                        data = (self.__codigo, self.__nombre, self.__facultad, self.__departamento, self.__idioma,self.__creditos)
+                        self.tableMaterias([data])
                         break
                     #Añadir materia sin que se vean los datos
                     elif subselector==2:
@@ -279,7 +280,7 @@ class Materia(Console):
                     #Añadir multiples materias
                     elif subselector==3:
                         self.__batchRowGetter()
-                        self.__batchInsertRow
+                        self.__batchInsertRow()
                         break
                     else:
                         break
