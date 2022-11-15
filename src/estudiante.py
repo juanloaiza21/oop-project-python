@@ -281,8 +281,9 @@ class Estudiante(Console):
                         validator = True
             #Primer caso del input de escritura, un solo dato
                 if int(pointer)==1:
-                    data = self.__rowGetter()
+                    self.__rowGetter()
                     self.__insertRow()
+                    data = [self.__identificacion, self.__nombre, self.__apellido, self.__carrera, self.__fechanacimiento, self.__fechaingreso, self.__procedencia, self.__correoeletronico, self.__cantidadmatriculas]
                     print("Datos insertados: ")
                     self.tableEstudiante([data])
             #Segundo caso, múltiples datos

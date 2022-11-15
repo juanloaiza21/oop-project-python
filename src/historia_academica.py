@@ -59,7 +59,7 @@ class AcadHistory(Console):
 
     def __creditsRef(self):
         try:
-            data = miMateria.searchByFilter('codigo', self.__idMateria)
+            data = miMateria.searchByFilter('codigo', self.__codigo)
             self.__creditosSetter(data[0][5]) #Retorna el codigo de la materia junto a los creditos
         except:  
             print("Codigo de la materia inexistente") #En caso de no existir materia se ejecuta la siguiente linea
@@ -76,7 +76,8 @@ class AcadHistory(Console):
             conn.commit();
             conn.close(); #Cierre de la conexion a la base de datos
             print("Datos añadidos: ") #Muestra en pantalla los datos añadidos
-            miConsola.tableHistoriaAcad([(0,self.__codigo, self.__id_estudiante, self.__score, self.__creditos)])
+            data = (0,self.__codigo, self.__idEstudiante, self.__score, self.__creditos)
+            miConsola.tableHistoriaAcad([data])
         except sql.Error as e:
             print (e)  #En caso de error se debe verificar la existencia de los datos
             print('Probablemente no exista el estudiante o la materia, revise por favor los datos que ingreso y vuelva a intentar. Si sí existen, es que primero debe eliminar la materia, para que se actualice con los nuevos datos')
@@ -112,11 +113,13 @@ class AcadHistory(Console):
     #----------------------------------------------------------------Lector del modulo de historia academica----------------------------------------------------------#
 
     #Esta función debe traer todos las notas de un id
-    def acadHistoryById(self):
+    def acadHistoryById(self, idd = None):
         try:
             conn = sql.connect(self.__db) #Conexion a la base de datos
             cursor = conn.cursor()
-            instruction = f"SELECT * from acadhistory WHERE id_estudiante={self.__idEstudiante} ORDER BY nota DESC" #da la instruccion de buscar las notas en la base de datos
+            if idd == None:
+                idd = self.__idEstudiante
+            instruction = f"SELECT * from acadhistory WHERE id_estudiante={idd} ORDER BY nota DESC" #da la instruccion de buscar las notas en la base de datos
             cursor.execute(instruction) #Ejecuta la instruccion de buscar las notas
             datos = cursor.fetchall()
             conn.commit(); 
@@ -192,7 +195,8 @@ class AcadHistory(Console):
             codigo = input('Codigo de la materia: ') #El usuario ingresa el codigo
             codigo = codigo.ljust(10) #El codigo ingresado no puede tener mas de 10 caracteres
             idEstudiante = input('Id del estudiante ') #El usuario ingresa el id
-            return (int(codigo), int(idEstudiante)) #Retorna codigo e id
+            self.__codigo = int(codigo)
+            self.__idEstudiante = int(idEstudiante) #Retorna codigo e id
         except ValueError:
             print("Dato(s) invalido") #En caso de insertar datos incorrectos se imprime este mensaje
     #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -282,6 +286,7 @@ class AcadHistory(Console):
                                     break
                                 except ValueError:
                                     print(f"{idd} es invalido")
+                            break
                         elif selector == 2: #Ejecucion en caso de la opcion 2
                             while True:
                                 try:
@@ -300,7 +305,7 @@ class AcadHistory(Console):
                 while True:
                     miConsola.clearConsole()
                     data = self.__rowDeleteGetter() #se ejecuta la funcion de borrado
-                    self.__deleteRow(data[0], data[1])
+                    self.__deleteRow()
                     break;
             else:
                 break

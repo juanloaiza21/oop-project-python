@@ -7,7 +7,7 @@ class Ranking(Console):
 #Busca todos los ids de la tabla estudiante y los guarda en una lista y devuelve esta lsita
     def __init__(self, db):
         self.__db = db
-        self.__estudiante = Estudiante()
+        self.__estudiante = Estudiante(self.__db)
         self.__acadHistory = AcadHistory(self.__db)
     
     def __idsList(self):
