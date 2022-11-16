@@ -3,7 +3,7 @@ import os
 #Modulo para la creación de tablas en consola y ordenar la informacion
 from prettytable import PrettyTable
 
-class Console:
+class Console: #Crea la clase "Console"
     #Funcion para limpiar la consola
     def clearConsole(self):
         command = 'clear' #Para sistemas linux
