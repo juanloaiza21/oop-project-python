@@ -18,7 +18,7 @@ class estudiante(Console):
         self.__cantidadmatriculas: int = None
         self.__multidata=[]
 
-        def identificacionsetter(self,identificacion: int) ->None:
+    def identificacionsetter(self,identificacion: int) ->None:
         self.__identificacion = identificacion
     
     def apellidosetter(self,apellido: str) ->None:
