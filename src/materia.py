@@ -1,129 +1,129 @@
-from cgitb import text
-import sqlite3 as sql
-from console_utils import Console
+from cgitb import text #se importa text del modulo cgitb
+import sqlite3 as sql #importar sqlite3 por el nombre sql
+from console_utils import Console #se importa Console del module console_utils
 
-class Materia(Console):
+class Materia(Console): #se crea la clase materia
 
     #Constructor function
-    def __init__(self, db) -> None:
-        self.__codigo:int = None;
-        self.__nombre:str = None;
-        self.__facultad:str = None;
-        self.__departamento:str = None;
-        self.__idioma:str = None;
-        self.__creditos:int = None;
-        self.__multidata = [];
-        self.__db = db;        
+    def __init__(self, db) -> None: #inicializa los atributos
+        self.__codigo:int = None; #atributo de codigo
+        self.__nombre:str = None; #atributo de nombre
+        self.__facultad:str = None; #atributo de facultad
+        self.__departamento:str = None; #atributo de departamento
+        self.__idioma:str = None; #atributo de idioma
+        self.__creditos:int = None; #atributo de creditos
+        self.__multidata = []; #lista donde se guardaran los datos
+        self.__db = db; #base de datos para inicializar las clases        
 
 #--------------------------------------------------------------------------------------SETTERS--------------------------------------------------------------------------#         
-    def codigoSetter(self, codigo: int) ->None:
-        self.__codigo = codigo;
+    def codigoSetter(self, codigo: int) ->None: #se establece el valor de codigo
+        self.__codigo = codigo; #variable privada de codigo
     
-    def creditosSetter(self, creditos: int) ->None:
-        self.__creditos = creditos;
+    def creditosSetter(self, creditos: int) ->None: #se establece el valor de creditos
+        self.__creditos = creditos; #variable privada de creditos
     
-    def nombreSetter(self, nombre: str) ->None:
-        self.__nombre = nombre;
+    def nombreSetter(self, nombre: str) ->None: #se establece el valor de nombre
+        self.__nombre = nombre; #variable privada de nombre
     
-    def facultadSetter(self, facultad: str) ->None:
-        self.__facultad = facultad;
+    def facultadSetter(self, facultad: str) ->None: #se establece el valor de facultad
+        self.__facultad = facultad; #variable privada de facultad
     
-    def departamentoSetter(self, departamento: str) ->None:
-        self.__departamento = departamento;
+    def departamentoSetter(self, departamento: str) ->None: #se establece el valor de departamento
+        self.__departamento = departamento; #variable privada de departamento
 
-    def idiomaSetter(self, idioma: str) ->None:
-        self.__idioma = idioma;
+    def idiomaSetter(self, idioma: str) ->None: #se establece el valor de idioma
+        self.__idioma = idioma; #variable privada de idioma
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 #--------------------------------------------------------------------------------------GETTERS---------------------------------------------------------------------------#
-    def codigoGetter(self) ->int:
-        return self.__codigo
+    def codigoGetter(self) ->int: #se obtiene el valor de codigo
+        return self.__codigo #devuelve el valor privado de codigo
     
-    def creditosGetter(self) ->int:
-        return self.__creditos
+    def creditosGetter(self) ->int: #se obtiene el valor de creditos
+        return self.__creditos #devuelve el valor privado de creditos
     
-    def nombreGetter(self) ->str:
-        return self.__nombre
+    def nombreGetter(self) ->str: #se obtiene el valor de nombre
+        return self.__nombre #devuelve el valor privado de nombre
     
-    def facultadGetter(self) ->str:
-        return self.__facultad
+    def facultadGetter(self) ->str: #se obtiene el valor de facultad
+        return self.__facultad #devuelve el valor privado de facultad
     
-    def departamentoGetter(self) ->str:
-        return self.__departamento
+    def departamentoGetter(self) ->str: #se obtiene el valor de departamento
+        return self.__departamento #devuelve el valor privado de departamento
 
-    def idiomaGetter(self) ->str:
-        return self.__idioma;
+    def idiomaGetter(self) ->str: #se obtiene el valor de idioma
+        return self.__idioma; #devuelve el valor privado de idioma
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
     #Inserta la materia
-    def __insertRow(self):
-        try:
-            conn = sql.connect(self.__db)
-            cursor = conn.cursor()
+    def __insertRow(self): #define el metodo privado
+        try: #sentecia que se desea ejecutar sin presencia de ningun tipo de error
+            conn = sql.connect(self.__db) #se genera la conexion con la base de datos
+            cursor = conn.cursor() #se inserta un cursor para la insercion de los datos que estaran presente en tabla materia de la base de datos
             instruction = f"INSERT INTO materias values({self.__codigo}, '{self.__nombre}', '{self.__facultad}', '{self.__departamento}', '{self.__idioma}', {self.__creditos})"
-            cursor.execute(instruction)
-            conn.commit();
-            conn.close();
-        except sql.Error as e:
-            print (e)
+            cursor.execute(instruction) #se pasa la instruccion a la base de datos de crear la tabla materia en caso de no existir con las subtablas codigo ,nombre ,facultad ,departamento ,idioma ,creditos y su respectivo tipo de entrada
+            conn.commit(); #se verifican que los cambios en la base de datos son validos
+            conn.close(); #se cierra la conexion con la base de datos
+        except sql.Error as e: #sentecia que se ejecuta en caso de algun tipo de error y determinar una variable para referirse al mismo
+            print (e) #mensaje del error que se presenta
 
         
     #Pide input por teclado a tráves de consola de los datos, en versión gráfica desaparece
     #Pide input por teclado y retorna una tupla de tamaño = 6, que contiene todos los datos de materias a ser insertados
-    def __rowGetter(self)->None:
-        while True:
-            try: 
-                codigo = input('Codigo de la materia: ')
-                codigo = codigo.ljust(10)
-                codigo = int(codigo)
-                nombre = input('Nombre de la materia: ')
-                facultad = input('Facultad que dicta la materia: ')
-                departamento = input('Departamento que dicta la materia: ')
-                creditos = input('Creditos de la materia: ')
-                creditos = int(creditos)
-                idioma = input('Idioma en que se dicta la materia: ')
+    def __rowGetter(self)->None: #define el metodo privado
+        while True: #ciclo generado para verificar que los datos ingresados sean validos
+            try: #sentecia que se desea ejecutar sin presencia de ningun tipo de error
+                codigo = input('Codigo de la materia: ') #determinar el codigo de la materia mediante el input del usuario
+                codigo = codigo.ljust(10) #especifica la cantidad maxima de caracteres que puede ingresar el usario para la variable codigo
+                codigo = int(codigo) #determinar si la entrada del usuario es un numero
+                nombre = input('Nombre de la materia: ') #determinar el nombre de la materia mediante el input del usuario
+                facultad = input('Facultad que dicta la materia: ') #determinar el nombre de la facultad mediante el input del usuario
+                departamento = input('Departamento que dicta la materia: ') #determinar el nombre del departamento mediante el input del usuario
+                creditos = input('Creditos de la materia: ') #determinar el numero de creditos mediante el input del usuario
+                creditos = int(creditos) #verifica que el input sea un entero
+                idioma = input('Idioma en que se dicta la materia: ') #determinar el idioma mediante el input del usuario
                 if(codigo is None and nombre is None and facultad is None and departamento is None and idioma is None and creditos is None):
-                    print("Por favor llene todos los campos")
-                else:
+                    print("Por favor llene todos los campos") #verifica que todos los datos hayan sido colocados, y si no es asi imprime el mensaje
+                else: #sentencia en caso de que todos los datos hayan sido colocados
                     self.codigoSetter(codigo)
                     self.nombreSetter(nombre.upper())
                     self.facultadSetter(facultad.upper())
                     self.departamentoSetter(departamento.upper())
                     self.idiomaSetter(idioma.upper())
                     self.creditosSetter(creditos)
-                    break
-            except ValueError:
-                print("Dato(s) invalido(s), codigo y creditos son numeros enteros")
+                    break #rompe el ciclo
+            except ValueError: #sentecia que se ejecuta en caso de que la algun dato sea invalido y no sea detectado
+                print("Dato(s) invalido(s), codigo y creditos son numeros enteros") #generar mensaje de entradas invalidas
 
 
     #pide varias veces los datos
     #Pide input por teclado y retorna una lista de tuplas de tamaño = 6, que contiene todos los datos de materias a ser insertados
-    def __batchRowGetter(self):
-        secret_runner = "1"
-        counter = 0
-        while True: 
-            try:
-                codigo = input('Codigo de la materia: ')
-                codigo = codigo.ljust(10)
-                codigo = int(codigo)
-                nombre = input('Nombre de la materia: ')
-                facultad = input('Facultad que dicta la materia: ')
-                departamento = input('Departamento que dicta la materia: ')
-                creditos = input('Creditos de la materia: ')
-                creditos = int(creditos)
-                idioma = input('Idioma en que se dicta la materia: ')
+    def __batchRowGetter(self): #define el metodo privado
+        secret_runner = "1" #establece la variable que sirve para mantener el ciclo que pide los datos varias veces
+        counter = 0 #establecer el contador que sirve para controlar el numero de veces que el usuario a ingresado datos
+        while True: #generar el ciclo que pide los datos varias veces
+            try: #sentecia que se desea ejecutar sin presencia de ningun tipo de error
+                codigo = input('Codigo de la materia: ') #determinar el codigo de la materia mediante el input del usuario
+                codigo = codigo.ljust(10) #especifica la cantidad maxima de caracteres que puede ingresar el usuario para la variable codigo
+                codigo = int(codigo) #determinar si la entrada del usuario es un numero
+                nombre = input('Nombre de la materia: ') #determinar el nombre de la materia mediante el input del usuario
+                facultad = input('Facultad que dicta la materia: ') #determinar el nombre de la facultad mediante el input del usuario
+                departamento = input('Departamento que dicta la materia: ') #determinar el nombre del departamento mediante el input del usuario
+                creditos = input('Creditos de la materia: ') #determinar el numero de creditos mediante el input del usuario
+                creditos = int(creditos) #verifica que el input sea un entero
+                idioma = input('Idioma en que se dicta la materia: ') #determinar el idioma mediante el input del usuario
                 if(codigo is None and nombre is None and facultad is None and departamento is None and idioma is None and creditos is None):
-                    print("Por favor llene todos los campos")
-                else:
-                    self.__multidata.append((codigo, nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), creditos))
-                    runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
-                    counter+=1
-                if runner != secret_runner:
-                    break 
-            except ValueError:
-                print("Dato(s) invalido(s), codigo y creditos son numeros enteros")
-        print (f"Usted ha insertado {counter} datos, los cuales son: ")
-        self.tableMaterias(self.__multidata)
-        return self.__multidata
+                    print("Por favor llene todos los campos") #verifica que todos los datos hayan sido colocados, y si no es asi imprime el mensaje
+                else: #sentencia en caso de que todos los datos hayan sido colocados
+                    self.__multidata.append((codigo, nombre.upper(), facultad.upper(), departamento.upper(), idioma.upper(), creditos)) #agregar a la lista los datos ingresados por el usuario, en caso de ser un string utilizando el metodo upper()
+                    runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ') #controlador de la continuacion del ciclo por parte de la entrada del usuario
+                    counter+=1 #agregarle una unidad al contador de datos ingresados
+                if runner != secret_runner: #sentencia de verificacion para continuar o no el ciclo
+                    break #como no se desea continuar el ciclo se rompera en esta sentencia
+            except ValueError: #sentecia que se ejecuta en caso de que la algun dato sea invalido y no sea detectado
+                print("Dato(s) invalido(s), codigo y creditos son numeros enteros") #generar mensaje de entradas invalidas
+        print (f"Usted ha insertado {counter} datos, los cuales son: ") #mensaje para el usuario de la cantidad de datos ingresados y cuales son
+        self.tableMaterias(self.__multidata) #llama al metodo encargado de las tablas que contienen los datos
+        return self.__multidata #retornar todos los datos que ingreso el usuario
 
 
     #Leer todos datos
