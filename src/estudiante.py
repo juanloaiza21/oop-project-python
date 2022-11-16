@@ -3,7 +3,8 @@ import sqlite3 as sql
 import datetime
 from console_utils import Console
 
-class Estudiante(Console):
+
+class estudiante(Console):
     def __init__(self, db: str)->None:
         self.__db = db            
         self.__identificacion:int = None
@@ -15,13 +16,72 @@ class Estudiante(Console):
         self.__procedencia: str = None
         self.__correoeletronico: str = None
         self.__cantidadmatriculas: int = None
+        self.__multidata=[]
 
+    def identificacionsetter(self,identificacion: int) ->None:
+        self.__identificacion = identificacion
+    
+    def apellidosetter(self,apellido: str) ->None:
+        self.__identificacion = apellido
+    
+    def nombresetter(self,nombre: str) ->None:
+        self.__identificacion = nombre
+    
+    def carrerasetter(self,carrera: str) ->None:
+        self.__identificacion = carrera
+
+    def fechanacimientosetter(self,fechanacimiento: int) ->None:
+        self.__identificacion = fechanacimiento
+
+    def fechaingresosetter(self,fechaingreso: int) ->None:
+        self.__identificacion = fechaingreso
+
+    def procedenciasetter(self,procedencia: str) ->None:
+        self.__identificacion = procedencia
+
+    def correoeletronicosetter(self,correoeletronico: str) ->None:
+        self.__identificacion = correoeletronico
+
+    def cantidadmatriculassetter(self,cantidadmatriculas: int) ->None:
+        self.__identificacion = cantidadmatriculas
+    
+    def cantidadmatriculassetter(self,multidata) ->None:
+        self.__multidata = multidata
+#-----------------------------------------------------------------------------------------------
+    def identificaciongetter(self)->int:
+        return self.__identificacion
+    
+    def apellidogetter(self)->str:
+        return self.__apellido
+    
+    def nombregetter(self)->str:
+        return self.__nombre 
+    
+    def carreragetter(self)->str:
+        return self.__carrera
+
+    def fechanacimientogetter(self)->str:
+        return self.__fechanacimiento
+
+    def fechaingresogetter(self)->str:
+        return self.__fechaingreso
+
+    def procedenciagetter(self)->str:
+        return self.__procedencia
+
+    def correoeletronicogetter(self)->str:
+        return self.__correoeletronico
+
+    def cantidadmatriculasgetter(self)->int:
+        return self.__cantidadmatriculas 
+    def cantidadmatriculasgetter(self):
+        return self.__multidata
     #Inserta la materia
     def __insertRow(self):
         try:
             conn = sql.connect(self.__db)
             cursor = conn.cursor()
-            instruction = f"INSERT INTO estudiante values({self.__identificacion}, '{self.__nombre}', '{self.__apellido}', '{self.__carrera}', '{self.__fechanacimiento}', '{self.__fechaingreso}','{self.__procedencia}','{self.__correoeletronico}','{self.__cantidadmatriculas}')"
+            instruction = f"INSERT INTO estudiante values({self.__carrera}, '{self.__nombre}', '{self.__apellido}', '{self.__fechanacimiento}', '{self.__fechaingreso}', '{self.__procedencia}','{self.__correoeletronico}','{self.__cantidadmatriculas}','{self.__identificacion}')"
             cursor.execute(instruction)
             conn.commit();
             conn.close();
@@ -29,7 +89,6 @@ class Estudiante(Console):
             print (e)
 
     #Pide input por teclado a tráves de consola de los datos, en versión gráfica desaparece
-    #Retorna todos los datos del estudiante en forma de tupla con tamaño = 9.
     def __rowGetter(self):
         #TODO hacer que la fecha sea DD/MM/AA
         while True:
@@ -38,59 +97,66 @@ class Estudiante(Console):
                 identificacion = identificacion.ljust(10)
                 while True:
                     try:
-                        self.__identificacion = int(identificacion)
+                        identificacion = int(identificacion)
                         break
                     except:
                         print("input invalido")
                         identificacion = input('numero de identificacion del estudiante: ')
                         identificacion = identificacion.ljust(10)                
-                self.__nombre = input('Nombre del estudiante: ').upper()
-                self.__apellido = input('apellido del estudiante: ').upper()
-                self.__carrera = input('nomrbre de la carrera: ').upper()
+                nombre = input('Nombre del estudiante: ')
+                apellido = input('apellido del estudiante: ')
+                carrera = input('nomrbre de la carrera: ')
                 #Validador fecha nacimiento
                 while True:
                     try:
-                        fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ') #Fecha en formato ISO 8601
-                        fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%d/%m/%Y')#Fecha en formato ISO 8601
+                        fechanacimiento = input('fecha de nacimiento del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+                        fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%d/%m/%Y')
                         break
                     except:
                         try:
-                            fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%Y/%m/%d')#Fecha en formato ISO 8601
+                            fechanacimiento=datetime.datetime.strptime(fechanacimiento,'%Y/%m/%d')
                             break
                         except:
                             print("formato invalido")
                 #Validador fecha ingreso
                 while True:
                     try:
-                        fechaingreso = input('fecha de ingreso del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')#Fecha en formato ISO 8601
-                        fechaingreso=datetime.datetime.strptime(fechaingreso,'%d/%m/%Y')#Fecha en formato ISO 8601
+                        fechaingreso = input('fecha de ingreso del estudiante (formato DD/MM/AAAA,AAAA/MM/DD): ')
+                        fechaingreso=datetime.datetime.strptime(fechaingreso,'%d/%m/%Y')
                         break
                     except:
                         try:
-                            fechaingreso=datetime.datetime.strptime(fechaingreso,'%Y/%m/%d')#Fecha en formato ISO 8601
+                            fechaingreso=datetime.datetime.strptime(fechaingreso,'%Y/%m/%d')
                             break
                         except:
                             print("formato invalido")
-                self.__fechaingreso = fechaingreso.isoformat()
-                self.__fechanacimiento = fechanacimiento.isoformat()
-                self.__procedencia = input('procedencia del estudiante: ').upper()
-                self.__correoeletronico = input('correo eletronico del estudiante: ').upper()
+                procedencia = input('procedencia del estudiante: ')
+                correoeletronico = input('correo eletronico del estudiante: ')
                 while True:
                     try:
                         cantidadmatriculas = input('cantidad de matriculas del estudiante: ')
-                        self.__cantidadmatriculas = int(cantidadmatriculas)
+                        cantidadmatriculas = int(cantidadmatriculas)
                         break
                     except:
                         print("input invalido")
-                if (self.__identificacion is None and self.__nombre is None and self.__apellido is None and self.__carrera is None and self.__fechanacimiento is None and self.__fechaingreso is None and self.__procedencia is None and self.__correoeletronico is None and self.__cantidadmatriculas is None):
+                if not (identificacion and nombre and apellido and carrera and fechanacimiento and fechaingreso and procedencia and correoeletronico and cantidadmatriculas):
                     print("Algun dato es vacio, por favor envie todos los datos.")
                 else:
+                    estudiante.cantidadmatriculassetter(cantidadmatriculas)
+                    estudiante.correoeletronicosetter(correoeletronico.upper())
+                    estudiante.procedenciasetter(procedencia.upper())
+                    estudiante.fechaingresosetter(fechaingreso)
+                    estudiante.fechanacimientosetter(fechanacimiento)
+                    estudiante.carrerasetter(carrera.upper())
+                    estudiante.nombresetter(nombre.upper())
+                    estudiante.identificacionsetter(identificacion)
+                    estudiante.apellidosetter(apellido.upper())
                     break
+                    #return (identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(),correoeletronico.upper(),cantidadmatriculas)
             except ValueError:
                 print('Value error, cantidad de matriculas e identificacion son numeros enteros')
 
     #pide varias veces los datos
-    #Retorna retorna una lista de tuplas con todos los datos de cada estudiante estudiante, tuplas con tamaño= 9.
     def __batchRowGetter(self):
         result = []
         secret_runner = "1"
@@ -143,10 +209,10 @@ class Estudiante(Console):
                         break
                     except:
                         print("input invalido")
-                if (identificacion is None and nombre is None and apellido is None and carrera is None and fechanacimiento is None and fechaingreso is None and procedencia is None and correoeletronico is None and cantidadmatriculas is None):
+                if not (identificacion and nombre and apellido and carrera and fechanacimiento and fechaingreso and procedencia and correoeletronico and cantidadmatriculas):
                     print("Algun dato es vacio, por favor envie todos los datos.")
                 else:    
-                    result.append((identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(), correoeletronico.upper(), cantidadmatriculas))
+                    self.__multidata.append((identificacion, nombre.upper(), apellido.upper(), carrera.upper(), fechanacimiento.isoformat(), fechaingreso.isoformat(), procedencia.upper(), correoeletronico.upper(), cantidadmatriculas))
                     runner=input('Digite 1 si desea continuar, digite cualquier otra tecla si no. ')
                     counter+=1
                     if runner != secret_runner:
@@ -154,11 +220,10 @@ class Estudiante(Console):
             except ValueError:
                     print('Value error, cantidad de matriculas e identificacion son numeros enteros')
         print (f"Usted ha insertado {counter} datos, los cuales son:")
-        self.tableEstudiante(result)
-        return result
+        self.tableEstudiante(self.__multidata)
+        return self.__multidata
 
     #Leer todos datos
-    #Retorna una lista de tuplas tamaño = 9 con los datos del estudiante
     def readAllRows(self):
         try:
             conn = sql.connect(self.__db)
@@ -173,9 +238,7 @@ class Estudiante(Console):
             print (e)
 
     #Acá se puede filtrar los datos bajo una condición 
-    #Field by name puede ser cualquier tipo de dato, igual que field value, no poseen validaciones ya que están siendo usados especificamente.
-    #Retorna una lista de tuplas tamaño = 9 que contiene los datos del estudiante que hace match con los datos pedidos
-    def searchByFilter(self, fieldName, fieldValue):
+    def searchByFilter(self,fieldName, fieldValue):
         try:
             conn = sql.connect(self.__db)
             cursor = conn.cursor()
@@ -189,8 +252,7 @@ class Estudiante(Console):
             print (e)   
 
     #Batch write, escribe multiples lineas de datos a la vez
-    #Recibe los datos de BatchRowGetter
-    def __batchInsertRow(self, dataList):
+    def __batchInsertRow(self,dataList):
         try:
             conn = sql.connect(self.__db)
             cursor = conn.cursor()
@@ -202,8 +264,7 @@ class Estudiante(Console):
             print (e)   
 
     #Read order, ordena los datos de mayor a menor según el campo que le pidamos 
-    #Retorna una lista de tuplas tamaño = 9 que contiene los datos de los estudiantes de manera ordenada según el campo que siemrpe será un string
-    def readOrdered(self, field: str):
+    def readOrdered(self,field: str):
         try:
             conn = sql.connect(self.__db)
             cursor = conn.cursor()
@@ -212,15 +273,13 @@ class Estudiante(Console):
             datos = cursor.fetchall()
             conn.commit();
             conn.close()
-            print(datos);
+            self.tableMaterias(datos);
         except sql.Error as e:
             print (e) 
 
     #Actualizar datos en un determinado campo de algun estudiante
     """Actualizar materia en diseño lógico."""
-    #Pide el fieldOnChange como un string, la data puede ser cualquier tipo de dato, y la identificación que responde al nombre iden
-    #Retorna un mensaje de felicitación si todo fue correcto
-    def __update(self, fieldOnChange: str, dataOnChange, iden: int):
+    def __update(self,fieldOnChange: str, dataOnChange, iden: int):
         try:
             conn = sql.connect(self.__db)
             cursor = conn.cursor()
@@ -332,5 +391,3 @@ class Estudiante(Console):
             #-----------------------------------------------------------------------------------------------------------------------------------------#
             elif selector ==4:
                 break;
-
-    #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
