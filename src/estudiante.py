@@ -74,7 +74,7 @@ class estudiante(Console):
 
     def cantidadmatriculasgetter(self)->int:
         return self.__cantidadmatriculas 
-    def cantidadmatriculasgetter(self):
+    def multidatagetter(self):
         return self.__multidata
     #Inserta la materia
     def __insertRow(self):
