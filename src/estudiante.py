@@ -18,32 +18,32 @@ class estudiante(Console):
         self.__cantidadmatriculas: int = None
         self.__multidata=[]
 
-    def identificacionsetter(self,identificacion: int) ->None:
+        def identificacionsetter(self,identificacion: int) ->None:
         self.__identificacion = identificacion
     
     def apellidosetter(self,apellido: str) ->None:
-        self.__identificacion = apellido
+        self.__apellido = apellido
     
     def nombresetter(self,nombre: str) ->None:
-        self.__identificacion = nombre
+        self.__nombre = nombre
     
     def carrerasetter(self,carrera: str) ->None:
-        self.__identificacion = carrera
+        self.__carrera = carrera
 
     def fechanacimientosetter(self,fechanacimiento: int) ->None:
-        self.__identificacion = fechanacimiento
+        self.__fechanacimiento = fechanacimiento
 
     def fechaingresosetter(self,fechaingreso: int) ->None:
-        self.__identificacion = fechaingreso
+        self.__fechaingreso = fechaingreso
 
     def procedenciasetter(self,procedencia: str) ->None:
-        self.__identificacion = procedencia
+        self.__procedencia = procedencia
 
     def correoeletronicosetter(self,correoeletronico: str) ->None:
-        self.__identificacion = correoeletronico
+        self.__correoeletronico = correoeletronico
 
     def cantidadmatriculassetter(self,cantidadmatriculas: int) ->None:
-        self.__identificacion = cantidadmatriculas
+        self.__cantidadmatriculas = cantidadmatriculas
     
     def cantidadmatriculassetter(self,multidata) ->None:
         self.__multidata = multidata
