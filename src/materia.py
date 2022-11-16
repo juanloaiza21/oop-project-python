@@ -211,32 +211,32 @@ class Materia(Console): #se crea la clase materia
 
     #---------------------------------------------------------------------------------------------IMPORTANT calcular promedios de una tabla------------------------------------------------------------------------------------------
     #Calcula el promedio de un campo, en este caso de creditos
-    def __promedio(self):
-        try:
-            conn = sql.connect(self.__db)
-            cursor = conn.cursor()
+    def __promedio(self): #definicion del metodo privado para calcular el promedio de un campo
+        try: #sentecia que se desea ejecutar sin presencia de ningun tipo de error
+            conn = sql.connect(self.__db) #se genera la conexion con la base de datos
+            cursor = conn.cursor() #se inserta un cursor para la actualizacion de los datos de la tabla materia de la base de datos
             instruction = f"SELECT count(*) FROM materias" #Comando de contar campos en SQL
-            cursor.execute(instruction)
-            cantidad=cursor.fetchall()
+            cursor.execute(instruction) #se pasa la instruccion con el cursor para seleccionar los campos
+            cantidad=cursor.fetchall() #utilizamos el metodo fetchall para obtener todas las filas de datos de golpe
             instruction = f"SELECT sum(creditos) FROM materias" #Comando de sumar campos en SQL
-            cursor.execute(instruction)
-            suma=cursor.fetchall()
-            conn.commit();
-            conn.close()
-            print("Promedio creditos ", suma[0][0]/cantidad[0][0])
-        except sql.Error as e:
-            print (e)
+            cursor.execute(instruction) #se pasa la instruccion con el cursor para seleccionar la suma de los campos
+            suma=cursor.fetchall() #utilizamos el metodo fetchall para obtener todas las filas de datos de golpe
+            conn.commit(); #se verifican que los cambios en la base de datos son validos
+            conn.close() #se cierra la conexion con la base de datos
+            print("Promedio creditos ", suma[0][0]/cantidad[0][0]) #mensaje para el usuario con el promedio de creditos
+        except sql.Error as e: #sentecia que se ejecuta en caso de algun tipo de error y determinar una variable para referirse al mismo
+            print (e) #mensaje del error que se presenta
     #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
     #---------------------------------------------------------------Función principal---------------------------------------------------------------------------------#
 
-    def main(self):
+    def main(self): #definicion del metodo controlador del modulo materia
         #TODO
-        while True:
+        while True:#Revisa si va a añadir datos, actualizar idioma o leer datos, metodo reutilizable, verifica que el input sea correcto
             #validador inicial
-            while True:
-                try:
+            while True: #creacion del boleano para realiza la comprobacion que se realizo una entrada correcta por parte del usuario
+                try: #sentecia que se desea ejecutar sin presencia de ningun tipo de error
                     selector = input(
                     """
                     Bienvenido a materia
@@ -244,90 +244,90 @@ class Materia(Console): #se crea la clase materia
                     2. Actualizar idioma. 
                     3. Leer datos. 
                     Para salir presione otro numero.  
-                    """)
-                    selector = int(selector)
-                    break
-                except ValueError:
-                    print("valor invalido")
+                    """)  #mensaje para el usuario sobre sus opciones validas de entrada y entrada del mismo 
+                    selector = int(selector) #verificacion de que la entrada es un numero
+                    break #se rompe el ciclo
+                except ValueError: #sentecia que se ejecuta en caso de algun tipo de error
+                    print("valor invalido") #genera mensaje de entrada invalida
             #Añadir materia
-            if selector == 1:
-                while True:
-                    while True:
-                        try:
+            if selector == 1: #sentencia en caso que la entrada del usuario sea 1
+                while True: #creacion del boleano para realiza la comprobacion que se realizo una entrada correcta por parte del usuario
+                    while True: #creacion del boleano para realiza la comprobacion que se realizo una entrada correcta por parte del usuario
+                        try: #sentecia que se desea ejecutar sin presencia de ningun tipo de error
                             subselector = input(
                                 """
                                 1. Para añadir una sola materia.
                                 2. Añadir materia sin recibir datos. 
                                 3. Para añadir múltiples materias.
                                 Para salir cualquier otro numero.  
-                                """)
-                            subselector = int(subselector)
-                            break
-                        except ValueError:
-                            print("valor invalido")
+                                """) #mensaje para el usuario sobre sus opciones validas de entrada y entrada del mismo 
+                            subselector = int(subselector) #verificacion de que la entrada es un numero
+                            break #se rompe el ciclo
+                        except ValueError: #sentecia que se ejecuta en caso de algun tipo de error
+                            print("valor invalido") #genera mensaje de entrada invalida
                     #Añadir una sola materia
-                    if subselector == 1:
-                        self.__rowGetter()
-                        self.__insertRow()
-                        data = (self.__codigo, self.__nombre, self.__facultad, self.__departamento, self.__idioma,self.__creditos)
-                        self.tableMaterias([data])
-                        break
+                    if subselector == 1: #sentencia en caso que la entrada del usuario en el subselector sea 1
+                        self.__rowGetter() #llamar al metodo privado que pide input por teclado a tráves de consola de los datos
+                        self.__insertRow() #llamar al metodo privado que inserta la materia en la base de datos
+                        data = (self.__codigo, self.__nombre, self.__facultad, self.__departamento, self.__idioma,self.__creditos) #actualizacion de los datos
+                        self.tableMaterias([data]) #llamado al metodo para ver los datos en la tabla
+                        break #rompe el ciclo
                     #Añadir materia sin que se vean los datos
-                    elif subselector==2:
-                        self.__rowGetter()
-                        self.__insertRow()
-                        break
+                    elif subselector==2: #sentencia en caso que la entrada del usuario en el subselector sea 2
+                        self.__rowGetter() #llamar al metodo privado que pide input por teclado a tráves de consola de los datos
+                        self.__insertRow() #llamar al metodo privado que pide input por teclado a tráves de consola de los datos
+                        break #rompe el ciclo
                     #Añadir multiples materias
-                    elif subselector==3:
-                        self.__batchRowGetter()
-                        self.__batchInsertRow()
-                        break
-                    else:
-                        break
+                    elif subselector==3: #sentencia en caso que la entrada del usuario en el subselector sea 3
+                        self.__batchRowGetter() #llamar al metodo privado que pide input por teclado a tráves de consola de los datos varias veces
+                        self.__batchInsertRow() #llamar al metodo que inserta todas las materias que a ingresado el usuario en la base de datos e internamenete da el mensaje al usuario
+                        break #rompe el ciclo
+                    else: #sentencia en caso de que la entrada fuera un numero distinto
+                        break #rompe el ciclo
             #Actualizar idioma
-            if selector == 2:
-                while True:
-                    try:
-                        codigo = input("Seleccione el codigo de la materia ")
-                        codigo = int(codigo)
-                        break
-                    except ValueError:
-                        print('Valor invalido')
-                while True:
-                    idioma = input("Escriba el nuevo idioma ")
-                    if (type(idioma)!=str):
-                        print('Ingrese un valor')
-                    else:
-                        break
-                self.__update('idioma', idioma, codigo)
+            if selector == 2: #sentencia en caso que la entrada del usuario sea 2
+                while True: #creacion del ciclo boleano para realiza la comprobacion que se realizo una entrada correcta por parte del usuario
+                    try: #sentecia que se desea ejecutar sin presencia de ningun tipo de error
+                        codigo = input("Seleccione el codigo de la materia ") #entrada del codigo o clave primaria de la materia que se desea actualizar
+                        codigo = int(codigo) #verificacion de que la entrada es un numero
+                        break #rompe el ciclo
+                    except ValueError: #sentecia que se ejecuta en caso de algun tipo de error 
+                        print('Valor invalido') #generar mensaje de entrada invalida
+                while True: #creacion del ciclo boleano para realiza la comprobacion que se realizo una entrada correcta por parte del usuario
+                    idioma = input("Escriba el nuevo idioma ") #entrada del nuevo idioma que desea actualizar
+                    if (type(idioma)!=str): #sentencia en caso de que la entrada no sea un str
+                        print('Ingrese un valor') #mensaje para el usuario 
+                    else: #sentencia en caso de que la entrada sea un str
+                        break #rompe el ciclo
+                self.__update('idioma', idioma, codigo) # metodo privado que actualiza el idioma
             #Leer datos
-            if selector == 3:
-                    while True:
-                        self.clearConsole()
-                        try:
+            if selector == 3: #sentencia en caso que la entrada del usuario sea 3
+                    while True: #creacion del ciclo boleano para realiza la comprobacion que se realizo una entrada correcta por parte del usuario
+                        self.clearConsole() #metodo que limpiara la consola
+                        try: #sentecia que se desea ejecutar sin presencia de ningun tipo de error
                             subselector = input(
                                 """
                                 1. Si desea ver todas las materias.
                                 2. Para bsucar con el código.
                                 Cualquier otro número para salir
                                 """ 
-                                )
-                            subselector=int(subselector)
-                            break
-                        except ValueError:
-                            print("valor invalido")
+                                ) #mensaje para el usuario sobre sus opciones validas de entrada y entrada del mismo
+                            subselector=int(subselector) #verifica que la entrada sea un entero
+                            break #rompe el ciclo
+                        except ValueError: #sentecia que se ejecuta en caso de algun tipo de error 
+                            print("valor invalido") #generar mensaje de entrada invalida
                 #Ver todas las materias
-                    if(subselector == 1):
-                        self.tableMaterias(self.__readAllRows())
+                    if(subselector == 1): #sentencia en caso que la entrada del usuario sea 1
+                        self.tableMaterias(self.__readAllRows()) #metodo privado que muestra todas las materias en una tabla
                 #Ver materias por codigos
-                    if(subselector == 2):
-                        while True:
-                            try:
-                                codigo = input("Escriba el codigo de la materia que quiere ver: ")
-                                codigo = int(codigo)
-                                break
-                            except ValueError:
-                                print("valor invalido")
-                        self.tableMaterias( self.searchByFilter('codigo', codigo))
-            else:
-                break
+                    if(subselector == 2): #sentencia en caso que la entrada del usuario sea 2
+                        while True: #creacion del ciclo boleano para realiza la comprobacion que se realizo una entrada correcta por parte del usuario
+                            try: #sentecia que se desea ejecutar sin presencia de ningun tipo de error
+                                codigo = input("Escriba el codigo de la materia que quiere ver: ") #mensaje que le pedira al usuario la clave o codigo de la materia
+                                codigo = int(codigo) #verifica que la entrada sea un entero
+                                break #rompe el ciclo
+                            except ValueError: #sentecia que se ejecuta en caso de algun tipo de error
+                                print("valor invalido") #generar mensaje de entrada invalida
+                        self.tableMaterias( self.searchByFilter('codigo', codigo)) #metodo que muestra las materias por codigos
+            else: #sentencia en caso de que la entrada no sea una de las mencionadas
+                break #rompe el ciclo
