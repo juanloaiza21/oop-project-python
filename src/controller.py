@@ -1,6 +1,6 @@
 #Modulos de control
-from materia import Materia
-from historia_academica import AcadHistory
+from materia import Materia # importar el metodo main del modulo materia para ser ejecutado por el nombre de Materia
+from historia_academica import AcadHistory # importar el metodo main del modulo historia_academica para ser ejecutado por el nombre de AcadHistory
 from estudiante import Estudiante
 from table_creator import TableGen
 from ranking import Ranking
