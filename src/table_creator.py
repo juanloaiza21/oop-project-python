@@ -1,15 +1,15 @@
 #Modulos
-import sqlite3 as sql
+import sqlite3 as sql #importar el modulo sqlite3 como sql
 
-class TableGen:
+class TableGen: #creacion de la clase TableGen
 
-    def __init__(self, db)->None:
-        self.__db = db
+    def __init__(self, db)->None: #definir la funcion que inicializa los atributos
+        self.__db = db #base de datos
 
-    def __estudianteTable(self)->None:
-        try:
-            conn = sql.connect(self.__db)
-            cursor = conn.cursor()
+    def __estudianteTable(self)->None: #define la funcion privada de la tabla de los estudiante
+        try: #sentecia que se desea ejecutar sin presencia de ningun tipo de error
+            conn = sql.connect(self.__db) #conexion a la base de datos
+            cursor = conn.cursor() #se inserta un cursor para la insercion de datos
             cursor.execute(
                     """CREATE TABLE IF NOT EXISTS estudiante (
                         identificacion INTEGER PRIMARY KEY,
@@ -22,16 +22,16 @@ class TableGen:
                         correoeletronico TEXT NOT NULL,
                         cantidadmatriculas INTEGER NOT NULL
                         )"""
-                );
-            conn.commit();
-            conn.close();
-        except sql.Error as e:
-            print(e)
+                ); #creacion de la tabla
+            conn.commit(); #se verifican que los cambios en la base de datos son validos
+            conn.close(); #se cierra la conexion con la base de datos
+        except sql.Error as e: #sentecia que se ejecuta en caso de algun tipo de error y determinar una variable para referirse al mismo
+            print(e) #mensaje del error que se presenta
 
-    def __materiaTable(self)->None:
-        try:
-            conn = sql.connect(self.__db)
-            cursor = conn.cursor()
+    def __materiaTable(self)->None: #define la funcion privada de la tabla de materias
+        try: #sentecia que se desea ejecutar sin presencia de ningun tipo de error
+            conn = sql.connect(self.__db) #conexion a la base de datos
+            cursor = conn.cursor() #se inserta un cursor para la insercion de datos
             cursor.execute(
             """CREATE TABLE IF NOT EXISTS materias (
                 codigo INTEGER PRIMARY KEY,
@@ -41,14 +41,14 @@ class TableGen:
                 idioma TEXT NOT NULL,
                 creditos INTEGER NOT NULL
                         )"""
-            );
-            conn.commit();
-            conn.close();
-        except sql.Error as e:
-            print(e)
+            ); #creacion de la tabla
+            conn.commit(); #se verifican que los cambios en la base de datos son validos
+            conn.close(); #se cierra la conexion con la base de datos
+        except sql.Error as e: #Sentencia que se ejecuta en caso de error
+            print(e) #Mensaje presentado en caso de error
 
-    def __acadHistoryTable(self)->None:
-        try:
+    def __acadHistoryTable(self)->None: #define la funcion privada de la tabla de historia academica
+        try: #sentecia que se desea ejecutar sin presencia de ningun tipo de error
             conn = sql.connect(self.__db) #Conexion a la base de datos
             cursor = conn.cursor()  #Se inserta un cursor para la insercion de datos
             cursor.execute(
@@ -68,16 +68,16 @@ class TableGen:
             print(e) #Mensaje presentado en caso de error
 
     #Crea base de datos
-    def __createrDB(self)->None:
-        try:
-            conn = sql.connect(self.__db);
-            conn.commit();
-            conn.close();
-        except sql.Error as e:
-            print(e)
+    def __createrDB(self)->None: #define la funcion privada de la creacion de base de datos
+        try: #sentecia que se desea ejecutar sin presencia de ningun tipo de error
+            conn = sql.connect(self.__db); #Conexion a la base de datos
+            conn.commit(); #Se verifican los cambios en la base de datos
+            conn.close(); # se cierra la conexion con la base de datos
+        except sql.Error as e: #Sentencia que se ejecuta en caso de error
+            print(e) #Mensaje presentado en caso de error
 
-    def main(self)->None:
-        self.__createrDB()
-        self.__materiaTable()
-        self.__estudianteTable()
-        self.__acadHistoryTable()
+    def main(self)->None: #definicion del metodo controldor del modulo table_creator
+        self.__createrDB() #atributo privado de la creacion de base de datos
+        self.__materiaTable() #atributo privado de la tabla materia
+        self.__estudianteTable() #atributo privado de la tabla estudiante 
+        self.__acadHistoryTable() #atributo privado de la tabla historia academica
