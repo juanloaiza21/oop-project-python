@@ -128,86 +128,86 @@ class Materia(Console): #se crea la clase materia
 
     #Leer todos datos
     #Retorna una lista de tuplas tamaño = 6 con todos los datos en la self.__db referentes a materias
-    def __readAllRows(self):
-        try:
-            conn = sql.connect(self.__db)
-            cursor = conn.cursor()
-            instruction = f"SELECT * from materias"
-            cursor.execute(instruction)
-            datos = cursor.fetchall()
-            conn.commit();
-            conn.close()
-            return (datos);
-        except sql.Error as e:
-            print (e)
+    def __readAllRows(self): #define el metodo privado
+        try: #sentecia que se desea ejecutar sin presencia de ningun tipo de error
+            conn = sql.connect(self.__db) #se genera la conexion con la base de datos 
+            cursor = conn.cursor() #se inserta un cursor para la busqueda de los datos de la tabla materia de la base de datos
+            instruction = f"SELECT * from materias" #se determina la intruccion de seleccionar los elementos de la tabla materia
+            cursor.execute(instruction) #se pasa la instruccion con el cursor para la busqueda de los datos
+            datos = cursor.fetchall() #utilizamos el metodo fetchall para obtener todas las filas de datos de golpe
+            conn.commit(); #se verifican que los cambios en la base de datos son validos
+            conn.close() #se cierra la conexion con la base de datos
+            return (datos); #devuelve los datos de la tabla materia
+        except sql.Error as e: #sentecia que se ejecuta en caso de algun tipo de error y determinar una variable para referirse al mismo
+            print (e) #mensaje del error que se presenta
 
     #Acá se puede filtrar los datos bajo una condición 
     #Pide los datos para filtrarlos bajo alguna condición, puede ser cualquier tipo de dato
     #Retorna lista de tuplas con tamaño = 6 con todos los datos de las materias que hagan match con la busqueda
     #Publico para el uso en historia academica 
-    def searchByFilter(self, fieldName, fieldValue):
-        try:
-            conn = sql.connect(self.__db)
-            cursor = conn.cursor()
-            instruction = f"SELECT * from materias WHERE {fieldName}={fieldValue}"
-            cursor.execute(instruction)
-            datos = cursor.fetchall()
-            conn.commit();
-            conn.close()
-            return datos;
-        except sql.Error as e:
-            print (e)
+    def searchByFilter(self, fieldName, fieldValue): #definir el método que se encarga de leer los datos por medio de un filtro al momento que se el usuario desee ver información especifica
+        try: #sentecia que se desea ejecutar sin presencia de ningun tipo de error
+            conn = sql.connect(self.__db) #se genera la conexion con la base de datos
+            cursor = conn.cursor() #se inserta un cursor para la busqueda de los datos de la tabla materia de la base de datos
+            instruction = f"SELECT * from materias WHERE {fieldName}={fieldValue}" #se determina la intruccion de seleccionar los elementos de la tabla materia de acuerdo al filtro seleccionado
+            cursor.execute(instruction) #se pasa la instruccion con el cursor para la busqueda de los datos
+            datos = cursor.fetchall() #utilizamos el metodo fetchall para obtener todas las filas de datos de golpe
+            conn.commit(); #se verifican que los cambios en la base de datos son validos
+            conn.close() #se cierra la conexion con la base de datos
+            return datos; #devuelve los datos de la tabla materia
+        except sql.Error as e: #sentecia que se ejecuta en caso de algun tipo de error y determinar una variable para referirse al mismo
+            print (e) #mensaje del error que se presenta
 
     #Batch write, escribe multiples lineas de datos a la vez
     #Recibe como datos la salida de batch row getter
-    def __batchInsertRow(self):
-        try:
-            conn = sql.connect(self.__db)
-            cursor = conn.cursor()
-            instruction = f"INSERT INTO materias values(?, ?, ?, ?, ?, ?)"
+    def __batchInsertRow(self): #definicion del metodo privado para insertar multiples cantidades de datos ingesados por el usuario
+        try: #sentecia que se desea ejecutar sin presencia de ningun tipo de error
+            conn = sql.connect(self.__db) #se genera la conexion con la base de datos 
+            cursor = conn.cursor() #se inserta un cursor para la insercion de los datos de la tabla materia de la base de datos
+            instruction = f"INSERT INTO materias values(?, ?, ?, ?, ?, ?)" #se determina la instruccion de insetar todos los valores ingresados por el usuario
             cursor.executemany(instruction, self.__multidata) #Enviar varios datos a la vez
-            conn.commit();
-            conn.close();
-        except sql.Error as e:
-            print (e)
+            conn.commit(); #se verifican que los cambios en la base de datos son validos
+            conn.close(); #se cierra la conexion con la base de datos
+        except sql.Error as e: #sentecia que se ejecuta en caso de algun tipo de error y determinar una variable para referirse al mismo
+            print (e) #mensaje del error que se presenta
         
 
     #Read order, ordena los datos de mayor a menor según el campo que le pidamos :p
     #Imprime los datos en forma de tablita
     #Método público para el uso en otros lugares
-    def readOrdered(self, field: str):
-        try:
-            conn = sql.connect(self.__db)
-            cursor = conn.cursor()
+    def readOrdered(self, field: str): #definicion del metedo para ordenar los datos de la tabla materia por medio de un filtro
+        try: #sentecia que se desea ejecutar sin presencia de ningun tipo de error
+            conn = sql.connect(self.__db) #se genera la conexion con la base de datos 
+            cursor = conn.cursor() #se inserta un cursor para la actualizacion de los datos de la tabla materia de la base de datos
             instruction = f"SELECT * from materias ORDER BY {field} DESC" #Si le quitamos el DESC se ordenara de menor a mayor, "DESC" viene de DESCENDING
-            cursor.execute(instruction)
-            datos = cursor.fetchall()
-            conn.commit();
-            conn.close()
-            self.tableMaterias(datos);
-        except sql.Error as e:
-            print (e)
+            cursor.execute(instruction) #se pasa la instruccion con el cursor para seleccionar los multiples datos por medio del parametro dado
+            datos = cursor.fetchall() #utilizamos el metodo fetchall para obtener todas las filas de datos de golpe
+            conn.commit(); #se verifican que los cambios en la base de datos son validos
+            conn.close() #se cierra la conexion con la base de datos
+            self.tableMaterias(datos); #se llama al metodo que contiene los datos en forma de tabalas
+        except sql.Error as e: #sentecia que se ejecuta en caso de algun tipo de error y determinar una variable para referirse al mismo
+            print (e) #mensaje del error que se presenta
 
     #Actualizar datos en un determinado campo de alguna materia
     """Actualizar materia en diseño lógico."""
     #Pide el fieldOnChange como un string, la data puede ser cualquier tipo de dato, y la identificación que responde al nombre code
     #Retorna un mensaje de felicitación si todo fue correcto
-    def __update(self, fieldOnChange: str, dataOnChange, code: int):
-        try:
-            conn = sql.connect(self.__db)
-            cursor = conn.cursor()
-            try:
-                dataOnChange= int(dataOnChange)
-                instruction = f"UPDATE materias SET '{fieldOnChange}'={dataOnChange} WHERE codigo={code}"
-            except ValueError:
+    def __update(self, fieldOnChange: str, dataOnChange, code: int): #definicion del metodo privado para actualizar los datos de la tabla materia por medio de la clave primaria
+        try: #sentecia que se desea ejecutar sin presencia de ningun tipo de error
+            conn = sql.connect(self.__db) #se genera la conexion con la base de datos
+            cursor = conn.cursor() #se inserta un cursor para la actualizacion de los datos de la tabla materia de la base de datos
+            try: #sentecia que se desea ejecutar sin presencia de ningun tipo de error
+                dataOnChange= int(dataOnChange) #comprobacion de que el parametro ingresado es un numero 
+                instruction = f"UPDATE materias SET '{fieldOnChange}'={dataOnChange} WHERE codigo={code}" #Comando de actualización en SQL
+            except ValueError: #sentecia que se ejecuta en caso de que se desee actualizar un string
                 instruction = f"UPDATE materias SET '{fieldOnChange}'='{dataOnChange}' WHERE codigo={code}" #Comando de actualización en SQL
-            finally:
-                cursor.execute(instruction)
-                conn.commit();
-                conn.close()
-                print ('Datos actualizados de forma correcta')
-        except sql.Error as e:
-            print (e)
+            finally: #sentencia que se ejecutara finalizando este proceso
+                cursor.execute(instruction) #se pasa la instruccion con el cursor para actualiza los datos por medio del parametro dado
+                conn.commit(); #se verifican que los cambios en la base de datos son validos
+                conn.close() #se cierra la conexion con la base de datos
+                print ('Datos actualizados de forma correcta') #mensaje para el usuario
+        except sql.Error as e: #sentecia que se ejecuta en caso de algun tipo de error y determinar una variable para referirse al mismo
+            print (e) #mensaje del error que se presenta
 
     #---------------------------------------------------------------------------------------------IMPORTANT calcular promedios de una tabla------------------------------------------------------------------------------------------
     #Calcula el promedio de un campo, en este caso de creditos
