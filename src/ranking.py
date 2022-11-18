@@ -1,4 +1,3 @@
-from types import NoneType #importar NoneType del modulo types
 from estudiante import Estudiante #importar Estudiante del modulo estudiante
 from historia_academica import AcadHistory #importar AcadHistory del modulo historia_academica
 from console_utils import Console #importar Console del modulo console_utils
@@ -23,7 +22,7 @@ class Ranking(Console): #creacion de la clase ranking
         for i in range(len(data)): #cantidad de caracteres de la informacion de los promedios
             datos = self.__acadHistory.acadHistoryById(data[i]) #data de los id estudiantes
             promedy =self.__acadHistory.prom(datos) #data de los promedios
-            if type(promedy)==NoneType: #instancia en caso de que el promedio no exista
+            if promedy is None: #instancia en caso de que el promedio no exista
                 promedy = 0.0 #el promedio es igual a 0.0
             proms.append({data[i]:promedy}) #Organiza los datos como un diccionario y almacena este diccionario en una lista
         return proms #Devuelve una lista de diccionarios con las notas y sus respectivos dueños
