@@ -329,5 +329,7 @@ class Materia(Console): #se crea la clase materia
                             except ValueError: #sentecia que se ejecuta en caso de algun tipo de error
                                 print("valor invalido") #generar mensaje de entrada invalida
                         self.tableMaterias( self.searchByFilter('codigo', codigo)) #metodo que muestra las materias por codigos
+            if selector == 4:
+                break
             else: #sentencia en caso de que la entrada no sea una de las mencionadas
-                break #rompe el ciclo
+                continue #rompe el ciclo
