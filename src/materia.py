@@ -330,4 +330,4 @@ class Materia(Console): #se crea la clase materia
                                 print("valor invalido") #generar mensaje de entrada invalida
                         self.tableMaterias( self.searchByFilter('codigo', codigo)) #metodo que muestra las materias por codigos
             else: #sentencia en caso de que la entrada no sea una de las mencionadas
-                continue #rompe el ciclo
+                break #rompe el ciclo
