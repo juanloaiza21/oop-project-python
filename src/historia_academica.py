@@ -215,7 +215,7 @@ class AcadHistory(Console):
                     2. Si desea actualizar una nota en una materia ya registrada. 
                     3. Si desea consultar sus notas o su promedio. 
                     4. Si desea eliminar alguna materia. 
-                    Para salir, cualquier otra tecla.
+                    5. salir
                     """)
                     #El usuario decide que desea realizar en el programa
                     selector =int(selector) #trensforma la seleccion del usuario para poder hacer una validacion
