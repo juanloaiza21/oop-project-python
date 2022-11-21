@@ -42,8 +42,11 @@ class Console: #Crea la clase "Console"
 
     #Tabla de historia academica
     def tableRanking(self, data): #Data va a ser una lista de tuplas, cada tupla será de un tamaño = 2, ambos datos seran int
-        my_table = PrettyTable() #llamado al modulo de tablas en consola
-        my_table.field_names = ["ID", "PROMEDIO"] #Nombre de los campos
-        for i in range(len(data)):
-            my_table.add_row(data[i])
-        print(my_table)
+        if (len(data))!=0: 
+            my_table = PrettyTable() #llamado al modulo de tablas en consola
+            my_table.field_names = ["ID", "PROMEDIO"] #Nombre de los campos
+            for i in range(len(data)):
+                my_table.add_row(data[i])
+            print(my_table)
+        elif (len(data))==0:
+            print("no hay datos")
