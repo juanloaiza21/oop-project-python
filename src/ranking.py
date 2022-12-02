@@ -13,29 +13,54 @@ class Ranking(Console): #creacion de la clase ranking
         ids =[] #creacion de una lista para ids
         data = self.__estudiante.readAllRows() #Data de todos los estudiantes
         for x in range(len(data)): #cantidad de caracteres de la informacion de los estudiantes
-            ids.append(data[x][0]) #Acomoda los ids en lista
+            element = data[x]
+            ids.append((element[0], element[1], element[2])) #Acomoda los ids en lista
         return ids #devuelve la lista de ids
 
     #Devuelve el promedio junto a quien le pertenece
     def __promsCalculator(self, data): #definir la funcion privada promsCalculator
         proms = [] #creacion de una lista para promedios
         for i in range(len(data)): #cantidad de caracteres de la informacion de los promedios
-            datos = self.__acadHistory.acadHistoryById(data[i]) #data de los id estudiantes
+            datos = self.__acadHistory.acadHistoryById(data[i][0]) #data de los id estudiantes #Donde 3 es nota, 4 creditos
             promedy =self.__acadHistory.prom(datos) #data de los promedios
             if promedy is None: #instancia en caso de que el promedio no exista
                 promedy = 0.0 #el promedio es igual a 0.0
-            proms.append({data[i]:promedy}) #Organiza los datos como un diccionario y almacena este diccionario en una lista
+                creditos = 0
+            else:
+                creditos = datos[0][4]
+            proms.append({data[i]: (promedy, creditos)}) #Organiza los datos como un diccionario y almacena este diccionario en una lista
         return proms #Devuelve una lista de diccionarios con las notas y sus respectivos dueños
 
-    #Convierte la lista de dictionarios en una lista de tuplas ordenadas
+        #Convierte la lista de dictionarios en una lista de tuplas ordenadas
     def __dictToTuple(self, data): #definir la funcion privada dictToTuple
         result = [] #creacion de una lista para resultados
         for i in range(len(data)): #cantidad de caracteres de la informacion 
             result.append(data[i].popitem()) #agrega la data a la lista
         return result #devuelve la lista de tuplas ordenadas
 
+    def __tupleUnion(self, data):
+        result = []
+        for i in range(len(data)):
+            element = data[i]
+            subelement = element[0] + element[1]
+            result.append(subelement)
+        return result 
+
+
+    def dataUnprint(self):
+        data = self.__idsList() #data del metodo privado de ids de los estudiantes
+        proms = self.__promsCalculator(data)
+        dataToOrder=self.__dictToTuple(proms) #data de la lista de tuplas en orden
+        tuples = self.__tupleUnion(dataToOrder)
+        return tuples
+
     def main(self): #definir el metodo controlador del modulo ranking
         data = self.__idsList() #data del metodo privado de ids de los estudiantes
-        promsList = self.__promsCalculator(data) #data del metodo privado de promedios
-        dataToOrder=self.__dictToTuple(promsList) #data de la lista de tuplas en orden
-        self.tableRanking(sorted(dataToOrder, key=lambda x: x[1], reverse=True)) #Ordena e imprime la lista de tuplas en orden descendente de acuerdo a la nota que estara siempre en indes = 1
+        proms = self.__promsCalculator(data)
+        dataToOrder=self.__dictToTuple(proms) #data de la lista de tuplas en orden
+        tuples = self.__tupleUnion(dataToOrder)
+        self.tableRanking(sorted(tuples, key=lambda x: x[4], reverse=True)) #Ordena e imprime la lista de tuplas en orden descendente de acuerdo a la nota que estara siempre en indes = 1
+
+
+test = Ranking("DBTEST.db")
+print(test.dataUnprint())
