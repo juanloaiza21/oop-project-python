@@ -26,9 +26,11 @@ class Ranking(Console): #creacion de la clase ranking
             if promedy is None: #instancia en caso de que el promedio no exista
                 promedy = 0.0 #el promedio es igual a 0.0
                 creditos = 0
+                cantidadMaterias = 0
             else:
                 creditos = self.__acadHistory.creditss(data[i][0])
-            proms.append({data[i]: (promedy, creditos)}) #Organiza los datos como un diccionario y almacena este diccionario en una lista
+                cantidadMaterias = self.__acadHistory.materiass(data[i][0])
+            proms.append({data[i]: (promedy, creditos, cantidadMaterias)}) #Organiza los datos como un diccionario y almacena este diccionario en una lista
         return proms #Devuelve una lista de diccionarios con las notas y sus respectivos dueños
 
         #Convierte la lista de dictionarios en una lista de tuplas ordenadas
@@ -60,7 +62,3 @@ class Ranking(Console): #creacion de la clase ranking
         dataToOrder=self.__dictToTuple(proms) #data de la lista de tuplas en orden
         tuples = self.__tupleUnion(dataToOrder)
         self.tableRanking(sorted(tuples, key=lambda x: x[4], reverse=True)) #Ordena e imprime la lista de tuplas en orden descendente de acuerdo a la nota que estara siempre en indes = 1
-
-
-test = Ranking("DBTEST.db")
-test.main()

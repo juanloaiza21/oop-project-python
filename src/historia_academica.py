@@ -214,7 +214,19 @@ class AcadHistory(Console):
             return result[0][0]
         except sql.Error as e:
             print (e)
-            
+    #Funcion que cuenta las amterias cursadas
+    def materiass(self, id: int):
+        try:
+            conn = sql.connect(self.__db) #Conexxion a la base de datos
+            cursor = conn.cursor()
+            instruction = f"SELECT count(creditos_cursados) FROM acadhistory WHERE id_estudiante = {id}" #Comando de delete en SQL un solo dato
+            cursor.execute(instruction) #Ejecuta la instruccion de borrado
+            result = cursor.fetchall()
+            conn.commit();
+            conn.close() #Cierre de conexion a la base de datos
+            return result[0][0]
+        except sql.Error as e:
+            print (e)
 
     #----------------------------------------------------------------Controlador principal----------------------------------------------------------------------------#
     def main(self):
