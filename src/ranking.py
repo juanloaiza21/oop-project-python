@@ -27,7 +27,7 @@ class Ranking(Console): #creacion de la clase ranking
                 promedy = 0.0 #el promedio es igual a 0.0
                 creditos = 0
             else:
-                creditos = datos[0][4]
+                creditos = self.__acadHistory.creditss(data[i][0])
             proms.append({data[i]: (promedy, creditos)}) #Organiza los datos como un diccionario y almacena este diccionario en una lista
         return proms #Devuelve una lista de diccionarios con las notas y sus respectivos dueños
 
@@ -63,4 +63,4 @@ class Ranking(Console): #creacion de la clase ranking
 
 
 test = Ranking("DBTEST.db")
-print(test.dataUnprint())
+test.main()

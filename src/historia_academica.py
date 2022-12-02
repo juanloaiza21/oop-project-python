@@ -201,6 +201,21 @@ class AcadHistory(Console):
             print("Dato(s) invalido") #En caso de insertar datos incorrectos se imprime este mensaje
     #-----------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
+    #funcion que hace suma de creditos
+    def creditss(self, id: int):
+        try:
+            conn = sql.connect(self.__db) #Conexxion a la base de datos
+            cursor = conn.cursor()
+            instruction = f"SELECT sum(creditos_cursados) FROM acadhistory WHERE id_estudiante = {id}" #Comando de delete en SQL un solo dato
+            cursor.execute(instruction) #Ejecuta la instruccion de borrado
+            result = cursor.fetchall()
+            conn.commit();
+            conn.close() #Cierre de conexion a la base de datos
+            return result[0][0]
+        except sql.Error as e:
+            print (e)
+            
+
     #----------------------------------------------------------------Controlador principal----------------------------------------------------------------------------#
     def main(self):
         #TODO print historia academica como una tabla 
