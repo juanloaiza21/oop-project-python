@@ -55,14 +55,14 @@ class Ranking(Console): #creacion de la clase ranking
         proms = self.__promsCalculator(data)
         dataToOrder=self.__dictToTuple(proms) #data de la lista de tuplas en orden
         tuples = self.__tupleUnion(dataToOrder)
-        return tuples
+        return sorted(tuples, key=lambda x: x[3], reverse=True)
 
     def main(self): #definir el metodo controlador del modulo ranking
         data = self.__idsList() #data del metodo privado de ids de los estudiantes
         proms = self.__promsCalculator(data)
         dataToOrder=self.__dictToTuple(proms) #data de la lista de tuplas en orden
         tuples = self.__tupleUnion(dataToOrder)
-        self.tableRanking(sorted(tuples, key=lambda x: x[4], reverse=True)) #Ordena e imprime la lista de tuplas en orden descendente de acuerdo a la nota que estara siempre en indes = 1
+        self.tableRanking(sorted(tuples, key=lambda x: x[3], reverse=True)) #Ordena e imprime la lista de tuplas en orden descendente de acuerdo a la nota que estara siempre en indes = 1
 
 
 data = Ranking("DBTEST.db")

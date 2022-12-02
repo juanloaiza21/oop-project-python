@@ -1,14 +1,16 @@
+from PyQt5.QtWidgets import *
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 from ranking import Ranking
 
 
+
 class TableModel(QtCore.QAbstractTableModel):
     def __init__(self, data):
         super(TableModel, self).__init__()
         self._data = data
-        
+    
     def headerData(self, p_int, Qt_Orientation, role=None):
         if role == Qt.DisplayRole and Qt_Orientation==Qt.Horizontal:
             header = [ "ID", "NOMBRE", "APELLIDO", "PROMEDIO", "CREDITOS", "MATERIAS"]
@@ -33,19 +35,22 @@ class TableModel(QtCore.QAbstractTableModel):
         return len(self._data[0])
 
 
+
+
+
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self._ranking = Ranking("DBTEST.db")
-
         self.table = QtWidgets.QTableView()
-
-        data = self._ranking.dataUnprint()
-
-        self.model = TableModel(data)
+        self.data = self._ranking.dataUnprint()
+        self.setFixedWidth(620)
+        self.setFixedHeight(700)
+        self.setWindowTitle("Ranking de mayor promedio a menor")
+        self.model = TableModel(self.data)
         self.table.setModel(self.model)
-
         self.setCentralWidget(self.table)
+        
 
 
 app=QtWidgets.QApplication(sys.argv)
