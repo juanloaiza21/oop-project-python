@@ -5,6 +5,7 @@ from estudiante import Estudiante # importar el metodo main del modulo estudiant
 from table_creator import TableGen # importar el metodo main del modulo table_creator para ser ejecutado por el nombre de TableGen
 from ranking import Ranking # importar el metodo main del modulo ranking para ser ejecutado por el nombre de Ranking
 from decouple import config # importar el metodo main del modulo decouple para ser ejecutado por el nombre de config
+from rankingQt import main as mainQt
 
 #DB
 DB = config('DB_NAME')
@@ -49,6 +50,7 @@ def main(): #se define la funcion prinsipal de control
             miEstudiante.main() #con 3 como la entrada del usuario se ejecutara el metodo main importado del modulo estudiante para entrar al mismo
         elif selector==4: #sentencia en caso que la entrada del usuario sea 4
             miRanking.main() #con 4 como la entrada del usuario se ejecutara el metodo main importado del modulo ranking para entrar al mismo
+            mainQt()
         elif selector==5: #sentencia en caso que la entrada del usuario sea 5
             break; #con 5 como la entrada del usuario se rompera el ciclo prinsipal y asi salir del programa
 

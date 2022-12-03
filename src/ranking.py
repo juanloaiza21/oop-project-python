@@ -50,7 +50,6 @@ class Ranking(Console): #creacion de la clase ranking
 
     #Metodo para usar en la parte gráfica
     def dataUnprint(self):
-        print("Entra")
         data = self.__idsList() #data del metodo privado de ids de los estudiantes
         proms = self.__promsCalculator(data)
         dataToOrder=self.__dictToTuple(proms) #data de la lista de tuplas en orden
@@ -63,7 +62,3 @@ class Ranking(Console): #creacion de la clase ranking
         dataToOrder=self.__dictToTuple(proms) #data de la lista de tuplas en orden
         tuples = self.__tupleUnion(dataToOrder)
         self.tableRanking(sorted(tuples, key=lambda x: x[3], reverse=True)) #Ordena e imprime la lista de tuplas en orden descendente de acuerdo a la nota que estara siempre en indes = 1
-
-
-data = Ranking("DBTEST.db")
-print(data.dataUnprint())

@@ -55,7 +55,10 @@ class App(QWidget):
             QHeaderView.Stretch)
         self.tableWidget.setSortingEnabled(True)
    
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    ex = App()
-    sys.exit(app.exec_())
+def main():
+    try:
+        app = QApplication(sys.argv)
+        ex = App()
+        sys.exit(app.exec_())
+    except:
+        "Saliendo"
