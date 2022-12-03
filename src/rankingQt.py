@@ -1,10 +1,9 @@
 from ranking import Ranking
 import sys
 from PyQt5.uic import loadUi
-from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import * 
-                    
-   
+from PyQt5 import QtWidgets, QtCore
+from PyQt5.QtWidgets import *      
+
 #Main Window
 class App(QWidget):
     def __init__(self):
@@ -54,6 +53,7 @@ class App(QWidget):
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.horizontalHeader().setSectionResizeMode(
             QHeaderView.Stretch)
+        self.tableWidget.setSortingEnabled(True)
    
 if __name__ == '__main__':
     app = QApplication(sys.argv)
