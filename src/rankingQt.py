@@ -36,7 +36,7 @@ class App(QWidget):
         self.tableWidget.setColumnCount(6)  
         self.tableWidget.setRowCount(len(data))
 
-        self.tableWidget.setHorizontalHeaderLabels(["Codigo","Nombre", "Apellido", "Promedio", "Materias", "Creditos"]) 
+        self.tableWidget.setHorizontalHeaderLabels(["Codigo","Nombre", "Apellido", "Promedio","Creditos", "Materias"]) 
 
         #Imprimir datos
         for i in range(len(data)):
